@@ -3,46 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocusFlow - Goal-Oriented Productivity System</title>
+    <title>Flusso - Goal-Oriented Productivity System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4A90E2;
-            --primary-light: #E3F2FD;
-            --secondary: #36B37E;
-            --accent: #FFAB00;
-            --danger: #FF5630;
-            --text: #2E3A59;
-            --text-light: #6C758F;
-            --bg: #FFFFFF;
-            --bg-secondary: #F8FAFC;
-            --card: #FFFFFF;
-            --shadow: rgba(0, 0, 0, 0.05);
-            --border: #E2E8F0;
+            /* New Color System - Deep Water + Mist + Moonlight */
+            --primary: #2C3E50; /* Deep Navy */
+            --primary-light: #34495E; /* Midnight Blue */
+            --secondary: #1ABC9C; /* Soft Teal - used sparingly */
+            --accent: #9B59B6; /* Muted Lavender */
+            --highlight: #F39C12; /* Desaturated Gold */
+            --text: #ECF0F1; /* Off-White/Fog */
+            --text-light: #BDC3C7; /* Lighter fog */
+            --bg: #0F172A; /* Deep Navy Background */
+            --bg-secondary: #1E293B; /* Slightly lighter navy */
+            --card: #1A2530; /* Card background */
+            --shadow: rgba(0, 0, 0, 0.25);
+            --border: #2C3E50; /* Subtle border */
             --radius: 12px;
             --transition: all 0.3s ease;
         }
 
-        .dark-mode {
-            --primary: #64B5F6;
-            --primary-light: #1E293B;
-            --secondary: #4DB6AC;
-            --accent: #FFB74D;
-            --danger: #FF8A80;
-            --text: #E2E8F0;
-            --text-light: #94A3B8;
-            --bg: #0F172A;
-            --bg-secondary: #1E293B;
-            --card: #1E293B;
-            --shadow: rgba(0, 0, 0, 0.3);
-            --border: #334155;
+        .light-mode {
+            --primary: #2C3E50;
+            --primary-light: #34495E;
+            --secondary: #16A085;
+            --accent: #8E44AD;
+            --highlight: #E67E22;
+            --text: #2C3E50;
+            --text-light: #5D6D7E;
+            --bg: #F5F7FA;
+            --bg-secondary: #E8ECEF;
+            --card: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --border: #D5DBDB;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         body {
@@ -52,6 +54,7 @@
             transition: var(--transition);
             min-height: 100vh;
             overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
         }
 
         .app-container {
@@ -68,7 +71,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             z-index: 10000;
             display: flex;
             align-items: center;
@@ -83,7 +86,7 @@
             padding: 40px;
             max-width: 500px;
             width: 100%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.5s ease;
         }
 
@@ -94,7 +97,7 @@
 
         .setup-header i {
             font-size: 48px;
-            color: var(--primary);
+            color: var(--secondary);
             margin-bottom: 15px;
         }
 
@@ -102,9 +105,9 @@
             font-size: 28px;
             font-weight: 700;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
         }
 
         .setup-header p {
@@ -160,14 +163,14 @@
         }
 
         .progress-step.active .step-circle {
-            background: var(--primary);
-            border-color: var(--primary);
+            background: var(--secondary);
+            border-color: var(--secondary);
             color: white;
         }
 
         .progress-step.completed .step-circle {
-            background: var(--secondary);
-            border-color: var(--secondary);
+            background: var(--accent);
+            border-color: var(--accent);
             color: white;
         }
 
@@ -195,16 +198,17 @@
         }
 
         .logo i {
-            color: var(--primary);
+            color: var(--secondary);
             font-size: 28px;
         }
 
         .logo h1 {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
 
         .header-controls {
@@ -213,69 +217,169 @@
             align-items: center;
         }
 
-        /* Content Bar */
-        .content-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border);
+        /* Enhanced Search Bar */
+        .search-container {
+            position: relative;
+            margin-bottom: 30px;
+            margin-top: 10px;
         }
 
-        .content-title {
-            font-size: 24px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Search Bar */
         .search-bar {
             position: relative;
-            margin-bottom: 20px;
             display: flex;
-            gap: 10px;
+            align-items: center;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 12px 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: var(--transition);
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--secondary);
+            box-shadow: 0 4px 20px rgba(26, 188, 156, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            color: var(--text-light);
+            font-size: 18px;
+            margin-right: 12px;
         }
 
         .search-input {
             flex: 1;
-            padding: 12px 45px 12px 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--card);
+            background: transparent;
+            border: none;
             color: var(--text);
             font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            padding: 4px 0;
         }
 
-        .search-icon {
+        .search-input::placeholder {
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .search-shortcut {
+            background: var(--bg-secondary);
+            color: var(--text-light);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+        }
+
+        .search-results {
             position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            border-radius: 0 0 var(--radius) var(--radius);
+            border: 1px solid var(--border);
+            border-top: none;
+            box-shadow: 0 8px 24px var(--shadow);
+            z-index: 100;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            animation: slideDown 0.2s ease;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-result-section {
+            margin-bottom: 10px;
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .search-result-item:hover {
+            background: var(--bg-secondary);
+            border-left-color: var(--secondary);
+        }
+
+        .search-result-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            color: var(--secondary);
+        }
+
+        .search-result-content {
+            flex: 1;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        .search-result-subtitle {
+            font-size: 12px;
             color: var(--text-light);
         }
 
-        .search-clear {
-            padding: 12px 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+        .search-result-meta {
+            display: flex;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .no-results {
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-light);
         }
 
         /* Quotes Bar */
         .quotes-bar {
-            background: linear-gradient(135deg, var(--primary-light), transparent);
-            border-left: 4px solid var(--primary);
-            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(26, 188, 156, 0.1), transparent);
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
             margin-bottom: 30px;
             border-radius: var(--radius);
             position: relative;
-            min-height: 70px;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -292,7 +396,8 @@
             font-style: italic;
             color: var(--text);
             margin-bottom: 5px;
-            line-height: 1.5;
+            line-height: 1.6;
+            font-weight: 400;
         }
 
         .quote-author {
@@ -330,15 +435,16 @@
             align-items: center;
             gap: 8px;
             white-space: nowrap;
+            font-family: 'Inter', sans-serif;
         }
 
         .nav-btn:hover {
-            background: var(--primary-light);
-            color: var(--primary);
+            background: rgba(26, 188, 156, 0.1);
+            color: var(--secondary);
         }
 
         .nav-btn.active {
-            background: var(--primary);
+            background: var(--secondary);
             color: white;
         }
 
@@ -362,6 +468,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Cards */
         .card {
             background: var(--card);
@@ -381,13 +492,14 @@
 
         .card-title {
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* NEW: Dashboard Top Row Layout */
+        /* Dashboard Top Row Layout */
         .dashboard-top-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -439,7 +551,7 @@
 
         .mini-progress-ring-fill {
             fill: none;
-            stroke: var(--primary);
+            stroke: var(--secondary);
             stroke-width: 6;
             stroke-linecap: round;
             stroke-dasharray: 226;
@@ -459,7 +571,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 600;
             color: var(--text);
         }
 
@@ -503,7 +615,7 @@
 
         .mini-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
             border-radius: 3px;
             transition: width 1s ease;
         }
@@ -554,14 +666,14 @@
         }
 
         .quick-action:hover {
-            background: var(--primary-light);
-            border-color: var(--primary);
+            background: rgba(26, 188, 156, 0.1);
+            border-color: var(--secondary);
             transform: translateY(-2px);
         }
 
         .quick-action-icon {
             font-size: 32px;
-            color: var(--primary);
+            color: var(--secondary);
             margin-bottom: 10px;
         }
 
@@ -574,8 +686,8 @@
         }
 
         .welcome-card {
-            background: linear-gradient(135deg, var(--primary-light), transparent);
-            border-left: 4px solid var(--primary);
+            background: linear-gradient(135deg, rgba(26, 188, 156, 0.1), transparent);
+            border-left: 4px solid var(--secondary);
             grid-column: 1 / -1;
         }
 
@@ -590,7 +702,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -602,6 +714,7 @@
         .user-info h3 {
             font-size: 20px;
             margin-bottom: 5px;
+            font-weight: 600;
         }
 
         .user-info p {
@@ -625,7 +738,7 @@
         .stat-value {
             font-size: 24px;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--secondary);
         }
 
         .stat-label {
@@ -649,7 +762,7 @@
 
         .progress-level-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
             border-radius: 4px;
             width: 0%;
             transition: width 1s ease;
@@ -682,12 +795,12 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: var(--primary-light);
+            background: rgba(26, 188, 156, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 15px;
-            color: var(--primary);
+            color: var(--secondary);
             font-size: 20px;
         }
 
@@ -722,7 +835,7 @@
 
         .progress-ring-fill {
             fill: none;
-            stroke: var(--primary);
+            stroke: var(--secondary);
             stroke-width: 8;
             stroke-linecap: round;
             stroke-dasharray: 314;
@@ -738,10 +851,6 @@
             font-size: 24px;
             font-weight: 700;
             color: var(--text);
-        }
-
-        .todays-tasks {
-            margin-top: 20px;
         }
 
         .task-item {
@@ -825,12 +934,12 @@
         }
 
         .calendar-day:hover {
-            background: var(--primary-light);
-            color: var(--primary);
+            background: rgba(26, 188, 156, 0.1);
+            color: var(--secondary);
         }
 
         .calendar-day.active {
-            background: var(--primary);
+            background: var(--secondary);
             color: white;
         }
 
@@ -839,11 +948,11 @@
         }
 
         .calendar-day.has-task {
-            border: 2px solid var(--accent);
+            border: 2px solid var(--highlight);
         }
 
         .calendar-day.has-objective {
-            border: 2px solid var(--primary);
+            border: 2px solid var(--accent);
         }
 
         .calendar-header {
@@ -871,11 +980,11 @@
         }
 
         .task-indicator {
-            background: var(--accent);
+            background: var(--highlight);
         }
 
         .objective-indicator {
-            background: var(--primary);
+            background: var(--accent);
         }
 
         /* Full Calendar Modal */
@@ -950,8 +1059,8 @@
         }
 
         .full-calendar-day.today {
-            background: var(--primary-light);
-            border-color: var(--primary);
+            background: rgba(26, 188, 156, 0.1);
+            border-color: var(--secondary);
         }
 
         .full-calendar-day-header {
@@ -979,19 +1088,19 @@
         }
 
         .calendar-event-task {
-            background: rgba(255, 171, 0, 0.1);
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--highlight);
+            border-left: 2px solid var(--highlight);
+        }
+
+        .calendar-event-objective {
+            background: rgba(155, 89, 182, 0.1);
             color: var(--accent);
             border-left: 2px solid var(--accent);
         }
 
-        .calendar-event-objective {
-            background: rgba(74, 144, 226, 0.1);
-            color: var(--primary);
-            border-left: 2px solid var(--primary);
-        }
-
         .calendar-event-custom {
-            background: rgba(54, 179, 126, 0.1);
+            background: rgba(26, 188, 156, 0.1);
             color: var(--secondary);
             border-left: 2px solid var(--secondary);
         }
@@ -1019,7 +1128,7 @@
 
         .graph-title {
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -1042,9 +1151,9 @@
         }
 
         .graph-period-btn.active {
-            background: var(--primary);
+            background: var(--secondary);
             color: white;
-            border-color: var(--primary);
+            border-color: var(--secondary);
         }
 
         .graph-container {
@@ -1073,7 +1182,7 @@
 
         .bar {
             width: 30px;
-            background: linear-gradient(to top, var(--primary), var(--secondary));
+            background: linear-gradient(to top, var(--secondary), var(--accent));
             border-radius: 6px 6px 0 0;
             transition: var(--transition);
             cursor: pointer;
@@ -1203,12 +1312,12 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: var(--primary-light);
+            background: rgba(26, 188, 156, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 15px;
-            color: var(--primary);
+            color: var(--secondary);
             font-size: 20px;
         }
 
@@ -1216,7 +1325,7 @@
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 5px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -1255,12 +1364,12 @@
         }
 
         .week-day:hover {
-            background: var(--primary-light);
+            background: rgba(26, 188, 156, 0.1);
             transform: translateY(-2px);
         }
 
         .week-day.active {
-            background: var(--primary);
+            background: var(--secondary);
             color: white;
         }
 
@@ -1316,7 +1425,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
             border-radius: 4px;
             width: 0%;
             transition: width 1s ease;
@@ -1372,7 +1481,7 @@
 
         .modal-title {
             font-size: 20px;
-            font-weight: 700;
+            font-weight: 600;
         }
 
         /* Timer Settings Modal */
@@ -1411,6 +1520,7 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--text);
+            font-family: 'Inter', sans-serif;
         }
 
         .form-input, .form-select, .form-textarea {
@@ -1425,6 +1535,7 @@
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
+            font-family: 'Inter', sans-serif;
         }
 
         /* Custom dropdown arrow */
@@ -1438,8 +1549,8 @@
 
         .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
         }
 
         .form-textarea {
@@ -1685,11 +1796,11 @@
         }
 
         .timer-btn.pause {
-            background: var(--accent);
+            background: var(--highlight);
         }
 
         .timer-btn.stop {
-            background: var(--danger);
+            background: #E74C3C;
         }
 
         .timer-btn.settings {
@@ -1855,8 +1966,8 @@
         }
 
         .background-option.active {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px var(--primary);
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px var(--secondary);
         }
 
         .background-option.forest {
@@ -1903,7 +2014,7 @@
         .settings-section h3 {
             margin-bottom: 20px;
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 600;
         }
 
         .setting-item {
@@ -1962,7 +2073,7 @@
         }
 
         input:checked + .toggle-slider {
-            background-color: var(--primary);
+            background-color: var(--secondary);
         }
 
         input:checked + .toggle-slider:before {
@@ -1996,7 +2107,7 @@
         }
 
         .context-menu-item:hover {
-            background: var(--primary-light);
+            background: rgba(26, 188, 156, 0.1);
         }
 
         /* Tutorial Tips */
@@ -2011,7 +2122,7 @@
             max-width: 300px;
             z-index: 999;
             animation: slideUp 0.3s ease;
-            border-left: 4px solid var(--accent);
+            border-left: 4px solid var(--highlight);
             display: none;
         }
 
@@ -2051,7 +2162,7 @@
 
         .achievement-item.unlocked {
             border-color: var(--secondary);
-            background: linear-gradient(135deg, rgba(54, 179, 126, 0.1), transparent);
+            background: linear-gradient(135deg, rgba(26, 188, 156, 0.1), transparent);
         }
 
         .achievement-item.locked {
@@ -2090,17 +2201,18 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-family: 'Inter', sans-serif;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: var(--secondary);
             color: white;
         }
 
         .btn-primary:hover {
             opacity: 0.9;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+            box-shadow: 0 4px 12px rgba(26, 188, 156, 0.2);
         }
 
         .btn-secondary {
@@ -2124,7 +2236,7 @@
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: #E74C3C;
             color: white;
         }
 
@@ -2182,37 +2294,9 @@
         }
 
         .finish-break-btn:hover {
-            background: var(--primary);
+            background: var(--accent);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Search Result Items */
-        .search-result-item {
-            padding: 12px;
-            margin-bottom: 8px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            border-left: 3px solid transparent;
-        }
-
-        .search-result-item:hover {
-            background: var(--primary-light);
-            border-left-color: var(--primary);
-            transform: translateX(5px);
-        }
-
-        .search-result-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .search-result-meta {
-            display: flex;
-            gap: 10px;
-            font-size: 12px;
         }
 
         /* Utility Classes */
@@ -2259,28 +2343,28 @@
         }
 
         .status-active {
-            background: rgba(54, 179, 126, 0.1);
+            background: rgba(26, 188, 156, 0.1);
             color: var(--secondary);
         }
 
         .status-paused {
-            background: rgba(255, 171, 0, 0.1);
-            color: var(--accent);
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--highlight);
         }
 
         .status-completed {
-            background: rgba(74, 144, 226, 0.1);
-            color: var(--primary);
+            background: rgba(155, 89, 182, 0.1);
+            color: var(--accent);
         }
 
         /* Priority Indicators */
         .priority-high {
-            color: var(--danger);
+            color: #E74C3C;
             font-weight: bold;
         }
 
         .priority-medium {
-            color: var(--accent);
+            color: var(--highlight);
         }
 
         .priority-low {
@@ -2457,7 +2541,7 @@
         <div class="setup-content">
             <div class="setup-header">
                 <i class="fas fa-bullseye"></i>
-                <h2>Welcome to FocusFlow</h2>
+                <h2>Welcome to Flusso</h2>
                 <p>Let's personalize your experience</p>
             </div>
 
@@ -2548,36 +2632,32 @@
         <header class="header">
             <div class="logo">
                 <i class="fas fa-bullseye"></i>
-                <h1>FocusFlow</h1>
+                <h1>Flusso</h1>
             </div>
             <div class="header-controls">
                 <button class="btn-icon" id="themeToggle" title="Toggle theme">
                     <i class="fas fa-moon"></i>
                 </button>
                 <button class="btn btn-primary" id="startGrindBtn">
-                    <i class="fas fa-play"></i> Start Grind
+                    <i class="fas fa-play"></i> Start Focus
                 </button>
             </div>
         </header>
 
-        <!-- Search Bar -->
-        <div class="search-bar">
-            <input type="text" class="search-input" id="globalSearch" placeholder="Search objectives, tasks, events... Press Enter to search">
-            <div class="search-icon">
-                <i class="fas fa-search"></i>
+        <!-- Enhanced Search Bar -->
+        <div class="search-container">
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="globalSearch" placeholder="Search objectives, tasks, events...">
+                <div class="search-actions">
+                    <span class="search-shortcut">⌘K</span>
+                    <button class="btn-icon" id="clearSearchBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
-            <button class="search-clear" id="clearSearch">
-                <i class="fas fa-times"></i> Clear
-            </button>
-        </div>
-
-        <!-- Content Bar -->
-        <div class="content-bar" id="contentBar">
-            <h2 class="content-title" id="currentPageTitle">
-                <i class="fas fa-home"></i> Dashboard
-            </h2>
-            <div class="page-actions" id="pageActions">
-                <!-- Page-specific actions will be added here -->
+            <div class="search-results" id="searchResults">
+                <!-- Search results will be dynamically populated -->
             </div>
         </div>
 
@@ -2764,25 +2844,6 @@
             <div class="stats-grid" id="enhancedStats">
                 <!-- Stats will be dynamically added here -->
             </div>
-
-            <!-- Today's Tasks -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-calendar-day"></i> Today's Tasks
-                    </h2>
-                    <button class="btn btn-secondary btn-sm" onclick="app.openTaskModal()">
-                        <i class="fas fa-plus"></i> Add
-                    </button>
-                </div>
-                <div class="todays-tasks" id="todayTasks">
-                    <div class="empty-state" id="emptyToday">
-                        <i class="fas fa-calendar-plus"></i>
-                        <h3>No tasks for today</h3>
-                        <p>Add tasks to get started</p>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!-- Objectives Section -->
@@ -2907,15 +2968,15 @@
                             <span>No activity</span>
                         </div>
                         <div class="heatmap-legend-item">
-                            <div class="legend-color" style="background: rgba(74, 144, 226, 0.3);"></div>
+                            <div class="legend-color" style="background: rgba(26, 188, 156, 0.3);"></div>
                             <span>Low</span>
                         </div>
                         <div class="heatmap-legend-item">
-                            <div class="legend-color" style="background: rgba(74, 144, 226, 0.6);"></div>
+                            <div class="legend-color" style="background: rgba(26, 188, 156, 0.6);"></div>
                             <span>Medium</span>
                         </div>
                         <div class="heatmap-legend-item">
-                            <div class="legend-color" style="background: rgba(74, 144, 226, 1);"></div>
+                            <div class="legend-color" style="background: rgba(26, 188, 156, 1);"></div>
                             <span>High</span>
                         </div>
                     </div>
@@ -3098,12 +3159,12 @@
                     <div class="setting-item">
                         <div class="setting-info">
                             <h4>Version</h4>
-                            <p>FocusFlow 2.3.0</p>
+                            <p>Flusso 2.3.0</p>
                         </div>
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Developer</h4>
+                            <h4>BLG group</h4>
                             <p>Built with ❤️ for productive minds</p>
                         </div>
                     </div>
@@ -3148,7 +3209,7 @@
                 <button class="back-button" onclick="app.closeGrindZone()">
                     <i class="fas fa-arrow-left"></i> Back to Dashboard
                 </button>
-                <h2 style="margin-top: 10px;">Grind Zone</h2>
+                <h2 style="margin-top: 10px;">Focus Zone</h2>
                 <p id="grindSessionInfo">Focus Session</p>
             </div>
         </div>
@@ -3314,11 +3375,11 @@
                         <label class="form-label" for="eventColor">Color</label>
                         <select class="form-select" id="eventColor">
                             <option value="">Select color</option>
-                            <option value="#4A90E2">Blue</option>
-                            <option value="#36B37E">Green</option>
-                            <option value="#FFAB00">Yellow</option>
-                            <option value="#FF5630">Red</option>
-                            <option value="#8E44AD">Purple</option>
+                            <option value="#2C3E50">Navy</option>
+                            <option value="#1ABC9C">Teal</option>
+                            <option value="#F39C12">Gold</option>
+                            <option value="#9B59B6">Lavender</option>
+                            <option value="#E74C3C">Red</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -3538,7 +3599,7 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <p id="tipContent">Use the grind zone for focused work sessions!</p>
+        <p id="tipContent">Use the search bar to quickly find objectives, tasks, or events!</p>
     </div>
 
     <!-- Notification -->
@@ -3550,7 +3611,7 @@
     <iframe id="youtubeMusic" style="display: none;" width="0" height="0" src="https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
     <script>
-        class FocusFlowApp {
+        class FlussoApp {
             constructor() {
                 this.currentStep = 1;
                 this.timer = {
@@ -3635,6 +3696,10 @@
                 // Context menu
                 this.contextMenuTarget = null;
                 
+                // Search state
+                this.searchResults = [];
+                this.isSearchActive = false;
+                
                 this.init();
             }
 
@@ -3644,6 +3709,7 @@
                 this.checkSetup();
                 this.initQuotes();
                 this.initContextMenu();
+                this.initSearch();
                 this.showTutorialTip();
                 
                 // Start quote rotation
@@ -3663,19 +3729,19 @@
 
             loadData() {
                 // Load objectives
-                const objectivesData = localStorage.getItem('focusFlow_objectives');
+                const objectivesData = localStorage.getItem('flusso_objectives');
                 this.objectives = objectivesData ? JSON.parse(objectivesData) : [];
 
                 // Load tasks
-                const tasksData = localStorage.getItem('focusFlow_tasks');
+                const tasksData = localStorage.getItem('flusso_tasks');
                 this.tasks = tasksData ? JSON.parse(tasksData) : [];
 
                 // Load calendar events
-                const eventsData = localStorage.getItem('focusFlow_calendarEvents');
+                const eventsData = localStorage.getItem('flusso_calendarEvents');
                 this.calendarEvents = eventsData ? JSON.parse(eventsData) : [];
 
                 // Load settings
-                const settingsData = localStorage.getItem('focusFlow_settings');
+                const settingsData = localStorage.getItem('flusso_settings');
                 this.settings = settingsData ? JSON.parse(settingsData) : {
                     darkMode: false,
                     setupCompleted: false,
@@ -3695,7 +3761,7 @@
                 };
 
                 // Load grind zone settings
-                const grindData = localStorage.getItem('focusFlow_grind');
+                const grindData = localStorage.getItem('flusso_grind');
                 this.grindSettings = grindData ? JSON.parse(grindData) : {
                     background: 'forest',
                     pomodoroDuration: 25,
@@ -3703,7 +3769,7 @@
                 };
 
                 // Load timer settings
-                const timerSettingsData = localStorage.getItem('focusFlow_timerSettings');
+                const timerSettingsData = localStorage.getItem('flusso_timerSettings');
                 if (timerSettingsData) {
                     this.timerSettings = JSON.parse(timerSettingsData);
                     this.timer.minutes = this.timerSettings.focusDuration;
@@ -3711,13 +3777,13 @@
                 }
 
                 // Load music settings
-                const musicSettingsData = localStorage.getItem('focusFlow_musicSettings');
+                const musicSettingsData = localStorage.getItem('flusso_musicSettings');
                 if (musicSettingsData) {
                     this.musicSettings = JSON.parse(musicSettingsData);
                 }
 
                 // Load achievements
-                const achievementsData = localStorage.getItem('focusFlow_achievements');
+                const achievementsData = localStorage.getItem('flusso_achievements');
                 if (achievementsData) {
                     this.achievements = JSON.parse(achievementsData);
                 }
@@ -3730,14 +3796,14 @@
             }
 
             saveData() {
-                localStorage.setItem('focusFlow_objectives', JSON.stringify(this.objectives));
-                localStorage.setItem('focusFlow_tasks', JSON.stringify(this.tasks));
-                localStorage.setItem('focusFlow_calendarEvents', JSON.stringify(this.calendarEvents));
-                localStorage.setItem('focusFlow_settings', JSON.stringify(this.settings));
-                localStorage.setItem('focusFlow_grind', JSON.stringify(this.grindSettings));
-                localStorage.setItem('focusFlow_timerSettings', JSON.stringify(this.timerSettings));
-                localStorage.setItem('focusFlow_musicSettings', JSON.stringify(this.musicSettings));
-                localStorage.setItem('focusFlow_achievements', JSON.stringify(this.achievements));
+                localStorage.setItem('flusso_objectives', JSON.stringify(this.objectives));
+                localStorage.setItem('flusso_tasks', JSON.stringify(this.tasks));
+                localStorage.setItem('flusso_calendarEvents', JSON.stringify(this.calendarEvents));
+                localStorage.setItem('flusso_settings', JSON.stringify(this.settings));
+                localStorage.setItem('flusso_grind', JSON.stringify(this.grindSettings));
+                localStorage.setItem('flusso_timerSettings', JSON.stringify(this.timerSettings));
+                localStorage.setItem('flusso_musicSettings', JSON.stringify(this.musicSettings));
+                localStorage.setItem('flusso_achievements', JSON.stringify(this.achievements));
             }
 
             checkStreak() {
@@ -3799,6 +3865,222 @@
                     }
                 });
                 this.saveData();
+            }
+
+            initSearch() {
+                const searchInput = document.getElementById('globalSearch');
+                const clearBtn = document.getElementById('clearSearchBtn');
+                const searchResults = document.getElementById('searchResults');
+                
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.trim();
+                    if (query.length > 0) {
+                        this.performSearch(query);
+                        searchResults.classList.add('active');
+                    } else {
+                        this.hideSearchResults();
+                    }
+                });
+                
+                searchInput.addEventListener('focus', () => {
+                    if (searchInput.value.trim().length > 0) {
+                        searchResults.classList.add('active');
+                    }
+                });
+                
+                clearBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    this.hideSearchResults();
+                    searchInput.focus();
+                });
+                
+                // Close search results when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.search-container')) {
+                        this.hideSearchResults();
+                    }
+                });
+                
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    // Cmd/Ctrl + K to focus search
+                    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                        e.preventDefault();
+                        searchInput.focus();
+                        searchInput.select();
+                    }
+                    
+                    // Escape to clear search
+                    if (e.key === 'Escape' && searchInput.value.length > 0) {
+                        searchInput.value = '';
+                        this.hideSearchResults();
+                    }
+                });
+            }
+
+            performSearch(query) {
+                const searchLower = query.toLowerCase();
+                this.searchResults = {
+                    objectives: [],
+                    tasks: [],
+                    events: []
+                };
+                
+                // Search in objectives
+                this.searchResults.objectives = this.objectives.filter(obj => 
+                    obj.title.toLowerCase().includes(searchLower) ||
+                    obj.description?.toLowerCase().includes(searchLower) ||
+                    obj.category?.toLowerCase().includes(searchLower)
+                );
+                
+                // Search in tasks
+                this.searchResults.tasks = this.tasks.filter(task => 
+                    task.title.toLowerCase().includes(searchLower) ||
+                    task.description?.toLowerCase().includes(searchLower)
+                );
+                
+                // Search in calendar events
+                this.searchResults.events = this.calendarEvents.filter(event => 
+                    event.title.toLowerCase().includes(searchLower) ||
+                    event.description?.toLowerCase().includes(searchLower)
+                );
+                
+                this.displaySearchResults();
+            }
+
+            displaySearchResults() {
+                const container = document.getElementById('searchResults');
+                const totalResults = this.searchResults.objectives.length + 
+                                   this.searchResults.tasks.length + 
+                                   this.searchResults.events.length;
+                
+                if (totalResults === 0) {
+                    container.innerHTML = `
+                        <div class="search-result-header">
+                            <span>Search Results</span>
+                            <span class="text-muted">0 found</span>
+                        </div>
+                        <div class="no-results">
+                            <i class="fas fa-search" style="font-size: 24px; margin-bottom: 10px;"></i>
+                            <p>No results found</p>
+                            <p class="text-sm text-muted mt-2">Try different keywords</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = `
+                    <div class="search-result-header">
+                        <span>Search Results</span>
+                        <span class="text-muted">${totalResults} found</span>
+                    </div>
+                `;
+                
+                // Objectives section
+                if (this.searchResults.objectives.length > 0) {
+                    html += `
+                        <div class="search-result-section">
+                            <div style="padding: 10px 20px 5px; font-size: 12px; color: var(--text-light); font-weight: 600; text-transform: uppercase;">
+                                Objectives (${this.searchResults.objectives.length})
+                            </div>
+                            ${this.searchResults.objectives.map(obj => `
+                                <div class="search-result-item" onclick="app.handleSearchResultClick('objective', '${obj.id}')">
+                                    <div class="search-result-icon">
+                                        <i class="fas fa-bullseye"></i>
+                                    </div>
+                                    <div class="search-result-content">
+                                        <div class="search-result-title">${obj.title}</div>
+                                        <div class="search-result-subtitle">${obj.description ? obj.description.substring(0, 60) + '...' : 'No description'}</div>
+                                        <div class="search-result-meta">
+                                            <span class="status-badge status-${obj.status}">${obj.status}</span>
+                                            <span>${this.getCategoryText(obj.category)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                // Tasks section
+                if (this.searchResults.tasks.length > 0) {
+                    html += `
+                        <div class="search-result-section">
+                            <div style="padding: 10px 20px 5px; font-size: 12px; color: var(--text-light); font-weight: 600; text-transform: uppercase;">
+                                Tasks (${this.searchResults.tasks.length})
+                            </div>
+                            ${this.searchResults.tasks.map(task => `
+                                <div class="search-result-item" onclick="app.handleSearchResultClick('task', '${task.id}')">
+                                    <div class="search-result-icon">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <div class="search-result-content">
+                                        <div class="search-result-title">${task.title}</div>
+                                        <div class="search-result-subtitle">${task.description ? task.description.substring(0, 60) + '...' : 'No description'}</div>
+                                        <div class="search-result-meta">
+                                            <span class="priority-${task.importance > 2 ? 'high' : task.importance > 1 ? 'medium' : 'low'}">
+                                                ${this.getPriorityText(task.importance)}
+                                            </span>
+                                            <span>Due: ${new Date(task.deadline).toLocaleDateString()}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                // Events section
+                if (this.searchResults.events.length > 0) {
+                    html += `
+                        <div class="search-result-section">
+                            <div style="padding: 10px 20px 5px; font-size: 12px; color: var(--text-light); font-weight: 600; text-transform: uppercase;">
+                                Events (${this.searchResults.events.length})
+                            </div>
+                            ${this.searchResults.events.map(event => `
+                                <div class="search-result-item" onclick="app.handleSearchResultClick('event', '${event.id}')">
+                                    <div class="search-result-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div class="search-result-content">
+                                        <div class="search-result-title">${event.title}</div>
+                                        <div class="search-result-subtitle">${event.description ? event.description.substring(0, 60) + '...' : 'No description'}</div>
+                                        <div class="search-result-meta">
+                                            <span>${new Date(event.date).toLocaleDateString()}</span>
+                                            ${event.time ? `<span>${event.time}</span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = html;
+            }
+
+            handleSearchResultClick(type, id) {
+                this.hideSearchResults();
+                document.getElementById('globalSearch').value = '';
+                
+                switch(type) {
+                    case 'objective':
+                        this.editObjective(id);
+                        this.switchSection('objectives');
+                        break;
+                    case 'task':
+                        this.editTask(id);
+                        this.switchSection('tasks');
+                        break;
+                    case 'event':
+                        this.editCalendarEvent(id);
+                        this.switchSection('calendar');
+                        break;
+                }
+            }
+
+            hideSearchResults() {
+                document.getElementById('searchResults').classList.remove('active');
             }
 
             setupEventListeners() {
@@ -3890,24 +4172,6 @@
                 document.getElementById('prevQuoteBtn')?.addEventListener('click', () => this.prevQuote());
                 document.getElementById('nextQuoteBtn')?.addEventListener('click', () => this.nextQuote());
                 document.getElementById('toggleQuotesBtn')?.addEventListener('click', () => this.toggleQuotes());
-
-                // Enhanced search
-                document.getElementById('globalSearch')?.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        this.searchContent(e.target.value);
-                    }
-                });
-                
-                document.getElementById('globalSearch')?.addEventListener('input', (e) => {
-                    if (e.target.value.trim() === '') {
-                        this.updateUI();
-                    }
-                });
-                
-                document.getElementById('clearSearch')?.addEventListener('click', () => {
-                    document.getElementById('globalSearch').value = '';
-                    this.updateUI();
-                });
 
                 // Tutorial tip
                 document.getElementById('closeTipBtn')?.addEventListener('click', () => this.hideTip());
@@ -4136,7 +4400,7 @@
                 document.getElementById('setupModal').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 this.updateUI();
-                this.showNotification(`Welcome to FocusFlow, ${this.settings.userName}! You've created your first objective and task.`);
+                this.showNotification(`Welcome to Flusso, ${this.settings.userName}! You've created your first objective and task.`);
             }
 
             // Quotes System
@@ -4277,9 +4541,6 @@
                     'settings': 'cog'
                 };
                 
-                document.getElementById('currentPageTitle').innerHTML = 
-                    `<i class="fas fa-${iconMap[sectionId]}"></i> ${titleMap[sectionId]}`;
-
                 // Show section
                 document.querySelectorAll('.content-section').forEach(section => {
                     section.classList.toggle('active', section.id === sectionId);
@@ -4325,38 +4586,6 @@
 
                 // Update top row mini boxes
                 this.updateTopRowBoxes();
-
-                // Update today's tasks
-                const today = new Date().toISOString().split('T')[0];
-                const todaysTasks = this.tasks.filter(task => task.deadline === today && task.status !== 'completed');
-                const todayTasksContainer = document.getElementById('todayTasks');
-                const emptyToday = document.getElementById('emptyToday');
-                
-                if (todaysTasks.length > 0) {
-                    emptyToday.style.display = 'none';
-                    todayTasksContainer.innerHTML = todaysTasks.map(task => `
-                        <div class="task-item" data-task-id="${task.id}">
-                            <div class="task-checkbox ${task.status === 'completed' ? 'checked' : ''}" onclick="app.toggleTaskCompletion('${task.id}')">
-                                ${task.status === 'completed' ? '<i class="fas fa-check"></i>' : ''}
-                            </div>
-                            <div class="task-info">
-                                <div class="task-title">${task.title}</div>
-                                <div class="task-meta">
-                                    <span><i class="far fa-clock"></i> ${task.duration}h</span>
-                                    <span class="priority-${task.importance > 2 ? 'high' : task.importance > 1 ? 'medium' : 'low'}">
-                                        <i class="fas fa-exclamation-circle"></i> ${this.getPriorityText(task.importance)}
-                                    </span>
-                                </div>
-                            </div>
-                            <button class="btn-icon" onclick="app.editTask('${task.id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </div>
-                    `).join('');
-                } else {
-                    emptyToday.style.display = 'block';
-                    todayTasksContainer.innerHTML = '';
-                }
 
                 // Render enhanced stats with clickable achievements
                 this.renderEnhancedStats();
@@ -4801,7 +5030,7 @@
                         dayDiv.style.background = 'var(--secondary)';
                         dayDiv.style.color = 'white';
                     } else if (isToday) {
-                        dayDiv.style.border = '2px solid var(--primary)';
+                        dayDiv.style.border = '2px solid var(--secondary)';
                     }
                     
                     let title = dayDate.toLocaleDateString();
@@ -5231,11 +5460,11 @@
                             if (intensity === 0) {
                                 dayDiv.style.background = 'var(--border)';
                             } else if (intensity < 0.33) {
-                                dayDiv.style.background = 'rgba(74, 144, 226, 0.3)';
+                                dayDiv.style.background = 'rgba(26, 188, 156, 0.3)';
                             } else if (intensity < 0.66) {
-                                dayDiv.style.background = 'rgba(74, 144, 226, 0.6)';
+                                dayDiv.style.background = 'rgba(26, 188, 156, 0.6)';
                             } else {
-                                dayDiv.style.background = 'rgba(74, 144, 226, 1)';
+                                dayDiv.style.background = 'rgba(26, 188, 156, 1)';
                             }
                             
                             // Add tooltip
@@ -5304,6 +5533,7 @@
                     document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
                 } else {
                     document.body.classList.remove('dark-mode');
+                    document.body.classList.add('light-mode');
                     document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
                 }
             }
@@ -5418,7 +5648,7 @@
                     grindZone.classList.add('timer-mode-12h');
                 }
                 
-                localStorage.setItem('focusFlow_timerSettings', JSON.stringify(this.timerSettings));
+                localStorage.setItem('flusso_timerSettings', JSON.stringify(this.timerSettings));
                 this.closeTimerSettings();
                 this.updateSettingsUI();
                 this.showNotification('Timer settings updated');
@@ -5791,7 +6021,7 @@
                         document.getElementById('eventType').value = event.type;
                         document.getElementById('eventDate').value = event.date;
                         document.getElementById('eventTime').value = event.time || '';
-                        document.getElementById('eventColor').value = event.color || '#4A90E2';
+                        document.getElementById('eventColor').value = event.color || '#2C3E50';
                         document.getElementById('eventPriority').value = event.priority || '2';
                         
                         if (event.linkedTaskId) {
@@ -5876,115 +6106,21 @@
                 this.openCalendarEventModal(id);
             }
 
-            // Search Methods
-            searchContent(query) {
-                if (!query.trim()) {
-                    this.updateUI();
+            changeActiveObjective() {
+                if (this.objectives.length === 0) {
+                    this.openObjectiveModal();
                     return;
                 }
                 
-                const searchLower = query.toLowerCase();
-                const results = {
-                    objectives: [],
-                    tasks: [],
-                    events: []
-                };
+                let message = "Select an objective to set as active:\n\n";
+                this.objectives.forEach((obj, index) => {
+                    message += `${index + 1}. ${obj.title} (${obj.status})\n`;
+                });
                 
-                // Search in objectives
-                results.objectives = this.objectives.filter(obj => 
-                    obj.title.toLowerCase().includes(searchLower) ||
-                    obj.description?.toLowerCase().includes(searchLower) ||
-                    obj.category?.toLowerCase().includes(searchLower)
-                );
-                
-                // Search in tasks
-                results.tasks = this.tasks.filter(task => 
-                    task.title.toLowerCase().includes(searchLower) ||
-                    task.description?.toLowerCase().includes(searchLower)
-                );
-                
-                // Search in calendar events
-                results.events = this.calendarEvents.filter(event => 
-                    event.title.toLowerCase().includes(searchLower) ||
-                    event.description?.toLowerCase().includes(searchLower)
-                );
-                
-                this.displaySearchResults(results);
-            }
-
-            displaySearchResults(results) {
-                const totalResults = results.objectives.length + results.tasks.length + results.events.length;
-                
-                if (totalResults === 0) {
-                    this.showNotification('No results found');
-                    return;
+                const choice = prompt(message + "\nEnter the number of the objective:");
+                if (choice && !isNaN(choice) && choice > 0 && choice <= this.objectives.length) {
+                    this.setActiveObjective(this.objectives[choice - 1].id);
                 }
-                
-                // Create modal for search results
-                const modal = document.createElement('div');
-                modal.className = 'modal active';
-                modal.innerHTML = `
-                    <div class="modal-content" style="max-width: 600px;">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Search Results (${totalResults})</h3>
-                            <button class="btn-icon" onclick="this.closest('.modal').remove()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div style="max-height: 400px; overflow-y: auto;">
-                            ${results.objectives.length > 0 ? `
-                                <h4 style="margin: 15px 0 10px 0; color: var(--primary);">
-                                    <i class="fas fa-bullseye"></i> Objectives (${results.objectives.length})
-                                </h4>
-                                ${results.objectives.map(obj => `
-                                    <div class="search-result-item" onclick="app.editObjective('${obj.id}'); this.closest('.modal').remove()">
-                                        <div class="search-result-title">${obj.title}</div>
-                                        <div class="search-result-meta">
-                                            <span class="status-badge status-${obj.status}">${obj.status}</span>
-                                            <span class="text-muted">${obj.category}</span>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            ` : ''}
-                            
-                            ${results.tasks.length > 0 ? `
-                                <h4 style="margin: 15px 0 10px 0; color: var(--accent);">
-                                    <i class="fas fa-tasks"></i> Tasks (${results.tasks.length})
-                                </h4>
-                                ${results.tasks.map(task => `
-                                    <div class="search-result-item" onclick="app.editTask('${task.id}'); this.closest('.modal').remove()">
-                                        <div class="search-result-title">${task.title}</div>
-                                        <div class="search-result-meta">
-                                            <span class="priority-${task.importance > 2 ? 'high' : task.importance > 1 ? 'medium' : 'low'}">
-                                                ${this.getPriorityText(task.importance)}
-                                            </span>
-                                            <span class="text-muted">Due: ${new Date(task.deadline).toLocaleDateString()}</span>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            ` : ''}
-                            
-                            ${results.events.length > 0 ? `
-                                <h4 style="margin: 15px 0 10px 0; color: var(--secondary);">
-                                    <i class="fas fa-calendar"></i> Events (${results.events.length})
-                                </h4>
-                                ${results.events.map(event => `
-                                    <div class="search-result-item" onclick="app.editCalendarEvent('${event.id}'); this.closest('.modal').remove()">
-                                        <div class="search-result-title">${event.title}</div>
-                                        <div class="search-result-meta">
-                                            <span class="text-muted">
-                                                ${new Date(event.date).toLocaleDateString()} 
-                                                ${event.time ? 'at ' + event.time : ''}
-                                            </span>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-                
-                document.body.appendChild(modal);
             }
 
             // Objective Methods
@@ -6053,23 +6189,6 @@
 
             editObjective(id) {
                 this.openObjectiveModal(id);
-            }
-
-            changeActiveObjective() {
-                if (this.objectives.length === 0) {
-                    this.openObjectiveModal();
-                    return;
-                }
-                
-                let message = "Select an objective to set as active:\n\n";
-                this.objectives.forEach((obj, index) => {
-                    message += `${index + 1}. ${obj.title} (${obj.status})\n`;
-                });
-                
-                const choice = prompt(message + "\nEnter the number of the objective:");
-                if (choice && !isNaN(choice) && choice > 0 && choice <= this.objectives.length) {
-                    this.setActiveObjective(this.objectives[choice - 1].id);
-                }
             }
 
             setActiveObjective(id) {
@@ -6240,7 +6359,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `focusflow-report-${new Date().toISOString().split('T')[0]}.json`;
+                a.download = `flusso-report-${new Date().toISOString().split('T')[0]}.json`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -6313,7 +6432,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `focusflow-backup-${new Date().toISOString().split('T')[0]}.json`;
+                a.download = `flusso-backup-${new Date().toISOString().split('T')[0]}.json`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -6441,26 +6560,25 @@
             }
 
             showTutorialTip() {
-                const hasSeenTip = localStorage.getItem('focusFlow_tutorialSeen');
+                const hasSeenTip = localStorage.getItem('flusso_tutorialSeen');
                 if (!hasSeenTip) {
                     setTimeout(() => {
                         const tip = document.getElementById('tutorialTip');
                         const tipContent = document.getElementById('tipContent');
                         
                         const tips = [
-                            "Try right-clicking on tasks and objectives for quick actions!",
-                            "Use the quotes bar for daily motivation - click arrows to change quotes.",
+                            "Try the new search bar! Search objectives, tasks, and events instantly.",
+                            "Use Cmd/Ctrl + K to quickly focus the search bar.",
+                            "Right-click on tasks and objectives for quick actions!",
                             "The grind zone has different backgrounds - click the palette icon to change.",
                             "Check your achievements by clicking on the achievement card!",
-                            "You can now edit timer settings and switch between 12/24 hour formats!",
-                            "Click on efficiency and growth cards to see detailed statistics.",
                             "Take regular breaks using the break feature for better productivity."
                         ];
                         
                         tipContent.textContent = tips[Math.floor(Math.random() * tips.length)];
                         tip.style.display = 'block';
                         
-                        localStorage.setItem('focusFlow_tutorialSeen', 'true');
+                        localStorage.setItem('flusso_tutorialSeen', 'true');
                     }, 3000);
                 }
             }
@@ -6490,7 +6608,7 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', () => {
-            window.app = new FocusFlowApp();
+            window.app = new FlussoApp();
         });
     </script>
 </body>
