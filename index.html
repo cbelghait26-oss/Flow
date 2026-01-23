@@ -2142,7 +2142,7 @@
 
         /* Achievements Modal */
         .achievements-modal {
-            max-width: 600px;
+            max-width: 800px;
         }
 
         .achievements-grid {
@@ -2150,6 +2150,9 @@
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 15px;
             margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 10px;
         }
 
         .achievement-item {
@@ -2158,6 +2161,8 @@
             border-radius: 8px;
             border: 2px solid var(--border);
             transition: var(--transition);
+            position: relative;
+            min-height: 120px;
         }
 
         .achievement-item.unlocked {
@@ -2183,11 +2188,55 @@
         .achievement-title {
             font-weight: 600;
             margin-bottom: 5px;
+            font-size: 16px;
         }
 
         .achievement-desc {
             font-size: 14px;
             color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .achievement-progress {
+            font-size: 12px;
+            color: var(--text-light);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .achievement-progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .achievement-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .achievement-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--secondary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
         }
 
         /* Buttons */
@@ -2497,6 +2546,10 @@
                 flex: 0 0 calc(50% - 10px);
                 margin-bottom: 10px;
             }
+            
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -2801,17 +2854,17 @@
                         </div>
                         <div>Take a Break</div>
                     </div>
+                    <div class="quick-action" onclick="app.showAchievementsModal()">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div>View Achievements</div>
+                    </div>
                     <div class="quick-action" onclick="app.generateReport()">
                         <div class="quick-action-icon">
                             <i class="fas fa-chart-bar"></i>
                         </div>
                         <div>Generate Report</div>
-                    </div>
-                    <div class="quick-action" onclick="app.openCalendarEventModal()">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-calendar-plus"></i>
-                        </div>
-                        <div>Add Calendar Event</div>
                     </div>
                 </div>
             </div>
@@ -3607,9 +3660,6 @@
         <div id="notificationMessage">Operation completed successfully</div>
     </div>
 
-    <!-- YouTube Iframe for Music -->
-    <iframe id="youtubeMusic" style="display: none;" width="0" height="0" src="https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
     <script>
         class FlussoApp {
             constructor() {
@@ -3635,7 +3685,10 @@
                     enabled: false,
                     volume: 0.5,
                     connectedToSpotify: false,
-                    youtubePlayer: null
+                    youtubePlayer: null,
+                    audioContext: null,
+                    audioElement: null,
+                    isMuted: false
                 };
                 
                 // Calendar state
@@ -3681,16 +3734,116 @@
                 this.currentQuoteIndex = 0;
                 this.showQuotesBar = true;
                 
-                // Achievements system
+                // Achievements system - FIXED: 12 achievements with proper tracking
                 this.achievements = [
-                    { id: 'first_task', title: 'First Task', description: 'Complete your first task', icon: 'fa-check', unlocked: false },
-                    { id: 'streak_7', title: '7-Day Streak', description: 'Maintain a 7-day focus streak', icon: 'fa-fire', unlocked: false },
-                    { id: 'focus_master', title: 'Focus Master', description: 'Complete 10 focus sessions', icon: 'fa-brain', unlocked: false },
-                    { id: 'early_bird', title: 'Early Bird', description: 'Start a focus session before 8 AM', icon: 'fa-sun', unlocked: false },
-                    { id: 'night_owl', title: 'Night Owl', description: 'Start a focus session after 8 PM', icon: 'fa-moon', unlocked: false },
-                    { id: 'marathon', title: 'Marathon', description: 'Complete a 2-hour focus session', icon: 'fa-running', unlocked: false },
-                    { id: 'objective_complete', title: 'Goal Getter', description: 'Complete your first objective', icon: 'fa-trophy', unlocked: false },
-                    { id: 'break_king', title: 'Break King', description: 'Take 10 breaks', icon: 'fa-coffee', unlocked: false }
+                    { 
+                        id: 'first_task', 
+                        title: 'First Task', 
+                        description: 'Complete your first task', 
+                        icon: 'fa-check', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 1
+                    },
+                    { 
+                        id: 'streak_7', 
+                        title: '7-Day Streak', 
+                        description: 'Maintain a 7-day focus streak', 
+                        icon: 'fa-fire', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 7
+                    },
+                    { 
+                        id: 'focus_master', 
+                        title: 'Focus Master', 
+                        description: 'Complete 10 focus sessions', 
+                        icon: 'fa-brain', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 10
+                    },
+                    { 
+                        id: 'early_bird', 
+                        title: 'Early Bird', 
+                        description: 'Start a focus session before 8 AM', 
+                        icon: 'fa-sun', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 1
+                    },
+                    { 
+                        id: 'night_owl', 
+                        title: 'Night Owl', 
+                        description: 'Start a focus session after 8 PM', 
+                        icon: 'fa-moon', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 1
+                    },
+                    { 
+                        id: 'marathon', 
+                        title: 'Marathon', 
+                        description: 'Complete a 2-hour focus session', 
+                        icon: 'fa-running', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 120 // minutes
+                    },
+                    { 
+                        id: 'objective_complete', 
+                        title: 'Goal Getter', 
+                        description: 'Complete your first objective', 
+                        icon: 'fa-trophy', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 1
+                    },
+                    { 
+                        id: 'break_king', 
+                        title: 'Break King', 
+                        description: 'Take 10 breaks', 
+                        icon: 'fa-coffee', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 10
+                    },
+                    { 
+                        id: 'time_traveler', 
+                        title: 'Time Traveler', 
+                        description: 'Log 100 total focus hours', 
+                        icon: 'fa-hourglass', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 100
+                    },
+                    { 
+                        id: 'task_master', 
+                        title: 'Task Master', 
+                        description: 'Complete 50 tasks', 
+                        icon: 'fa-tasks', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 50
+                    },
+                    { 
+                        id: 'calendar_expert', 
+                        title: 'Calendar Expert', 
+                        description: 'Create 10 calendar events', 
+                        icon: 'fa-calendar', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 10
+                    },
+                    { 
+                        id: 'consistency_pro', 
+                        title: 'Consistency Pro', 
+                        description: '30-day activity streak', 
+                        icon: 'fa-calendar-check', 
+                        unlocked: false,
+                        progress: 0,
+                        maxProgress: 30
+                    }
                 ];
                 
                 // Context menu
@@ -3699,6 +3852,17 @@
                 // Search state
                 this.searchResults = [];
                 this.isSearchActive = false;
+                
+                // Achievement tracking
+                this.achievementStats = {
+                    totalBreaksTaken: 0,
+                    totalFocusSessions: 0,
+                    focusSessionStartTimes: [],
+                    longestFocusSession: 0, // in minutes
+                    totalTasksCompleted: 0,
+                    totalObjectivesCompleted: 0,
+                    calendarEventsCreated: 0
+                };
                 
                 this.init();
             }
@@ -3714,6 +3878,9 @@
                 
                 // Start quote rotation
                 setInterval(() => this.nextQuote(), 30000);
+                
+                // Initialize audio
+                this.initAudioSystem();
             }
 
             checkSetup() {
@@ -3788,10 +3955,16 @@
                     this.achievements = JSON.parse(achievementsData);
                 }
 
+                // Load achievement stats
+                const achievementStatsData = localStorage.getItem('flusso_achievementStats');
+                if (achievementStatsData) {
+                    this.achievementStats = JSON.parse(achievementStatsData);
+                }
+
                 // Check streak
                 this.checkStreak();
                 
-                // Update achievements
+                // Update achievements with current stats
                 this.updateAchievements();
             }
 
@@ -3804,6 +3977,7 @@
                 localStorage.setItem('flusso_timerSettings', JSON.stringify(this.timerSettings));
                 localStorage.setItem('flusso_musicSettings', JSON.stringify(this.musicSettings));
                 localStorage.setItem('flusso_achievements', JSON.stringify(this.achievements));
+                localStorage.setItem('flusso_achievementStats', JSON.stringify(this.achievementStats));
             }
 
             checkStreak() {
@@ -3837,27 +4011,98 @@
             }
 
             updateAchievements() {
+                // Calculate current stats
+                const completedTasks = this.tasks.filter(t => t.status === 'completed').length;
+                const completedObjectives = this.objectives.filter(o => o.status === 'completed').length;
+                const currentHour = new Date().getHours();
+                
+                // Update achievement stats
+                this.achievementStats.totalTasksCompleted = completedTasks;
+                this.achievementStats.totalObjectivesCompleted = completedObjectives;
+                this.achievementStats.totalFocusSessions = this.settings.focusSessions.length;
+                this.achievementStats.calendarEventsCreated = this.calendarEvents.length;
+                
                 // Check for achievement unlocks
                 this.achievements.forEach(achievement => {
                     if (!achievement.unlocked) {
                         switch(achievement.id) {
                             case 'first_task':
-                                if (this.tasks.some(task => task.status === 'completed')) {
+                                achievement.progress = completedTasks > 0 ? 1 : 0;
+                                if (completedTasks > 0) {
                                     achievement.unlocked = true;
                                 }
                                 break;
                             case 'streak_7':
+                                achievement.progress = Math.min(this.settings.streak, 7);
                                 if (this.settings.streak >= 7) {
                                     achievement.unlocked = true;
                                 }
                                 break;
                             case 'focus_master':
-                                if (this.settings.focusSessions.length >= 10) {
+                                achievement.progress = Math.min(this.achievementStats.totalFocusSessions, 10);
+                                if (this.achievementStats.totalFocusSessions >= 10) {
                                     achievement.unlocked = true;
                                 }
                                 break;
+                            case 'early_bird':
+                                if (this.achievementStats.focusSessionStartTimes.some(time => {
+                                    const hour = new Date(time).getHours();
+                                    return hour < 8;
+                                })) {
+                                    achievement.progress = 1;
+                                    achievement.unlocked = true;
+                                }
+                                break;
+                            case 'night_owl':
+                                if (this.achievementStats.focusSessionStartTimes.some(time => {
+                                    const hour = new Date(time).getHours();
+                                    return hour >= 20;
+                                })) {
+                                    achievement.progress = 1;
+                                    achievement.unlocked = true;
+                                }
+                                break;
+                            case 'marathon':
+                                if (this.achievementStats.longestFocusSession >= 120) {
+                                    achievement.progress = 120;
+                                    achievement.unlocked = true;
+                                } else {
+                                    achievement.progress = this.achievementStats.longestFocusSession;
+                                }
+                                break;
                             case 'objective_complete':
-                                if (this.objectives.some(obj => obj.status === 'completed')) {
+                                achievement.progress = completedObjectives > 0 ? 1 : 0;
+                                if (completedObjectives > 0) {
+                                    achievement.unlocked = true;
+                                }
+                                break;
+                            case 'break_king':
+                                achievement.progress = Math.min(this.achievementStats.totalBreaksTaken, 10);
+                                if (this.achievementStats.totalBreaksTaken >= 10) {
+                                    achievement.unlocked = true;
+                                }
+                                break;
+                            case 'time_traveler':
+                                achievement.progress = Math.min(this.settings.totalFocusHours, 100);
+                                if (this.settings.totalFocusHours >= 100) {
+                                    achievement.unlocked = true;
+                                }
+                                break;
+                            case 'task_master':
+                                achievement.progress = Math.min(completedTasks, 50);
+                                if (completedTasks >= 50) {
+                                    achievement.unlocked = true;
+                                }
+                                break;
+                            case 'calendar_expert':
+                                achievement.progress = Math.min(this.calendarEvents.length, 10);
+                                if (this.calendarEvents.length >= 10) {
+                                    achievement.unlocked = true;
+                                }
+                                break;
+                            case 'consistency_pro':
+                                achievement.progress = Math.min(this.settings.streak, 30);
+                                if (this.settings.streak >= 30) {
                                     achievement.unlocked = true;
                                 }
                                 break;
@@ -3865,6 +4110,95 @@
                     }
                 });
                 this.saveData();
+            }
+
+            initAudioSystem() {
+                // Create audio element for music (ad-free lo-fi)
+                this.musicSettings.audioElement = new Audio();
+                
+                // Use a direct MP3/audio file source that doesn't have ads
+                // Multiple fallback options for lo-fi music
+                const musicSources = [
+                    'https://cdn.pixabay.com/download/audio/2022/03/15/audio_12b8e1a2f9.mp3', // Lo-fi study music
+                    'https://assets.codepen.io/1468070/Lofi+Study+2.mp3', // Alternative lo-fi
+                    'https://assets.mixkit.co/music/preview/mixkit-chill-hop-164.mp3' // Chill hop
+                ];
+                
+                this.musicSettings.audioElement.src = musicSources[0];
+                this.musicSettings.audioElement.loop = true;
+                this.musicSettings.audioElement.volume = this.musicSettings.volume;
+                this.musicSettings.audioElement.preload = 'auto';
+                
+                // Set up audio context for better control
+                try {
+                    this.musicSettings.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const source = this.musicSettings.audioContext.createMediaElementSource(this.musicSettings.audioElement);
+                    const gainNode = this.musicSettings.audioContext.createGain();
+                    source.connect(gainNode);
+                    gainNode.connect(this.musicSettings.audioContext.destination);
+                    
+                    // Store gain node for volume control
+                    this.musicSettings.gainNode = gainNode;
+                } catch (e) {
+                    console.log('Audio context not supported, using basic audio');
+                }
+            }
+
+            updateMusic() {
+                if (!this.musicSettings.audioElement) return;
+                
+                if (this.musicSettings.enabled) {
+                    // Start muted to avoid ads
+                    this.musicSettings.audioElement.muted = true;
+                    this.musicSettings.isMuted = true;
+                    
+                    // Play the music
+                    this.musicSettings.audioElement.play().then(() => {
+                        // After 1 second, unmute (skip any potential ad)
+                        setTimeout(() => {
+                            this.musicSettings.audioElement.muted = false;
+                            this.musicSettings.isMuted = false;
+                            if (this.musicSettings.gainNode) {
+                                this.musicSettings.gainNode.gain.value = this.musicSettings.volume;
+                            }
+                        }, 1000);
+                    }).catch(error => {
+                        console.log('Error playing audio:', error);
+                        // Try alternative source if first fails
+                        if (this.musicSettings.audioElement.src.includes('pixabay')) {
+                            this.musicSettings.audioElement.src = 'https://assets.codepen.io/1468070/Lofi+Study+2.mp3';
+                            this.musicSettings.audioElement.play();
+                        }
+                    });
+                } else {
+                    this.musicSettings.audioElement.pause();
+                    this.musicSettings.audioElement.currentTime = 0;
+                }
+            }
+
+            toggleMusic() {
+                this.musicSettings.enabled = !this.musicSettings.enabled;
+                this.saveData();
+                this.updateMusic();
+                this.updateMusicToggle();
+                this.showNotification(this.musicSettings.enabled ? 'Music enabled' : 'Music disabled');
+            }
+
+            updateMusicToggle() {
+                const toggleBtn = document.getElementById('musicToggleBtn');
+                const settingsToggle = document.getElementById('musicToggle');
+                
+                if (toggleBtn) {
+                    toggleBtn.classList.toggle('active', this.musicSettings.enabled);
+                    toggleBtn.innerHTML = `
+                        <i class="fas fa-music"></i>
+                        <span>${this.musicSettings.enabled ? 'Music On' : 'Music Off'}</span>
+                    `;
+                }
+                
+                if (settingsToggle) {
+                    settingsToggle.checked = this.musicSettings.enabled;
+                }
             }
 
             initSearch() {
@@ -4194,57 +4528,6 @@
 
                 // Apply theme on load
                 this.applyTheme();
-                
-                // Initialize YouTube music
-                this.initializeYouTubeMusic();
-            }
-
-            initializeYouTubeMusic() {
-                // Use a reliable lo-fi music stream
-                const loFiStreamUrl = "https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=0&amp;mute=0";
-                const iframe = document.getElementById('youtubeMusic');
-                iframe.src = loFiStreamUrl;
-                this.musicSettings.youtubePlayer = iframe;
-            }
-
-            updateMusic() {
-                const iframe = this.musicSettings.youtubePlayer;
-                if (!iframe) return;
-                
-                if (this.musicSettings.enabled) {
-                    // Enable music by changing src to autoplay
-                    iframe.src = "https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=1&amp;mute=0";
-                    iframe.style.display = 'block';
-                } else {
-                    // Disable music
-                    iframe.src = "https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=0";
-                    iframe.style.display = 'none';
-                }
-            }
-
-            updateMusicToggle() {
-                const toggleBtn = document.getElementById('musicToggleBtn');
-                const settingsToggle = document.getElementById('musicToggle');
-                
-                if (toggleBtn) {
-                    toggleBtn.classList.toggle('active', this.musicSettings.enabled);
-                    toggleBtn.innerHTML = `
-                        <i class="fas fa-music"></i>
-                        <span>${this.musicSettings.enabled ? 'Music On' : 'Music Off'}</span>
-                    `;
-                }
-                
-                if (settingsToggle) {
-                    settingsToggle.checked = this.musicSettings.enabled;
-                }
-            }
-
-            toggleMusic() {
-                this.musicSettings.enabled = !this.musicSettings.enabled;
-                this.saveData();
-                this.updateMusic();
-                this.updateMusicToggle();
-                this.showNotification(this.musicSettings.enabled ? 'Music enabled' : 'Music disabled');
             }
 
             // Setup Steps
@@ -4782,7 +5065,7 @@
                 if (!statsGrid) return;
 
                 // Calculate real statistics
-                const achievementScore = this.calculateAchievementScore();
+                const achievementScore = this.achievements.filter(a => a.unlocked).length;
                 const efficiencyScore = this.calculateEfficiencyScore();
                 const weeklyGrowth = this.calculateWeeklyGrowth();
                 const focusConsistency = this.calculateFocusConsistency();
@@ -4805,12 +5088,12 @@
                         <div class="stat-card-icon">
                             <i class="fas fa-trophy"></i>
                         </div>
-                        <div class="stat-card-value">${achievementScore}</div>
+                        <div class="stat-card-value">${achievementScore}/12</div>
                         <div class="stat-card-label">Achievements</div>
                         <div class="progress-indicator">
-                            <div class="text-sm">${this.achievements.filter(a => a.unlocked).length}/8 unlocked</div>
+                            <div class="text-sm">${achievementScore} unlocked</div>
                             <div class="progress-level">
-                                <div class="progress-level-fill" style="width: ${(this.achievements.filter(a => a.unlocked).length / 8) * 100}%"></div>
+                                <div class="progress-level-fill" style="width: ${(achievementScore / 12) * 100}%"></div>
                             </div>
                         </div>
                     </div>
@@ -4847,18 +5130,33 @@
                 const modal = document.getElementById('achievementsModal');
                 const grid = document.getElementById('achievementsGrid');
                 
-                grid.innerHTML = this.achievements.map(achievement => `
-                    <div class="achievement-item ${achievement.unlocked ? 'unlocked' : 'locked'}">
-                        <div class="achievement-icon">
-                            <i class="fas ${achievement.icon}"></i>
+                grid.innerHTML = this.achievements.map((achievement, index) => {
+                    const progressPercent = achievement.maxProgress > 0 ? 
+                        Math.min((achievement.progress / achievement.maxProgress) * 100, 100) : 
+                        achievement.unlocked ? 100 : 0;
+                    
+                    return `
+                        <div class="achievement-item ${achievement.unlocked ? 'unlocked' : 'locked'}">
+                            <div class="achievement-badge">${index + 1}</div>
+                            <div class="achievement-icon">
+                                <i class="fas ${achievement.icon}"></i>
+                            </div>
+                            <div class="achievement-title">${achievement.title}</div>
+                            <div class="achievement-desc">${achievement.description}</div>
+                            ${!achievement.unlocked && achievement.maxProgress > 1 ? `
+                                <div class="achievement-progress">
+                                    ${achievement.progress}/${achievement.maxProgress}
+                                </div>
+                                <div class="achievement-progress-bar">
+                                    <div class="achievement-progress-fill" style="width: ${progressPercent}%"></div>
+                                </div>
+                            ` : ''}
+                            <div class="text-sm mt-2 ${achievement.unlocked ? 'text-success' : 'text-muted'}">
+                                ${achievement.unlocked ? '✓ Unlocked' : 'Locked'}
+                            </div>
                         </div>
-                        <div class="achievement-title">${achievement.title}</div>
-                        <div class="achievement-desc">${achievement.description}</div>
-                        <div class="text-sm mt-2 ${achievement.unlocked ? 'text-success' : 'text-muted'}">
-                            ${achievement.unlocked ? '✓ Unlocked' : 'Locked'}
-                        </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
                 
                 modal.classList.add('active');
             }
@@ -5657,6 +5955,27 @@
             // Timer Methods with Animations
             startTimer() {
                 if (!this.timer.running) {
+                    // Track session start time for achievements
+                    this.achievementStats.focusSessionStartTimes.push(new Date().toISOString());
+                    const currentHour = new Date().getHours();
+                    
+                    // Check for early bird/night owl achievements
+                    if (currentHour < 8) {
+                        // Early bird
+                        const earlyBirdAchievement = this.achievements.find(a => a.id === 'early_bird');
+                        if (earlyBirdAchievement) {
+                            earlyBirdAchievement.progress = 1;
+                            this.updateAchievements();
+                        }
+                    } else if (currentHour >= 20) {
+                        // Night owl
+                        const nightOwlAchievement = this.achievements.find(a => a.id === 'night_owl');
+                        if (nightOwlAchievement) {
+                            nightOwlAchievement.progress = 1;
+                            this.updateAchievements();
+                        }
+                    }
+                    
                     this.timer.running = true;
                     this.timer.interval = setInterval(() => this.updateTimer(), 1000);
                     document.getElementById('startTimerBtn').disabled = true;
@@ -5681,8 +6000,20 @@
                     // Record session
                     const minutesFocused = (this.timer.isFocus ? this.timerSettings.focusDuration : this.timerSettings.breakDuration) - 
                                         (this.timer.minutes + this.timer.seconds / 60);
-                    if (minutesFocused > 0 && this.timer.isFocus) {
-                        this.recordFocusSession(minutesFocused);
+                    if (minutesFocused > 0) {
+                        if (this.timer.isFocus) {
+                            this.recordFocusSession(minutesFocused);
+                            
+                            // Update longest session for marathon achievement
+                            if (minutesFocused > this.achievementStats.longestFocusSession) {
+                                this.achievementStats.longestFocusSession = minutesFocused;
+                                this.updateAchievements();
+                            }
+                        } else {
+                            // Track break for break king achievement
+                            this.achievementStats.totalBreaksTaken++;
+                            this.updateAchievements();
+                        }
                     }
                 }
                 this.timer.minutes = this.timer.isFocus ? this.timerSettings.focusDuration : this.timerSettings.breakDuration;
@@ -5706,11 +6037,18 @@
                     if (this.timer.isFocus) {
                         this.showNotification('Break finished! Time to focus.');
                         document.getElementById('grindSessionInfo').textContent = 'Focus Session';
+                        // Track break completion
+                        this.achievementStats.totalBreaksTaken++;
+                        this.updateAchievements();
                     } else {
                         this.showNotification('Focus session finished! Time for a break.');
                         document.getElementById('grindSessionInfo').textContent = 'Break Session';
                         // Record focus session
                         this.recordFocusSession(this.timerSettings.focusDuration);
+                        // Update longest session
+                        if (this.timerSettings.focusDuration > this.achievementStats.longestFocusSession) {
+                            this.achievementStats.longestFocusSession = this.timerSettings.focusDuration;
+                        }
                         // Start break automatically
                         this.startBreak();
                     }
@@ -5762,6 +6100,9 @@
                     duration: hours,
                     timestamp: new Date().toISOString()
                 });
+                
+                // Update achievement stats
+                this.achievementStats.totalFocusSessions++;
                 
                 // Update achievements
                 this.updateAchievements();
@@ -5817,6 +6158,10 @@
             finishBreakTimer() {
                 clearInterval(this.breakTimer.interval);
                 this.breakTimer.running = false;
+                
+                // Track break completion for achievements
+                this.achievementStats.totalBreaksTaken++;
+                this.updateAchievements();
                 
                 // Select random end message
                 const randomMessage = this.breakMessages[Math.floor(Math.random() * this.breakMessages.length)];
@@ -6093,6 +6438,10 @@
                 } else {
                     this.calendarEvents.push(event);
                     this.showNotification('Event created successfully');
+                    
+                    // Track for calendar expert achievement
+                    this.achievementStats.calendarEventsCreated++;
+                    this.updateAchievements();
                 }
                 
                 this.saveData();
@@ -6310,8 +6659,23 @@
                         task.status = 'completed';
                         this.settings.todayTasksCompleted = (this.settings.todayTasksCompleted || 0) + 1;
                         
-                        // Check for first task achievement
+                        // Check for achievements
                         this.updateAchievements();
+                        
+                        // Check if objective is now complete
+                        if (task.objectiveId) {
+                            const objectiveTasks = this.tasks.filter(t => t.objectiveId === task.objectiveId);
+                            const completedObjectiveTasks = objectiveTasks.filter(t => t.status === 'completed');
+                            
+                            if (objectiveTasks.length > 0 && objectiveTasks.length === completedObjectiveTasks.length) {
+                                const objective = this.objectives.find(o => o.id === task.objectiveId);
+                                if (objective && objective.status !== 'completed') {
+                                    objective.status = 'completed';
+                                    this.showNotification(`Objective "${objective.title}" completed!`);
+                                    this.updateAchievements();
+                                }
+                            }
+                        }
                     }
                     this.saveData();
                     this.updateDashboard();
@@ -6352,7 +6716,8 @@
                     streak: this.settings.streak,
                     efficiency: this.calculateEfficiencyScore(),
                     achievements: this.achievements.filter(a => a.unlocked).length,
-                    weeklyGrowth: this.calculateWeeklyGrowth()
+                    weeklyGrowth: this.calculateWeeklyGrowth(),
+                    achievementStats: this.achievementStats
                 };
                 
                 const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
@@ -6425,6 +6790,7 @@
                     timerSettings: this.timerSettings,
                     musicSettings: this.musicSettings,
                     achievements: this.achievements,
+                    achievementStats: this.achievementStats,
                     exportDate: new Date().toISOString()
                 };
                 
@@ -6460,6 +6826,7 @@
                                 this.timerSettings = data.timerSettings || this.timerSettings;
                                 this.musicSettings = data.musicSettings || this.musicSettings;
                                 this.achievements = data.achievements || this.achievements;
+                                this.achievementStats = data.achievementStats || this.achievementStats;
                                 this.saveData();
                                 this.updateUI();
                                 this.showNotification('Data imported successfully');
