@@ -2142,7 +2142,7 @@
 
         /* Achievements Modal */
         .achievements-modal {
-            max-width: 800px;
+            max-width: 600px;
         }
 
         .achievements-grid {
@@ -2150,9 +2150,6 @@
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 15px;
             margin-top: 20px;
-            max-height: 500px;
-            overflow-y: auto;
-            padding: 10px;
         }
 
         .achievement-item {
@@ -2161,8 +2158,6 @@
             border-radius: 8px;
             border: 2px solid var(--border);
             transition: var(--transition);
-            position: relative;
-            min-height: 120px;
         }
 
         .achievement-item.unlocked {
@@ -2188,55 +2183,26 @@
         .achievement-title {
             font-weight: 600;
             margin-bottom: 5px;
-            font-size: 16px;
         }
 
         .achievement-desc {
             font-size: 14px;
             color: var(--text-light);
-            margin-bottom: 10px;
         }
 
-        .achievement-progress {
-            font-size: 12px;
-            color: var(--text-light);
-            background: rgba(0, 0, 0, 0.2);
-            padding: 4px 8px;
-            border-radius: 4px;
-            margin-top: 5px;
-            display: inline-block;
+        /* Language Selector */
+        .language-selector {
+            margin-top: 10px;
         }
 
-        .achievement-progress-bar {
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-
-        .achievement-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--secondary), var(--accent));
-            border-radius: 2px;
-            width: 0%;
-            transition: width 1s ease;
-        }
-
-        .achievement-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--secondary);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
+        .language-dropdown {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 16px;
         }
 
         /* Buttons */
@@ -2546,10 +2512,6 @@
                 flex: 0 0 calc(50% - 10px);
                 margin-bottom: 10px;
             }
-            
-            .achievements-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         @media (max-width: 480px) {
@@ -2594,34 +2556,34 @@
         <div class="setup-content">
             <div class="setup-header">
                 <i class="fas fa-bullseye"></i>
-                <h2>Welcome to Flusso</h2>
-                <p>Let's personalize your experience</p>
+                <h2 id="setupTitle">Welcome to Flusso</h2>
+                <p id="setupSubtitle">Let's personalize your experience</p>
             </div>
 
             <div class="setup-progress">
                 <div class="progress-step active" id="step1Indicator">
                     <div class="step-circle">1</div>
-                    <div class="step-label">Personal Info</div>
+                    <div class="step-label" id="step1Label">Personal Info</div>
                 </div>
                 <div class="progress-step" id="step2Indicator">
                     <div class="step-circle">2</div>
-                    <div class="step-label">First Steps</div>
+                    <div class="step-label" id="step2Label">First Steps</div>
                 </div>
                 <div class="progress-step" id="step3Indicator">
                     <div class="step-circle">3</div>
-                    <div class="step-label">Preferences</div>
+                    <div class="step-label" id="step3Label">Preferences</div>
                 </div>
             </div>
 
             <div class="setup-steps">
                 <div class="setup-step active" id="step1">
                     <div class="form-group">
-                        <label class="form-label" for="userName">What's your name?</label>
+                        <label class="form-label" for="userName" id="nameLabel">What's your name?</label>
                         <input type="text" class="form-input" id="userName" placeholder="Enter your name" required>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="userFocus">What's your primary focus area?</label>
+                        <label class="form-label" for="userFocus" id="focusLabel">What's your primary focus area?</label>
                         <select class="form-select" id="userFocus" required>
                             <option value="">Select your focus</option>
                             <option value="academic">Academic & Study</option>
@@ -2637,19 +2599,19 @@
                 
                 <div class="setup-step hidden" id="step2">
                     <div class="form-group">
-                        <label class="form-label" for="setupObjective">Create your first objective</label>
+                        <label class="form-label" for="setupObjective" id="firstObjectiveLabel">Create your first objective</label>
                         <input type="text" class="form-input" id="setupObjective" placeholder="e.g., Learn JavaScript basics" required>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="setupTask">Create your first task</label>
+                        <label class="form-label" for="setupTask" id="firstTaskLabel">Create your first task</label>
                         <input type="text" class="form-input" id="setupTask" placeholder="e.g., Complete JavaScript tutorial" required>
                     </div>
                 </div>
                 
                 <div class="setup-step hidden" id="step3">
                     <div class="form-group">
-                        <label class="form-label" for="workStyle">How do you prefer to work?</label>
+                        <label class="form-label" for="workStyle" id="workStyleLabel">How do you prefer to work?</label>
                         <select class="form-select" id="workStyle" required>
                             <option value="">Select work style</option>
                             <option value="pomodoro">Pomodoro Technique (25/5)</option>
@@ -2660,7 +2622,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label" for="motivationType">What motivates you most?</label>
+                        <label class="form-label" for="motivationType" id="motivationLabel">What motivates you most?</label>
                         <select class="form-select" id="motivationType" required>
                             <option value="">Select motivation type</option>
                             <option value="progress">Seeing Progress</option>
@@ -2692,7 +2654,7 @@
                     <i class="fas fa-moon"></i>
                 </button>
                 <button class="btn btn-primary" id="startGrindBtn">
-                    <i class="fas fa-play"></i> Start Focus
+                    <i class="fas fa-play"></i> <span id="startFocusText">Start Focus</span>
                 </button>
             </div>
         </header>
@@ -2736,22 +2698,22 @@
         <!-- Navigation -->
         <nav class="nav">
             <button class="nav-btn active" data-section="dashboard">
-                <i class="fas fa-home"></i> Dashboard
+                <i class="fas fa-home"></i> <span class="nav-text" data-key="dashboard">Dashboard</span>
             </button>
             <button class="nav-btn" data-section="objectives">
-                <i class="fas fa-bullseye"></i> Objectives
+                <i class="fas fa-bullseye"></i> <span class="nav-text" data-key="objectives">Objectives</span>
             </button>
             <button class="nav-btn" data-section="tasks">
-                <i class="fas fa-tasks"></i> Tasks
+                <i class="fas fa-tasks"></i> <span class="nav-text" data-key="tasks">Tasks</span>
             </button>
             <button class="nav-btn" data-section="progress">
-                <i class="fas fa-chart-line"></i> Progress
+                <i class="fas fa-chart-line"></i> <span class="nav-text" data-key="progress">Progress</span>
             </button>
             <button class="nav-btn" data-section="calendar">
-                <i class="fas fa-calendar"></i> Calendar
+                <i class="fas fa-calendar"></i> <span class="nav-text" data-key="calendar">Calendar</span>
             </button>
             <button class="nav-btn" data-section="settings">
-                <i class="fas fa-cog"></i> Settings
+                <i class="fas fa-cog"></i> <span class="nav-text" data-key="settings">Settings</span>
             </button>
         </nav>
 
@@ -2769,19 +2731,19 @@
                 <div class="quick-stats">
                     <div class="stat-item">
                         <div class="stat-value" id="dailyGoalDisplay">0m</div>
-                        <div class="stat-label">Daily Goal</div>
+                        <div class="stat-label" id="dailyGoalLabel">Daily Goal</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="streakDisplay">0</div>
-                        <div class="stat-label">Day Streak</div>
+                        <div class="stat-label" id="streakLabel">Day Streak</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="completedToday">0</div>
-                        <div class="stat-label">Completed Today</div>
+                        <div class="stat-label" id="completedLabel">Completed Today</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="focusTimeToday">00</div>
-                        <div class="stat-label">Focus Today (min)</div>
+                        <div class="stat-label" id="focusLabel">Focus Today (min)</div>
                     </div>
                 </div>
             </div>
@@ -2791,7 +2753,7 @@
                 <!-- Progress Box -->
                 <div class="progress-box">
                     <h2 class="card-title">
-                        <i class="fas fa-chart-pie"></i> Overall Progress
+                        <i class="fas fa-chart-pie"></i> <span id="overallProgressText">Overall Progress</span>
                     </h2>
                     <div class="progress-content">
                         <div class="mini-progress-ring">
@@ -2809,9 +2771,9 @@
                 <div class="objective-box">
                     <div class="card-header" style="padding: 0; margin-bottom: 15px;">
                         <h2 class="card-title">
-                            <i class="fas fa-star"></i> Active Objective
+                            <i class="fas fa-star"></i> <span id="activeObjectiveText">Active Objective</span>
                         </h2>
-                        <button class="btn btn-secondary btn-sm" onclick="app.changeActiveObjective()">
+                        <button class="btn btn-secondary btn-sm" onclick="app.changeActiveObjective()" id="changeObjectiveBtn">
                             Change
                         </button>
                     </div>
@@ -2824,9 +2786,9 @@
                 <div class="task-box">
                     <div class="card-header" style="padding: 0; margin-bottom: 15px;">
                         <h2 class="card-title">
-                            <i class="fas fa-tasks"></i> Active Task
+                            <i class="fas fa-tasks"></i> <span id="activeTaskText">Active Task</span>
                         </h2>
-                        <button class="btn btn-secondary btn-sm" onclick="app.changeActiveTask()">
+                        <button class="btn btn-secondary btn-sm" onclick="app.changeActiveTask()" id="changeTaskBtn">
                             Change
                         </button>
                     </div>
@@ -2839,32 +2801,32 @@
             <!-- Quick Actions Box -->
             <div class="quick-actions-box">
                 <h2 class="card-title">
-                    <i class="fas fa-bolt"></i> Quick Actions
+                    <i class="fas fa-bolt"></i> <span id="quickActionsText">Quick Actions</span>
                 </h2>
                 <div class="quick-actions-grid">
                     <div class="quick-action" onclick="app.openGrindZone()">
                         <div class="quick-action-icon">
                             <i class="fas fa-play"></i>
                         </div>
-                        <div>Start Focus Session</div>
+                        <div id="startFocusAction">Start Focus Session</div>
                     </div>
                     <div class="quick-action" onclick="app.startBreak()">
                         <div class="quick-action-icon">
                             <i class="fas fa-coffee"></i>
                         </div>
-                        <div>Take a Break</div>
-                    </div>
-                    <div class="quick-action" onclick="app.showAchievementsModal()">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <div>View Achievements</div>
+                        <div id="takeBreakAction">Take a Break</div>
                     </div>
                     <div class="quick-action" onclick="app.generateReport()">
                         <div class="quick-action-icon">
                             <i class="fas fa-chart-bar"></i>
                         </div>
-                        <div>Generate Report</div>
+                        <div id="generateReportAction">Generate Report</div>
+                    </div>
+                    <div class="quick-action" onclick="app.openCalendarEventModal()">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-calendar-plus"></i>
+                        </div>
+                        <div id="addEventAction">Add Calendar Event</div>
                     </div>
                 </div>
             </div>
@@ -2873,20 +2835,20 @@
             <div class="card calendar-container" id="calendarCard">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-calendar"></i> This Week
+                        <i class="fas fa-calendar"></i> <span id="thisWeekText">This Week</span>
                     </h2>
-                    <button class="btn btn-secondary btn-sm" onclick="app.viewFullCalendar()">
+                    <button class="btn btn-secondary btn-sm" onclick="app.viewFullCalendar()" id="viewAllCalendarBtn">
                         View All
                     </button>
                 </div>
                 <div class="calendar-header">
-                    <div>Sun</div>
-                    <div>Mon</div>
-                    <div>Tue</div>
-                    <div>Wed</div>
-                    <div>Thu</div>
-                    <div>Fri</div>
-                    <div>Sat</div>
+                    <div id="sunLabel">Sun</div>
+                    <div id="monLabel">Mon</div>
+                    <div id="tueLabel">Tue</div>
+                    <div id="wedLabel">Wed</div>
+                    <div id="thuLabel">Thu</div>
+                    <div id="friLabel">Fri</div>
+                    <div id="satLabel">Sat</div>
                 </div>
                 <div class="calendar-view" id="weekCalendar">
                     <!-- Calendar days will be generated here -->
@@ -2904,10 +2866,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-bullseye"></i> Your Objectives
+                        <i class="fas fa-bullseye"></i> <span id="yourObjectivesText">Your Objectives</span>
                     </h2>
                     <div>
-                        <button class="btn btn-primary" onclick="app.openObjectiveModal()">
+                        <button class="btn btn-primary" onclick="app.openObjectiveModal()" id="createObjectiveBtn">
                             <i class="fas fa-plus"></i> Create Objective
                         </button>
                     </div>
@@ -2923,10 +2885,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-tasks"></i> Task Management
+                        <i class="fas fa-tasks"></i> <span id="taskManagementText">Task Management</span>
                     </h2>
                     <div>
-                        <button class="btn btn-primary" onclick="app.openTaskModal()">
+                        <button class="btn btn-primary" onclick="app.openTaskModal()" id="createTaskBtn">
                             <i class="fas fa-plus"></i> Create Task
                         </button>
                     </div>
@@ -2949,28 +2911,28 @@
                             <i class="fas fa-clock"></i>
                         </div>
                         <div class="progress-stat-value" id="totalHoursDisplay">0</div>
-                        <div class="progress-stat-label">Total Focus Hours</div>
+                        <div class="progress-stat-label" id="totalHoursLabel">Total Focus Hours</div>
                     </div>
                     <div class="progress-stat-card">
                         <div class="progress-stat-icon">
                             <i class="fas fa-check-circle"></i>
                         </div>
                         <div class="progress-stat-value" id="completedTasksDisplay">0</div>
-                        <div class="progress-stat-label">Completed Tasks</div>
+                        <div class="progress-stat-label" id="completedTasksLabel">Completed Tasks</div>
                     </div>
                     <div class="progress-stat-card">
                         <div class="progress-stat-icon">
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="progress-stat-value" id="completionRateDisplay">0%</div>
-                        <div class="progress-stat-label">Completion Rate</div>
+                        <div class="progress-stat-label" id="completionRateLabel">Completion Rate</div>
                     </div>
                     <div class="progress-stat-card">
                         <div class="progress-stat-icon">
                             <i class="fas fa-fire"></i>
                         </div>
                         <div class="progress-stat-value" id="streakDisplayProgress">0</div>
-                        <div class="progress-stat-label">Day Streak</div>
+                        <div class="progress-stat-label" id="streakProgressLabel">Day Streak</div>
                     </div>
                 </div>
 
@@ -2978,12 +2940,12 @@
                 <div class="progress-graph-container">
                     <div class="graph-header">
                         <h3 class="graph-title">
-                            <i class="fas fa-chart-bar"></i> Weekly Focus Time
+                            <i class="fas fa-chart-bar"></i> <span id="weeklyFocusText">Weekly Focus Time</span>
                         </h3>
                         <div class="graph-controls">
-                            <button class="graph-period-btn active" data-period="week">Week</button>
-                            <button class="graph-period-btn" data-period="month">Month</button>
-                            <button class="graph-period-btn" data-period="year">Year</button>
+                            <button class="graph-period-btn active" data-period="week" id="weekBtn">Week</button>
+                            <button class="graph-period-btn" data-period="month" id="monthBtn">Month</button>
+                            <button class="graph-period-btn" data-period="year" id="yearBtn">Year</button>
                         </div>
                     </div>
                     <div class="graph-container">
@@ -3004,12 +2966,12 @@
                 <div class="progress-graph-container heatmap-container">
                     <div class="graph-header">
                         <h3 class="graph-title">
-                            <i class="fas fa-calendar-alt"></i> Activity Heatmap
+                            <i class="fas fa-calendar-alt"></i> <span id="activityHeatmapText">Activity Heatmap</span>
                         </h3>
                         <div class="graph-controls">
-                            <button class="graph-period-btn active" data-heatmap="year">Last Year</button>
-                            <button class="graph-period-btn" data-heatmap="6months">Last 6 Months</button>
-                            <button class="graph-period-btn" data-heatmap="3months">Last 3 Months</button>
+                            <button class="graph-period-btn active" data-heatmap="year" id="lastYearBtn">Last Year</button>
+                            <button class="graph-period-btn" data-heatmap="6months" id="last6MonthsBtn">Last 6 Months</button>
+                            <button class="graph-period-btn" data-heatmap="3months" id="last3MonthsBtn">Last 3 Months</button>
                         </div>
                     </div>
                     <div class="heatmap-grid" id="heatmapGrid">
@@ -3018,19 +2980,19 @@
                     <div class="heatmap-legend">
                         <div class="heatmap-legend-item">
                             <div class="legend-color" style="background: var(--border);"></div>
-                            <span>No activity</span>
+                            <span id="noActivityText">No activity</span>
                         </div>
                         <div class="heatmap-legend-item">
                             <div class="legend-color" style="background: rgba(26, 188, 156, 0.3);"></div>
-                            <span>Low</span>
+                            <span id="lowActivityText">Low</span>
                         </div>
                         <div class="heatmap-legend-item">
                             <div class="legend-color" style="background: rgba(26, 188, 156, 0.6);"></div>
-                            <span>Medium</span>
+                            <span id="mediumActivityText">Medium</span>
                         </div>
                         <div class="heatmap-legend-item">
                             <div class="legend-color" style="background: rgba(26, 188, 156, 1);"></div>
-                            <span>High</span>
+                            <span id="highActivityText">High</span>
                         </div>
                     </div>
                 </div>
@@ -3038,7 +3000,7 @@
                 <!-- Week Focus Breakdown -->
                 <div class="week-breakdown">
                     <h3 class="graph-title">
-                        <i class="fas fa-calendar-week"></i> This Week's Focus
+                        <i class="fas fa-calendar-week"></i> <span id="weekFocusText">This Week's Focus</span>
                     </h3>
                     <div class="week-days" id="weekFocusBreakdown">
                         <!-- Week days will be generated here -->
@@ -3052,10 +3014,10 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-calendar-alt"></i> Calendar
+                        <i class="fas fa-calendar-alt"></i> <span id="calendarText">Calendar</span>
                     </h2>
                     <div>
-                        <button class="btn btn-primary" onclick="app.openCalendarEventModal()">
+                        <button class="btn btn-primary" onclick="app.openCalendarEventModal()" id="addEventBtn">
                             <i class="fas fa-plus"></i> Add Event
                         </button>
                     </div>
@@ -3071,66 +3033,80 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">
-                        <i class="fas fa-cog"></i> Settings
+                        <i class="fas fa-cog"></i> <span id="settingsText">Settings</span>
                     </h2>
                 </div>
 
                 <div class="settings-section">
-                    <h3>Personalization</h3>
+                    <h3 id="personalizationText">Personalization</h3>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>User Name</h4>
+                            <h4 id="userNameLabel">User Name</h4>
                             <p id="userNameDisplay">Not set</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="app.editUserName()">Edit</button>
+                        <button class="btn btn-secondary" onclick="app.editUserName()" id="editNameBtn">Edit</button>
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Focus Area</h4>
+                            <h4 id="focusAreaLabel">Focus Area</h4>
                             <p id="focusAreaDisplay">Not set</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="app.editFocusArea()">Change</button>
+                        <button class="btn btn-secondary" onclick="app.editFocusArea()" id="editFocusBtn">Change</button>
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Work Style</h4>
+                            <h4 id="workStyleLabel">Work Style</h4>
                             <p id="workStyleDisplay">Standard</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="app.editWorkStyle()">Change</button>
+                        <button class="btn btn-secondary" onclick="app.editWorkStyle()" id="editWorkStyleBtn">Change</button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4 id="languageLabel">Language</h4>
+                            <p id="languageDisplay">English</p>
+                        </div>
+                        <div class="language-selector">
+                            <select class="language-dropdown" id="languageSelect">
+                                <option value="en">English</option>
+                                <option value="fr">Français</option>
+                                <option value="es">Español</option>
+                                <option value="ko">한국어</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
                 <div class="settings-section">
-                    <h3>Timer Settings</h3>
+                    <h3 id="timerSettingsText">Timer Settings</h3>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Default Focus Duration</h4>
+                            <h4 id="focusDurationLabel">Default Focus Duration</h4>
                             <p id="focusDurationDisplay">25 minutes</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="app.openTimerSettings()">Edit</button>
+                        <button class="btn btn-secondary" onclick="app.openTimerSettings()" id="editTimerBtn">Edit</button>
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Break Duration</h4>
+                            <h4 id="breakDurationLabel">Break Duration</h4>
                             <p id="breakDurationDisplay">5 minutes</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="app.openTimerSettings()">Edit</button>
+                        <button class="btn btn-secondary" onclick="app.openTimerSettings()" id="editBreakBtn">Edit</button>
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Timer Display</h4>
+                            <h4 id="timerDisplayLabel">Timer Display</h4>
                             <p id="timerDisplayMode">24-hour format</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="app.openTimerSettings()">Change</button>
+                        <button class="btn btn-secondary" onclick="app.openTimerSettings()" id="changeDisplayBtn">Change</button>
                     </div>
                 </div>
 
                 <div class="settings-section">
-                    <h3>Music Settings</h3>
+                    <h3 id="musicSettingsText">Music Settings</h3>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Background Music</h4>
-                            <p>Lo-fi music for focus sessions</p>
+                            <h4 id="backgroundMusicLabel">Background Music</h4>
+                            <p id="backgroundMusicDesc">Lo-fi music for focus sessions</p>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="musicToggle">
@@ -3139,21 +3115,21 @@
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Spotify Integration</h4>
-                            <p>Connect your Spotify account</p>
+                            <h4 id="spotifyLabel">Spotify Integration</h4>
+                            <p id="spotifyDesc">Connect your Spotify account</p>
                         </div>
-                        <button class="btn btn-success" onclick="app.connectSpotify()">
+                        <button class="btn btn-success" onclick="app.connectSpotify()" id="connectSpotifyBtn">
                             <i class="fab fa-spotify"></i> Connect
                         </button>
                     </div>
                 </div>
 
                 <div class="settings-section">
-                    <h3>Preferences</h3>
+                    <h3 id="preferencesText">Preferences</h3>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Dark Mode</h4>
-                            <p>Switch between light and dark theme</p>
+                            <h4 id="darkModeLabel">Dark Mode</h4>
+                            <p id="darkModeDesc">Switch between light and dark theme</p>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="darkModeToggle">
@@ -3162,8 +3138,8 @@
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Pomodoro Timer</h4>
-                            <p>Enable 25/5 minute work/break cycles</p>
+                            <h4 id="pomodoroLabel">Pomodoro Timer</h4>
+                            <p id="pomodoroDesc">Enable 25/5 minute work/break cycles</p>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="pomodoroToggle">
@@ -3172,8 +3148,8 @@
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Notifications</h4>
-                            <p>Get session reminders and updates</p>
+                            <h4 id="notificationsLabel">Notifications</h4>
+                            <p id="notificationsDesc">Get session reminders and updates</p>
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="notificationsToggle">
@@ -3183,41 +3159,41 @@
                 </div>
 
                 <div class="settings-section">
-                    <h3>Data Management</h3>
+                    <h3 id="dataManagementText">Data Management</h3>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Export Data</h4>
-                            <p>Download your objectives and tasks as JSON</p>
+                            <h4 id="exportDataLabel">Export Data</h4>
+                            <p id="exportDataDesc">Download your objectives and tasks as JSON</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="app.exportData()">Export</button>
+                        <button class="btn btn-secondary" onclick="app.exportData()" id="exportBtn">Export</button>
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Import Data</h4>
-                            <p>Import objectives and tasks from JSON file</p>
+                            <h4 id="importDataLabel">Import Data</h4>
+                            <p id="importDataDesc">Import objectives and tasks from JSON file</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="app.importData()">Import</button>
+                        <button class="btn btn-secondary" onclick="app.importData()" id="importBtn">Import</button>
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Clear All Data</h4>
-                            <p>Reset the application to initial state</p>
+                            <h4 id="clearDataLabel">Clear All Data</h4>
+                            <p id="clearDataDesc">Reset the application to initial state</p>
                         </div>
-                        <button class="btn btn-danger" onclick="app.clearData()">Clear All</button>
+                        <button class="btn btn-danger" onclick="app.clearData()" id="clearBtn">Clear All</button>
                     </div>
                 </div>
 
                 <div class="settings-section">
-                    <h3>About</h3>
+                    <h3 id="aboutText">About</h3>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>Version</h4>
+                            <h4 id="versionLabel">Version</h4>
                             <p>Flusso 2.3.0</p>
                         </div>
                     </div>
                     <div class="setting-item">
                         <div class="setting-info">
-                            <h4>BLG group</h4>
+                            <h4 id="creditLabel">BLG group</h4>
                             <p>Built with ❤️ for productive minds</p>
                         </div>
                     </div>
@@ -3230,29 +3206,29 @@
     <div class="grind-zone" id="grindZone">
         <div class="background-panel" id="backgroundPanel">
             <div class="background-panel-header">
-                <h3>Choose Background</h3>
+                <h3 id="chooseBackgroundText">Choose Background</h3>
                 <button class="close-panel-btn" id="closePanelBtn">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="background-grid">
                 <div class="background-option forest active" data-bg="forest">
-                    <span>Forest</span>
+                    <span id="forestText">Forest</span>
                 </div>
                 <div class="background-option ocean" data-bg="ocean">
-                    <span>Ocean</span>
+                    <span id="oceanText">Ocean</span>
                 </div>
                 <div class="background-option skyline" data-bg="skyline">
-                    <span>Skyline</span>
+                    <span id="skylineText">Skyline</span>
                 </div>
                 <div class="background-option mountain" data-bg="mountain">
-                    <span>Mountain</span>
+                    <span id="mountainText">Mountain</span>
                 </div>
                 <div class="background-option coffee" data-bg="coffee">
-                    <span>Coffee Shop</span>
+                    <span id="coffeeText">Coffee Shop</span>
                 </div>
                 <div class="background-option space" data-bg="space">
-                    <span>Space</span>
+                    <span id="spaceText">Space</span>
                 </div>
             </div>
         </div>
@@ -3260,9 +3236,9 @@
         <div class="grind-header">
             <div>
                 <button class="back-button" onclick="app.closeGrindZone()">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    <i class="fas fa-arrow-left"></i> <span id="backToDashboardText">Back to Dashboard</span>
                 </button>
-                <h2 style="margin-top: 10px;">Focus Zone</h2>
+                <h2 style="margin-top: 10px;" id="focusZoneText">Focus Zone</h2>
                 <p id="grindSessionInfo">Focus Session</p>
             </div>
         </div>
@@ -3270,14 +3246,14 @@
         <!-- Action buttons -->
         <div class="grind-action-buttons">
             <button class="grind-action-btn" id="backgroundToggleBtn">
-                <i class="fas fa-palette"></i> Background
+                <i class="fas fa-palette"></i> <span id="backgroundBtnText">Background</span>
             </button>
             <button class="grind-action-btn spotify" id="spotifyConnectBtn">
                 <div class="spotify-logo">♪</div>
-                <span>Spotify</span>
+                <span id="spotifyBtnText">Spotify</span>
             </button>
             <button class="grind-action-btn" id="timerSettingsBtn">
-                <i class="fas fa-clock"></i> Timer Settings
+                <i class="fas fa-clock"></i> <span id="timerSettingsBtnText">Timer Settings</span>
             </button>
         </div>
 
@@ -3289,7 +3265,7 @@
             <div class="music-controls">
                 <div class="music-toggle" id="musicToggleBtn">
                     <i class="fas fa-music"></i>
-                    <span>Music</span>
+                    <span id="musicBtnText">Music</span>
                 </div>
             </div>
             
@@ -3310,12 +3286,12 @@
     <!-- Break Zone -->
     <div class="break-zone" id="breakZone">
         <div class="break-content">
-            <h1 style="font-size: 48px; margin-bottom: 20px;">Break Time</h1>
+            <h1 style="font-size: 48px; margin-bottom: 20px;" id="breakTimeText">Break Time</h1>
             <div class="break-message" id="breakMessage">Take a deep breath and relax...</div>
             <div class="break-timer" id="breakTimer">05:00</div>
             <div class="break-message" id="breakEndMessage"></div>
             <button class="finish-break-btn" id="finishBreakBtn">
-                <i class="fas fa-check"></i> Finish Break
+                <i class="fas fa-check"></i> <span id="finishBreakText">Finish Break</span>
             </button>
         </div>
     </div>
@@ -3324,7 +3300,7 @@
     <div class="modal" id="achievementsModal">
         <div class="modal-content achievements-modal">
             <div class="modal-header">
-                <h3 class="modal-title">Your Achievements</h3>
+                <h3 class="modal-title" id="achievementsTitle">Your Achievements</h3>
                 <button class="btn-icon" id="closeAchievementsModal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -3342,7 +3318,7 @@
     <div class="modal" id="timerSettingsModal">
         <div class="modal-content timer-settings-modal">
             <div class="modal-header">
-                <h3 class="modal-title">Timer Settings</h3>
+                <h3 class="modal-title" id="timerSettingsTitle">Timer Settings</h3>
                 <button class="btn-icon" id="closeTimerSettingsModal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -3350,11 +3326,11 @@
             <form id="timerSettingsForm">
                 <div class="timer-settings-group">
                     <div class="form-group">
-                        <label class="form-label" for="focusDuration">Focus Duration (min)</label>
+                        <label class="form-label" for="focusDuration" id="focusDurationModalLabel">Focus Duration (min)</label>
                         <input type="number" class="form-input" id="focusDuration" min="1" max="120" value="25">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="breakDuration">Break Duration (min)</label>
+                        <label class="form-label" for="breakDuration" id="breakDurationModalLabel">Break Duration (min)</label>
                         <input type="number" class="form-input" id="breakDuration" min="1" max="60" value="5">
                     </div>
                 </div>
@@ -3363,11 +3339,11 @@
                         <input type="checkbox" id="timer24hToggle">
                         <span class="toggle-slider"></span>
                     </label>
-                    <span>24-hour format</span>
+                    <span id="timeFormatText">24-hour format</span>
                 </div>
                 <div class="text-right mt-6">
                     <button type="button" class="btn btn-secondary" id="cancelTimerSettingsBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ml-2">Save Settings</button>
+                    <button type="submit" class="btn btn-primary ml-2" id="saveTimerSettingsBtn">Save Settings</button>
                 </div>
             </form>
         </div>
@@ -3385,15 +3361,15 @@
             <form id="calendarEventForm">
                 <input type="hidden" id="calendarEventId">
                 <div class="form-group">
-                    <label class="form-label" for="eventTitle">Event Title</label>
+                    <label class="form-label" for="eventTitle" id="eventTitleLabel">Event Title</label>
                     <input type="text" class="form-input" id="eventTitle" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="eventDescription">Description</label>
+                    <label class="form-label" for="eventDescription" id="eventDescLabel">Description</label>
                     <textarea class="form-textarea" id="eventDescription"></textarea>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="eventType">Event Type</label>
+                    <label class="form-label" for="eventType" id="eventTypeLabel">Event Type</label>
                     <select class="form-select" id="eventType" required>
                         <option value="">Select event type</option>
                         <option value="custom">Custom Event</option>
@@ -3402,30 +3378,30 @@
                     </select>
                 </div>
                 <div class="form-group" id="linkedTaskGroup" style="display: none;">
-                    <label class="form-label" for="linkedTask">Linked Task</label>
+                    <label class="form-label" for="linkedTask" id="linkedTaskLabel">Linked Task</label>
                     <select class="form-select" id="linkedTask">
                         <option value="">Select task</option>
                     </select>
                 </div>
                 <div class="form-group" id="linkedObjectiveGroup" style="display: none;">
-                    <label class="form-label" for="linkedObjective">Linked Objective</label>
+                    <label class="form-label" for="linkedObjective" id="linkedObjectiveLabel">Linked Objective</label>
                     <select class="form-select" id="linkedObjective">
                         <option value="">Select objective</option>
                     </select>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="eventDate">Date</label>
+                        <label class="form-label" for="eventDate" id="eventDateLabel">Date</label>
                         <input type="date" class="form-input" id="eventDate" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="eventTime">Time (Optional)</label>
+                        <label class="form-label" for="eventTime" id="eventTimeLabel">Time (Optional)</label>
                         <input type="time" class="form-input" id="eventTime">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="eventColor">Color</label>
+                        <label class="form-label" for="eventColor" id="eventColorLabel">Color</label>
                         <select class="form-select" id="eventColor">
                             <option value="">Select color</option>
                             <option value="#2C3E50">Navy</option>
@@ -3436,7 +3412,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="eventPriority">Priority</label>
+                        <label class="form-label" for="eventPriority" id="eventPriorityLabel">Priority</label>
                         <select class="form-select" id="eventPriority">
                             <option value="">Select priority</option>
                             <option value="1">Low</option>
@@ -3447,7 +3423,7 @@
                 </div>
                 <div class="text-right mt-6">
                     <button type="button" class="btn btn-secondary" id="cancelCalendarEventBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ml-2">Save Event</button>
+                    <button type="submit" class="btn btn-primary ml-2" id="saveEventBtn">Save Event</button>
                 </div>
             </form>
         </div>
@@ -3474,13 +3450,13 @@
                 </div>
             </div>
             <div class="calendar-header">
-                <div>Sun</div>
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
+                <div id="fullSunLabel">Sun</div>
+                <div id="fullMonLabel">Mon</div>
+                <div id="fullTueLabel">Tue</div>
+                <div id="fullWedLabel">Wed</div>
+                <div id="fullThuLabel">Thu</div>
+                <div id="fullFriLabel">Fri</div>
+                <div id="fullSatLabel">Sat</div>
             </div>
             <div class="full-calendar-view" id="fullCalendarDays">
                 <!-- Full calendar days will be generated here -->
@@ -3500,16 +3476,16 @@
             <form id="objectiveForm">
                 <input type="hidden" id="objectiveId">
                 <div class="form-group">
-                    <label class="form-label" for="objectiveTitle">Title</label>
+                    <label class="form-label" for="objectiveTitle" id="objTitleLabel">Title</label>
                     <input type="text" class="form-input" id="objectiveTitle" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="objectiveDescription">Description</label>
+                    <label class="form-label" for="objectiveDescription" id="objDescLabel">Description</label>
                     <textarea class="form-textarea" id="objectiveDescription"></textarea>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="objectiveCategory">Category</label>
+                        <label class="form-label" for="objectiveCategory" id="objCategoryLabel">Category</label>
                         <select class="form-select" id="objectiveCategory" required>
                             <option value="">Select category</option>
                             <option value="academic">Academic</option>
@@ -3521,7 +3497,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="objectiveTimeRange">Time Range</label>
+                        <label class="form-label" for="objectiveTimeRange" id="objTimeLabel">Time Range</label>
                         <select class="form-select" id="objectiveTimeRange" required>
                             <option value="">Select time range</option>
                             <option value="short">Short Term (1-3 months)</option>
@@ -3532,7 +3508,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="objectivePriority">Priority</label>
+                        <label class="form-label" for="objectivePriority" id="objPriorityLabel">Priority</label>
                         <select class="form-select" id="objectivePriority" required>
                             <option value="">Select priority</option>
                             <option value="1">Low</option>
@@ -3543,7 +3519,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="objectiveStatus">Status</label>
+                        <label class="form-label" for="objectiveStatus" id="objStatusLabel">Status</label>
                         <select class="form-select" id="objectiveStatus" required>
                             <option value="">Select status</option>
                             <option value="active">Active</option>
@@ -3553,12 +3529,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="objectiveDeadline">Target Date (Optional)</label>
+                    <label class="form-label" for="objectiveDeadline" id="objDeadlineLabel">Target Date (Optional)</label>
                     <input type="date" class="form-input" id="objectiveDeadline">
                 </div>
                 <div class="text-right mt-6">
                     <button type="button" class="btn btn-secondary" id="cancelObjectiveBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ml-2">Save Objective</button>
+                    <button type="submit" class="btn btn-primary ml-2" id="saveObjectiveBtn">Save Objective</button>
                 </div>
             </form>
         </div>
@@ -3576,32 +3552,32 @@
             <form id="taskForm">
                 <input type="hidden" id="taskId">
                 <div class="form-group">
-                    <label class="form-label" for="taskTitle">Title</label>
+                    <label class="form-label" for="taskTitle" id="taskTitleLabel">Title</label>
                     <input type="text" class="form-input" id="taskTitle" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="taskDescription">Description</label>
+                    <label class="form-label" for="taskDescription" id="taskDescLabel">Description</label>
                     <textarea class="form-textarea" id="taskDescription"></textarea>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="taskObjective">Linked Objective</label>
+                    <label class="form-label" for="taskObjective" id="taskObjLabel">Linked Objective</label>
                     <select class="form-select" id="taskObjective" required>
                         <option value="">Select objective</option>
                     </select>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="taskDeadline">Deadline</label>
+                        <label class="form-label" for="taskDeadline" id="taskDeadlineLabel">Deadline</label>
                         <input type="date" class="form-input" id="taskDeadline" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="taskDuration">Estimated Duration (hours)</label>
+                        <label class="form-label" for="taskDuration" id="taskDurationLabel">Estimated Duration (hours)</label>
                         <input type="number" class="form-input" id="taskDuration" min="0.5" step="0.5" value="1">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="taskImportance">Importance</label>
+                        <label class="form-label" for="taskImportance" id="taskImportanceLabel">Importance</label>
                         <select class="form-select" id="taskImportance">
                             <option value="">Select importance</option>
                             <option value="1">Low</option>
@@ -3611,7 +3587,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="taskStatus">Status</label>
+                        <label class="form-label" for="taskStatus" id="taskStatusLabel">Status</label>
                         <select class="form-select" id="taskStatus">
                             <option value="">Select status</option>
                             <option value="not-started">Not Started</option>
@@ -3622,7 +3598,7 @@
                 </div>
                 <div class="text-right mt-6">
                     <button type="button" class="btn btn-secondary" id="cancelTaskBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ml-2">Save Task</button>
+                    <button type="submit" class="btn btn-primary ml-2" id="saveTaskBtn">Save Task</button>
                 </div>
             </form>
         </div>
@@ -3631,23 +3607,23 @@
     <!-- Context Menu -->
     <div class="context-menu" id="contextMenu">
         <div class="context-menu-item" data-action="edit">
-            <i class="fas fa-edit"></i> Edit
+            <i class="fas fa-edit"></i> <span id="editText">Edit</span>
         </div>
         <div class="context-menu-item" data-action="delete">
-            <i class="fas fa-trash"></i> Delete
+            <i class="fas fa-trash"></i> <span id="deleteText">Delete</span>
         </div>
         <div class="context-menu-item" data-action="duplicate">
-            <i class="fas fa-copy"></i> Duplicate
+            <i class="fas fa-copy"></i> <span id="duplicateText">Duplicate</span>
         </div>
         <div class="context-menu-item" data-action="mark-done">
-            <i class="fas fa-check"></i> Mark as Done
+            <i class="fas fa-check"></i> <span id="markDoneText">Mark as Done</span>
         </div>
     </div>
 
     <!-- Tutorial Tip -->
     <div class="tutorial-tip" id="tutorialTip">
         <div class="tip-header">
-            <h4>💡 Quick Tip</h4>
+            <h4>💡 <span id="quickTipText">Quick Tip</span></h4>
             <button class="close-tip" id="closeTipBtn">
                 <i class="fas fa-times"></i>
             </button>
@@ -3659,6 +3635,11 @@
     <div class="notification" id="notification">
         <div id="notificationMessage">Operation completed successfully</div>
     </div>
+
+    <!-- Audio for Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         class FlussoApp {
@@ -3685,10 +3666,7 @@
                     enabled: false,
                     volume: 0.5,
                     connectedToSpotify: false,
-                    youtubePlayer: null,
-                    audioContext: null,
-                    audioElement: null,
-                    isMuted: false
+                    audioElement: null
                 };
                 
                 // Calendar state
@@ -3734,116 +3712,805 @@
                 this.currentQuoteIndex = 0;
                 this.showQuotesBar = true;
                 
-                // Achievements system - FIXED: 12 achievements with proper tracking
-                this.achievements = [
-                    { 
-                        id: 'first_task', 
-                        title: 'First Task', 
-                        description: 'Complete your first task', 
-                        icon: 'fa-check', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 1
+                // Language system
+                this.currentLanguage = 'en';
+                this.translations = {
+                    'en': {
+                        // Setup
+                        'setupTitle': 'Welcome to Flusso',
+                        'setupSubtitle': 'Let\'s personalize your experience',
+                        'step1Label': 'Personal Info',
+                        'step2Label': 'First Steps',
+                        'step3Label': 'Preferences',
+                        'nameLabel': 'What\'s your name?',
+                        'focusLabel': 'What\'s your primary focus area?',
+                        'firstObjectiveLabel': 'Create your first objective',
+                        'firstTaskLabel': 'Create your first task',
+                        'workStyleLabel': 'How do you prefer to work?',
+                        'motivationLabel': 'What motivates you most?',
+                        
+                        // Dashboard
+                        'dashboard': 'Dashboard',
+                        'overallProgressText': 'Overall Progress',
+                        'activeObjectiveText': 'Active Objective',
+                        'activeTaskText': 'Active Task',
+                        'changeObjectiveBtn': 'Change',
+                        'changeTaskBtn': 'Change',
+                        'quickActionsText': 'Quick Actions',
+                        'startFocusAction': 'Start Focus Session',
+                        'takeBreakAction': 'Take a Break',
+                        'generateReportAction': 'Generate Report',
+                        'addEventAction': 'Add Calendar Event',
+                        'thisWeekText': 'This Week',
+                        'viewAllCalendarBtn': 'View All',
+                        'sunLabel': 'Sun',
+                        'monLabel': 'Mon',
+                        'tueLabel': 'Tue',
+                        'wedLabel': 'Wed',
+                        'thuLabel': 'Thu',
+                        'friLabel': 'Fri',
+                        'satLabel': 'Sat',
+                        'dailyGoalLabel': 'Daily Goal',
+                        'streakLabel': 'Day Streak',
+                        'completedLabel': 'Completed Today',
+                        'focusLabel': 'Focus Today (min)',
+                        
+                        // Objectives
+                        'objectives': 'Objectives',
+                        'yourObjectivesText': 'Your Objectives',
+                        'createObjectiveBtn': 'Create Objective',
+                        
+                        // Tasks
+                        'tasks': 'Tasks',
+                        'taskManagementText': 'Task Management',
+                        'createTaskBtn': 'Create Task',
+                        
+                        // Progress
+                        'progress': 'Progress',
+                        'totalHoursLabel': 'Total Focus Hours',
+                        'completedTasksLabel': 'Completed Tasks',
+                        'completionRateLabel': 'Completion Rate',
+                        'streakProgressLabel': 'Day Streak',
+                        'weeklyFocusText': 'Weekly Focus Time',
+                        'weekBtn': 'Week',
+                        'monthBtn': 'Month',
+                        'yearBtn': 'Year',
+                        'activityHeatmapText': 'Activity Heatmap',
+                        'lastYearBtn': 'Last Year',
+                        'last6MonthsBtn': 'Last 6 Months',
+                        'last3MonthsBtn': 'Last 3 Months',
+                        'noActivityText': 'No activity',
+                        'lowActivityText': 'Low',
+                        'mediumActivityText': 'Medium',
+                        'highActivityText': 'High',
+                        'weekFocusText': 'This Week\'s Focus',
+                        
+                        // Calendar
+                        'calendar': 'Calendar',
+                        'calendarText': 'Calendar',
+                        'addEventBtn': 'Add Event',
+                        
+                        // Settings
+                        'settings': 'Settings',
+                        'settingsText': 'Settings',
+                        'personalizationText': 'Personalization',
+                        'userNameLabel': 'User Name',
+                        'focusAreaLabel': 'Focus Area',
+                        'workStyleLabel': 'Work Style',
+                        'languageLabel': 'Language',
+                        'editNameBtn': 'Edit',
+                        'editFocusBtn': 'Change',
+                        'editWorkStyleBtn': 'Change',
+                        'timerSettingsText': 'Timer Settings',
+                        'focusDurationLabel': 'Default Focus Duration',
+                        'breakDurationLabel': 'Break Duration',
+                        'timerDisplayLabel': 'Timer Display',
+                        'editTimerBtn': 'Edit',
+                        'editBreakBtn': 'Edit',
+                        'changeDisplayBtn': 'Change',
+                        'musicSettingsText': 'Music Settings',
+                        'backgroundMusicLabel': 'Background Music',
+                        'backgroundMusicDesc': 'Lo-fi music for focus sessions',
+                        'spotifyLabel': 'Spotify Integration',
+                        'spotifyDesc': 'Connect your Spotify account',
+                        'connectSpotifyBtn': 'Connect',
+                        'preferencesText': 'Preferences',
+                        'darkModeLabel': 'Dark Mode',
+                        'darkModeDesc': 'Switch between light and dark theme',
+                        'pomodoroLabel': 'Pomodoro Timer',
+                        'pomodoroDesc': 'Enable 25/5 minute work/break cycles',
+                        'notificationsLabel': 'Notifications',
+                        'notificationsDesc': 'Get session reminders and updates',
+                        'dataManagementText': 'Data Management',
+                        'exportDataLabel': 'Export Data',
+                        'exportDataDesc': 'Download your objectives and tasks as JSON',
+                        'importDataLabel': 'Import Data',
+                        'importDataDesc': 'Import objectives and tasks from JSON file',
+                        'clearDataLabel': 'Clear All Data',
+                        'clearDataDesc': 'Reset the application to initial state',
+                        'exportBtn': 'Export',
+                        'importBtn': 'Import',
+                        'clearBtn': 'Clear All',
+                        'aboutText': 'About',
+                        'versionLabel': 'Version',
+                        'creditLabel': 'BLG group',
+                        
+                        // Grind Zone
+                        'startFocusText': 'Start Focus',
+                        'backToDashboardText': 'Back to Dashboard',
+                        'focusZoneText': 'Focus Zone',
+                        'chooseBackgroundText': 'Choose Background',
+                        'forestText': 'Forest',
+                        'oceanText': 'Ocean',
+                        'skylineText': 'Skyline',
+                        'mountainText': 'Mountain',
+                        'coffeeText': 'Coffee Shop',
+                        'spaceText': 'Space',
+                        'backgroundBtnText': 'Background',
+                        'spotifyBtnText': 'Spotify',
+                        'timerSettingsBtnText': 'Timer Settings',
+                        'musicBtnText': 'Music',
+                        
+                        // Break Zone
+                        'breakTimeText': 'Break Time',
+                        'finishBreakText': 'Finish Break',
+                        
+                        // Achievements
+                        'achievementsTitle': 'Your Achievements',
+                        
+                        // Timer Settings Modal
+                        'timerSettingsTitle': 'Timer Settings',
+                        'focusDurationModalLabel': 'Focus Duration (min)',
+                        'breakDurationModalLabel': 'Break Duration (min)',
+                        'timeFormatText': '24-hour format',
+                        'cancelTimerSettingsBtn': 'Cancel',
+                        'saveTimerSettingsBtn': 'Save Settings',
+                        
+                        // Calendar Event Modal
+                        'eventTitleLabel': 'Event Title',
+                        'eventDescLabel': 'Description',
+                        'eventTypeLabel': 'Event Type',
+                        'linkedTaskLabel': 'Linked Task',
+                        'linkedObjectiveLabel': 'Linked Objective',
+                        'eventDateLabel': 'Date',
+                        'eventTimeLabel': 'Time (Optional)',
+                        'eventColorLabel': 'Color',
+                        'eventPriorityLabel': 'Priority',
+                        'cancelCalendarEventBtn': 'Cancel',
+                        'saveEventBtn': 'Save Event',
+                        
+                        // Objective Modal
+                        'objTitleLabel': 'Title',
+                        'objDescLabel': 'Description',
+                        'objCategoryLabel': 'Category',
+                        'objTimeLabel': 'Time Range',
+                        'objPriorityLabel': 'Priority',
+                        'objStatusLabel': 'Status',
+                        'objDeadlineLabel': 'Target Date (Optional)',
+                        'cancelObjectiveBtn': 'Cancel',
+                        'saveObjectiveBtn': 'Save Objective',
+                        
+                        // Task Modal
+                        'taskTitleLabel': 'Title',
+                        'taskDescLabel': 'Description',
+                        'taskObjLabel': 'Linked Objective',
+                        'taskDeadlineLabel': 'Deadline',
+                        'taskDurationLabel': 'Estimated Duration (hours)',
+                        'taskImportanceLabel': 'Importance',
+                        'taskStatusLabel': 'Status',
+                        'cancelTaskBtn': 'Cancel',
+                        'saveTaskBtn': 'Save Task',
+                        
+                        // Context Menu
+                        'editText': 'Edit',
+                        'deleteText': 'Delete',
+                        'duplicateText': 'Duplicate',
+                        'markDoneText': 'Mark as Done',
+                        
+                        // Tutorial
+                        'quickTipText': 'Quick Tip'
                     },
-                    { 
-                        id: 'streak_7', 
-                        title: '7-Day Streak', 
-                        description: 'Maintain a 7-day focus streak', 
-                        icon: 'fa-fire', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 7
+                    'fr': {
+                        // Setup
+                        'setupTitle': 'Bienvenue sur Flusso',
+                        'setupSubtitle': 'Personnalisons votre expérience',
+                        'step1Label': 'Informations personnelles',
+                        'step2Label': 'Premiers pas',
+                        'step3Label': 'Préférences',
+                        'nameLabel': 'Quel est votre nom ?',
+                        'focusLabel': 'Quel est votre domaine de concentration principal ?',
+                        'firstObjectiveLabel': 'Créez votre premier objectif',
+                        'firstTaskLabel': 'Créez votre première tâche',
+                        'workStyleLabel': 'Comment préférez-vous travailler ?',
+                        'motivationLabel': 'Qu\'est-ce qui vous motive le plus ?',
+                        
+                        // Dashboard
+                        'dashboard': 'Tableau de bord',
+                        'overallProgressText': 'Progression globale',
+                        'activeObjectiveText': 'Objectif actif',
+                        'activeTaskText': 'Tâche active',
+                        'changeObjectiveBtn': 'Changer',
+                        'changeTaskBtn': 'Changer',
+                        'quickActionsText': 'Actions rapides',
+                        'startFocusAction': 'Démarrer une session de concentration',
+                        'takeBreakAction': 'Prendre une pause',
+                        'generateReportAction': 'Générer un rapport',
+                        'addEventAction': 'Ajouter un événement',
+                        'thisWeekText': 'Cette semaine',
+                        'viewAllCalendarBtn': 'Voir tout',
+                        'sunLabel': 'Dim',
+                        'monLabel': 'Lun',
+                        'tueLabel': 'Mar',
+                        'wedLabel': 'Mer',
+                        'thuLabel': 'Jeu',
+                        'friLabel': 'Ven',
+                        'satLabel': 'Sam',
+                        'dailyGoalLabel': 'Objectif quotidien',
+                        'streakLabel': 'Série de jours',
+                        'completedLabel': 'Terminés aujourd\'hui',
+                        'focusLabel': 'Concentration aujourd\'hui (min)',
+                        
+                        // Objectives
+                        'objectives': 'Objectifs',
+                        'yourObjectivesText': 'Vos objectifs',
+                        'createObjectiveBtn': 'Créer un objectif',
+                        
+                        // Tasks
+                        'tasks': 'Tâches',
+                        'taskManagementText': 'Gestion des tâches',
+                        'createTaskBtn': 'Créer une tâche',
+                        
+                        // Progress
+                        'progress': 'Progression',
+                        'totalHoursLabel': 'Heures de concentration totales',
+                        'completedTasksLabel': 'Tâches terminées',
+                        'completionRateLabel': 'Taux d\'achèvement',
+                        'streakProgressLabel': 'Série de jours',
+                        'weeklyFocusText': 'Temps de concentration hebdomadaire',
+                        'weekBtn': 'Semaine',
+                        'monthBtn': 'Mois',
+                        'yearBtn': 'Année',
+                        'activityHeatmapText': 'Carte de chaleur d\'activité',
+                        'lastYearBtn': 'Dernière année',
+                        'last6MonthsBtn': '6 derniers mois',
+                        'last3MonthsBtn': '3 derniers mois',
+                        'noActivityText': 'Aucune activité',
+                        'lowActivityText': 'Faible',
+                        'mediumActivityText': 'Moyen',
+                        'highActivityText': 'Élevé',
+                        'weekFocusText': 'Concentration cette semaine',
+                        
+                        // Calendar
+                        'calendar': 'Calendrier',
+                        'calendarText': 'Calendrier',
+                        'addEventBtn': 'Ajouter un événement',
+                        
+                        // Settings
+                        'settings': 'Paramètres',
+                        'settingsText': 'Paramètres',
+                        'personalizationText': 'Personnalisation',
+                        'userNameLabel': 'Nom d\'utilisateur',
+                        'focusAreaLabel': 'Domaine de concentration',
+                        'workStyleLabel': 'Style de travail',
+                        'languageLabel': 'Langue',
+                        'editNameBtn': 'Modifier',
+                        'editFocusBtn': 'Changer',
+                        'editWorkStyleBtn': 'Changer',
+                        'timerSettingsText': 'Paramètres du minuteur',
+                        'focusDurationLabel': 'Durée de concentration par défaut',
+                        'breakDurationLabel': 'Durée de pause',
+                        'timerDisplayLabel': 'Affichage du minuteur',
+                        'editTimerBtn': 'Modifier',
+                        'editBreakBtn': 'Modifier',
+                        'changeDisplayBtn': 'Changer',
+                        'musicSettingsText': 'Paramètres de musique',
+                        'backgroundMusicLabel': 'Musique de fond',
+                        'backgroundMusicDesc': 'Musique lo-fi pour les sessions de concentration',
+                        'spotifyLabel': 'Intégration Spotify',
+                        'spotifyDesc': 'Connectez votre compte Spotify',
+                        'connectSpotifyBtn': 'Connecter',
+                        'preferencesText': 'Préférences',
+                        'darkModeLabel': 'Mode sombre',
+                        'darkModeDesc': 'Basculer entre les thèmes clair et sombre',
+                        'pomodoroLabel': 'Minuteur Pomodoro',
+                        'pomodoroDesc': 'Activer les cycles travail/pause de 25/5 minutes',
+                        'notificationsLabel': 'Notifications',
+                        'notificationsDesc': 'Recevoir des rappels et mises à jour',
+                        'dataManagementText': 'Gestion des données',
+                        'exportDataLabel': 'Exporter les données',
+                        'exportDataDesc': 'Télécharger vos objectifs et tâches en JSON',
+                        'importDataLabel': 'Importer des données',
+                        'importDataDesc': 'Importer des objectifs et tâches depuis un fichier JSON',
+                        'clearDataLabel': 'Effacer toutes les données',
+                        'clearDataDesc': 'Réinitialiser l\'application à l\'état initial',
+                        'exportBtn': 'Exporter',
+                        'importBtn': 'Importer',
+                        'clearBtn': 'Tout effacer',
+                        'aboutText': 'À propos',
+                        'versionLabel': 'Version',
+                        'creditLabel': 'Groupe BLG',
+                        
+                        // Grind Zone
+                        'startFocusText': 'Démarrer la concentration',
+                        'backToDashboardText': 'Retour au tableau de bord',
+                        'focusZoneText': 'Zone de concentration',
+                        'chooseBackgroundText': 'Choisir l\'arrière-plan',
+                        'forestText': 'Forêt',
+                        'oceanText': 'Océan',
+                        'skylineText': 'Skyline',
+                        'mountainText': 'Montagne',
+                        'coffeeText': 'Café',
+                        'spaceText': 'Espace',
+                        'backgroundBtnText': 'Arrière-plan',
+                        'spotifyBtnText': 'Spotify',
+                        'timerSettingsBtnText': 'Paramètres du minuteur',
+                        'musicBtnText': 'Musique',
+                        
+                        // Break Zone
+                        'breakTimeText': 'Pause',
+                        'finishBreakText': 'Terminer la pause',
+                        
+                        // Achievements
+                        'achievementsTitle': 'Vos réalisations',
+                        
+                        // Timer Settings Modal
+                        'timerSettingsTitle': 'Paramètres du minuteur',
+                        'focusDurationModalLabel': 'Durée de concentration (min)',
+                        'breakDurationModalLabel': 'Durée de pause (min)',
+                        'timeFormatText': 'Format 24 heures',
+                        'cancelTimerSettingsBtn': 'Annuler',
+                        'saveTimerSettingsBtn': 'Enregistrer',
+                        
+                        // Calendar Event Modal
+                        'eventTitleLabel': 'Titre de l\'événement',
+                        'eventDescLabel': 'Description',
+                        'eventTypeLabel': 'Type d\'événement',
+                        'linkedTaskLabel': 'Tâche liée',
+                        'linkedObjectiveLabel': 'Objectif lié',
+                        'eventDateLabel': 'Date',
+                        'eventTimeLabel': 'Heure (optionnel)',
+                        'eventColorLabel': 'Couleur',
+                        'eventPriorityLabel': 'Priorité',
+                        'cancelCalendarEventBtn': 'Annuler',
+                        'saveEventBtn': 'Enregistrer',
+                        
+                        // Objective Modal
+                        'objTitleLabel': 'Titre',
+                        'objDescLabel': 'Description',
+                        'objCategoryLabel': 'Catégorie',
+                        'objTimeLabel': 'Période',
+                        'objPriorityLabel': 'Priorité',
+                        'objStatusLabel': 'Statut',
+                        'objDeadlineLabel': 'Date cible (optionnel)',
+                        'cancelObjectiveBtn': 'Annuler',
+                        'saveObjectiveBtn': 'Enregistrer',
+                        
+                        // Task Modal
+                        'taskTitleLabel': 'Titre',
+                        'taskDescLabel': 'Description',
+                        'taskObjLabel': 'Objectif lié',
+                        'taskDeadlineLabel': 'Date limite',
+                        'taskDurationLabel': 'Durée estimée (heures)',
+                        'taskImportanceLabel': 'Importance',
+                        'taskStatusLabel': 'Statut',
+                        'cancelTaskBtn': 'Annuler',
+                        'saveTaskBtn': 'Enregistrer',
+                        
+                        // Context Menu
+                        'editText': 'Modifier',
+                        'deleteText': 'Supprimer',
+                        'duplicateText': 'Dupliquer',
+                        'markDoneText': 'Marquer comme terminé',
+                        
+                        // Tutorial
+                        'quickTipText': 'Astuce rapide'
                     },
-                    { 
-                        id: 'focus_master', 
-                        title: 'Focus Master', 
-                        description: 'Complete 10 focus sessions', 
-                        icon: 'fa-brain', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 10
+                    'es': {
+                        // Setup
+                        'setupTitle': 'Bienvenido a Flusso',
+                        'setupSubtitle': 'Personalicemos tu experiencia',
+                        'step1Label': 'Información personal',
+                        'step2Label': 'Primeros pasos',
+                        'step3Label': 'Preferencias',
+                        'nameLabel': '¿Cómo te llamas?',
+                        'focusLabel': '¿Cuál es tu área principal de enfoque?',
+                        'firstObjectiveLabel': 'Crea tu primer objetivo',
+                        'firstTaskLabel': 'Crea tu primera tarea',
+                        'workStyleLabel': '¿Cómo prefieres trabajar?',
+                        'motivationLabel': '¿Qué te motiva más?',
+                        
+                        // Dashboard
+                        'dashboard': 'Tablero',
+                        'overallProgressText': 'Progreso general',
+                        'activeObjectiveText': 'Objetivo activo',
+                        'activeTaskText': 'Tarea activa',
+                        'changeObjectiveBtn': 'Cambiar',
+                        'changeTaskBtn': 'Cambiar',
+                        'quickActionsText': 'Acciones rápidas',
+                        'startFocusAction': 'Iniciar sesión de enfoque',
+                        'takeBreakAction': 'Tomar un descanso',
+                        'generateReportAction': 'Generar informe',
+                        'addEventAction': 'Agregar evento',
+                        'thisWeekText': 'Esta semana',
+                        'viewAllCalendarBtn': 'Ver todo',
+                        'sunLabel': 'Dom',
+                        'monLabel': 'Lun',
+                        'tueLabel': 'Mar',
+                        'wedLabel': 'Mié',
+                        'thuLabel': 'Jue',
+                        'friLabel': 'Vie',
+                        'satLabel': 'Sáb',
+                        'dailyGoalLabel': 'Meta diaria',
+                        'streakLabel': 'Racha de días',
+                        'completedLabel': 'Completados hoy',
+                        'focusLabel': 'Enfoque hoy (min)',
+                        
+                        // Objectives
+                        'objectives': 'Objetivos',
+                        'yourObjectivesText': 'Tus objetivos',
+                        'createObjectiveBtn': 'Crear objetivo',
+                        
+                        // Tasks
+                        'tasks': 'Tareas',
+                        'taskManagementText': 'Gestión de tareas',
+                        'createTaskBtn': 'Crear tarea',
+                        
+                        // Progress
+                        'progress': 'Progreso',
+                        'totalHoursLabel': 'Horas totales de enfoque',
+                        'completedTasksLabel': 'Tareas completadas',
+                        'completionRateLabel': 'Tasa de finalización',
+                        'streakProgressLabel': 'Racha de días',
+                        'weeklyFocusText': 'Tiempo de enfoque semanal',
+                        'weekBtn': 'Semana',
+                        'monthBtn': 'Mes',
+                        'yearBtn': 'Año',
+                        'activityHeatmapText': 'Mapa de calor de actividad',
+                        'lastYearBtn': 'Último año',
+                        'last6MonthsBtn': 'Últimos 6 meses',
+                        'last3MonthsBtn': 'Últimos 3 meses',
+                        'noActivityText': 'Sin actividad',
+                        'lowActivityText': 'Baja',
+                        'mediumActivityText': 'Media',
+                        'highActivityText': 'Alta',
+                        'weekFocusText': 'Enfoque esta semana',
+                        
+                        // Calendar
+                        'calendar': 'Calendario',
+                        'calendarText': 'Calendario',
+                        'addEventBtn': 'Agregar evento',
+                        
+                        // Settings
+                        'settings': 'Configuración',
+                        'settingsText': 'Configuración',
+                        'personalizationText': 'Personalización',
+                        'userNameLabel': 'Nombre de usuario',
+                        'focusAreaLabel': 'Área de enfoque',
+                        'workStyleLabel': 'Estilo de trabajo',
+                        'languageLabel': 'Idioma',
+                        'editNameBtn': 'Editar',
+                        'editFocusBtn': 'Cambiar',
+                        'editWorkStyleBtn': 'Cambiar',
+                        'timerSettingsText': 'Configuración del temporizador',
+                        'focusDurationLabel': 'Duración de enfoque predeterminada',
+                        'breakDurationLabel': 'Duración del descanso',
+                        'timerDisplayLabel': 'Visualización del temporizador',
+                        'editTimerBtn': 'Editar',
+                        'editBreakBtn': 'Editar',
+                        'changeDisplayBtn': 'Cambiar',
+                        'musicSettingsText': 'Configuración de música',
+                        'backgroundMusicLabel': 'Música de fondo',
+                        'backgroundMusicDesc': 'Música lo-fi para sesiones de enfoque',
+                        'spotifyLabel': 'Integración Spotify',
+                        'spotifyDesc': 'Conecta tu cuenta de Spotify',
+                        'connectSpotifyBtn': 'Conectar',
+                        'preferencesText': 'Preferencias',
+                        'darkModeLabel': 'Modo oscuro',
+                        'darkModeDesc': 'Cambiar entre tema claro y oscuro',
+                        'pomodoroLabel': 'Temporizador Pomodoro',
+                        'pomodoroDesc': 'Habilitar ciclos trabajo/descanso de 25/5 minutos',
+                        'notificationsLabel': 'Notificaciones',
+                        'notificationsDesc': 'Recibir recordatorios y actualizaciones',
+                        'dataManagementText': 'Gestión de datos',
+                        'exportDataLabel': 'Exportar datos',
+                        'exportDataDesc': 'Descargar tus objetivos y tareas en JSON',
+                        'importDataLabel': 'Importar datos',
+                        'importDataDesc': 'Importar objetivos y tareas desde archivo JSON',
+                        'clearDataLabel': 'Borrar todos los datos',
+                        'clearDataDesc': 'Restablecer la aplicación al estado inicial',
+                        'exportBtn': 'Exportar',
+                        'importBtn': 'Importar',
+                        'clearBtn': 'Borrar todo',
+                        'aboutText': 'Acerca de',
+                        'versionLabel': 'Versión',
+                        'creditLabel': 'Grupo BLG',
+                        
+                        // Grind Zone
+                        'startFocusText': 'Iniciar enfoque',
+                        'backToDashboardText': 'Volver al tablero',
+                        'focusZoneText': 'Zona de enfoque',
+                        'chooseBackgroundText': 'Elegir fondo',
+                        'forestText': 'Bosque',
+                        'oceanText': 'Océano',
+                        'skylineText': 'Skyline',
+                        'mountainText': 'Montaña',
+                        'coffeeText': 'Cafetería',
+                        'spaceText': 'Espacio',
+                        'backgroundBtnText': 'Fondo',
+                        'spotifyBtnText': 'Spotify',
+                        'timerSettingsBtnText': 'Configuración',
+                        'musicBtnText': 'Música',
+                        
+                        // Break Zone
+                        'breakTimeText': 'Tiempo de descanso',
+                        'finishBreakText': 'Finalizar descanso',
+                        
+                        // Achievements
+                        'achievementsTitle': 'Tus logros',
+                        
+                        // Timer Settings Modal
+                        'timerSettingsTitle': 'Configuración del temporizador',
+                        'focusDurationModalLabel': 'Duración de enfoque (min)',
+                        'breakDurationModalLabel': 'Duración de descanso (min)',
+                        'timeFormatText': 'Formato 24 horas',
+                        'cancelTimerSettingsBtn': 'Cancelar',
+                        'saveTimerSettingsBtn': 'Guardar configuración',
+                        
+                        // Calendar Event Modal
+                        'eventTitleLabel': 'Título del evento',
+                        'eventDescLabel': 'Descripción',
+                        'eventTypeLabel': 'Tipo de evento',
+                        'linkedTaskLabel': 'Tarea vinculada',
+                        'linkedObjectiveLabel': 'Objetivo vinculado',
+                        'eventDateLabel': 'Fecha',
+                        'eventTimeLabel': 'Hora (opcional)',
+                        'eventColorLabel': 'Color',
+                        'eventPriorityLabel': 'Prioridad',
+                        'cancelCalendarEventBtn': 'Cancelar',
+                        'saveEventBtn': 'Guardar evento',
+                        
+                        // Objective Modal
+                        'objTitleLabel': 'Título',
+                        'objDescLabel': 'Descripción',
+                        'objCategoryLabel': 'Categoría',
+                        'objTimeLabel': 'Período de tiempo',
+                        'objPriorityLabel': 'Prioridad',
+                        'objStatusLabel': 'Estado',
+                        'objDeadlineLabel': 'Fecha objetivo (opcional)',
+                        'cancelObjectiveBtn': 'Cancelar',
+                        'saveObjectiveBtn': 'Guardar objetivo',
+                        
+                        // Task Modal
+                        'taskTitleLabel': 'Título',
+                        'taskDescLabel': 'Descripción',
+                        'taskObjLabel': 'Objetivo vinculado',
+                        'taskDeadlineLabel': 'Fecha límite',
+                        'taskDurationLabel': 'Duración estimada (horas)',
+                        'taskImportanceLabel': 'Importancia',
+                        'taskStatusLabel': 'Estado',
+                        'cancelTaskBtn': 'Cancelar',
+                        'saveTaskBtn': 'Guardar tarea',
+                        
+                        // Context Menu
+                        'editText': 'Editar',
+                        'deleteText': 'Eliminar',
+                        'duplicateText': 'Duplicar',
+                        'markDoneText': 'Marcar como hecho',
+                        
+                        // Tutorial
+                        'quickTipText': 'Consejo rápido'
                     },
-                    { 
-                        id: 'early_bird', 
-                        title: 'Early Bird', 
-                        description: 'Start a focus session before 8 AM', 
-                        icon: 'fa-sun', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 1
-                    },
-                    { 
-                        id: 'night_owl', 
-                        title: 'Night Owl', 
-                        description: 'Start a focus session after 8 PM', 
-                        icon: 'fa-moon', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 1
-                    },
-                    { 
-                        id: 'marathon', 
-                        title: 'Marathon', 
-                        description: 'Complete a 2-hour focus session', 
-                        icon: 'fa-running', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 120 // minutes
-                    },
-                    { 
-                        id: 'objective_complete', 
-                        title: 'Goal Getter', 
-                        description: 'Complete your first objective', 
-                        icon: 'fa-trophy', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 1
-                    },
-                    { 
-                        id: 'break_king', 
-                        title: 'Break King', 
-                        description: 'Take 10 breaks', 
-                        icon: 'fa-coffee', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 10
-                    },
-                    { 
-                        id: 'time_traveler', 
-                        title: 'Time Traveler', 
-                        description: 'Log 100 total focus hours', 
-                        icon: 'fa-hourglass', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 100
-                    },
-                    { 
-                        id: 'task_master', 
-                        title: 'Task Master', 
-                        description: 'Complete 50 tasks', 
-                        icon: 'fa-tasks', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 50
-                    },
-                    { 
-                        id: 'calendar_expert', 
-                        title: 'Calendar Expert', 
-                        description: 'Create 10 calendar events', 
-                        icon: 'fa-calendar', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 10
-                    },
-                    { 
-                        id: 'consistency_pro', 
-                        title: 'Consistency Pro', 
-                        description: '30-day activity streak', 
-                        icon: 'fa-calendar-check', 
-                        unlocked: false,
-                        progress: 0,
-                        maxProgress: 30
+                    'ko': {
+                        // Setup
+                        'setupTitle': 'Flusso에 오신 것을 환영합니다',
+                        'setupSubtitle': '경험을 맞춤 설정하세요',
+                        'step1Label': '개인 정보',
+                        'step2Label': '첫 단계',
+                        'step3Label': '환경 설정',
+                        'nameLabel': '이름이 무엇인가요?',
+                        'focusLabel': '주요 집중 분야는 무엇인가요?',
+                        'firstObjectiveLabel': '첫 번째 목표 만들기',
+                        'firstTaskLabel': '첫 번째 작업 만들기',
+                        'workStyleLabel': '어떻게 일하는 것을 선호하나요?',
+                        'motivationLabel': '무엇이 가장 동기부여가 되나요?',
+                        
+                        // Dashboard
+                        'dashboard': '대시보드',
+                        'overallProgressText': '전체 진행 상황',
+                        'activeObjectiveText': '활성 목표',
+                        'activeTaskText': '활성 작업',
+                        'changeObjectiveBtn': '변경',
+                        'changeTaskBtn': '변경',
+                        'quickActionsText': '빠른 작업',
+                        'startFocusAction': '집중 세션 시작',
+                        'takeBreakAction': '휴식하기',
+                        'generateReportAction': '보고서 생성',
+                        'addEventAction': '일정 추가',
+                        'thisWeekText': '이번 주',
+                        'viewAllCalendarBtn': '전체 보기',
+                        'sunLabel': '일',
+                        'monLabel': '월',
+                        'tueLabel': '화',
+                        'wedLabel': '수',
+                        'thuLabel': '목',
+                        'friLabel': '금',
+                        'satLabel': '토',
+                        'dailyGoalLabel': '일일 목표',
+                        'streakLabel': '연속 일수',
+                        'completedLabel': '오늘 완료',
+                        'focusLabel': '오늘 집중 시간(분)',
+                        
+                        // Objectives
+                        'objectives': '목표',
+                        'yourObjectivesText': '당신의 목표',
+                        'createObjectiveBtn': '목표 만들기',
+                        
+                        // Tasks
+                        'tasks': '작업',
+                        'taskManagementText': '작업 관리',
+                        'createTaskBtn': '작업 만들기',
+                        
+                        // Progress
+                        'progress': '진행 상황',
+                        'totalHoursLabel': '총 집중 시간',
+                        'completedTasksLabel': '완료된 작업',
+                        'completionRateLabel': '완료율',
+                        'streakProgressLabel': '연속 일수',
+                        'weeklyFocusText': '주간 집중 시간',
+                        'weekBtn': '주',
+                        'monthBtn': '월',
+                        'yearBtn': '년',
+                        'activityHeatmapText': '활동 히트맵',
+                        'lastYearBtn': '지난 해',
+                        'last6MonthsBtn': '지난 6개월',
+                        'last3MonthsBtn': '지난 3개월',
+                        'noActivityText': '활동 없음',
+                        'lowActivityText': '낮음',
+                        'mediumActivityText': '중간',
+                        'highActivityText': '높음',
+                        'weekFocusText': '이번 주 집중 시간',
+                        
+                        // Calendar
+                        'calendar': '달력',
+                        'calendarText': '달력',
+                        'addEventBtn': '일정 추가',
+                        
+                        // Settings
+                        'settings': '설정',
+                        'settingsText': '설정',
+                        'personalizationText': '개인 설정',
+                        'userNameLabel': '사용자 이름',
+                        'focusAreaLabel': '집중 분야',
+                        'workStyleLabel': '작업 스타일',
+                        'languageLabel': '언어',
+                        'editNameBtn': '편집',
+                        'editFocusBtn': '변경',
+                        'editWorkStyleBtn': '변경',
+                        'timerSettingsText': '타이머 설정',
+                        'focusDurationLabel': '기본 집중 시간',
+                        'breakDurationLabel': '휴식 시간',
+                        'timerDisplayLabel': '타이머 표시',
+                        'editTimerBtn': '편집',
+                        'editBreakBtn': '편집',
+                        'changeDisplayBtn': '변경',
+                        'musicSettingsText': '음악 설정',
+                        'backgroundMusicLabel': '배경 음악',
+                        'backgroundMusicDesc': '집중 세션을 위한 로파이 음악',
+                        'spotifyLabel': 'Spotify 연동',
+                        'spotifyDesc': 'Spotify 계정 연결',
+                        'connectSpotifyBtn': '연결',
+                        'preferencesText': '환경 설정',
+                        'darkModeLabel': '다크 모드',
+                        'darkModeDesc': '라이트/다크 테마 전환',
+                        'pomodoroLabel': '뽀모도로 타이머',
+                        'pomodoroDesc': '25/5분 작업/휴식 사이클 활성화',
+                        'notificationsLabel': '알림',
+                        'notificationsDesc': '세션 알림 및 업데이트 받기',
+                        'dataManagementText': '데이터 관리',
+                        'exportDataLabel': '데이터 내보내기',
+                        'exportDataDesc': '목표와 작업을 JSON으로 다운로드',
+                        'importDataLabel': '데이터 가져오기',
+                        'importDataDesc': 'JSON 파일에서 목표와 작업 가져오기',
+                        'clearDataLabel': '모든 데이터 지우기',
+                        'clearDataDesc': '애플리케이션을 초기 상태로 재설정',
+                        'exportBtn': '내보내기',
+                        'importBtn': '가져오기',
+                        'clearBtn': '모두 지우기',
+                        'aboutText': '정보',
+                        'versionLabel': '버전',
+                        'creditLabel': 'BLG 그룹',
+                        
+                        // Grind Zone
+                        'startFocusText': '집중 시작',
+                        'backToDashboardText': '대시보드로 돌아가기',
+                        'focusZoneText': '집중 존',
+                        'chooseBackgroundText': '배경 선택',
+                        'forestText': '숲',
+                        'oceanText': '바다',
+                        'skylineText': '스카이라인',
+                        'mountainText': '산',
+                        'coffeeText': '커피숍',
+                        'spaceText': '우주',
+                        'backgroundBtnText': '배경',
+                        'spotifyBtnText': 'Spotify',
+                        'timerSettingsBtnText': '타이머 설정',
+                        'musicBtnText': '음악',
+                        
+                        // Break Zone
+                        'breakTimeText': '휴식 시간',
+                        'finishBreakText': '휴식 종료',
+                        
+                        // Achievements
+                        'achievementsTitle': '당신의 업적',
+                        
+                        // Timer Settings Modal
+                        'timerSettingsTitle': '타이머 설정',
+                        'focusDurationModalLabel': '집중 시간(분)',
+                        'breakDurationModalLabel': '휴식 시간(분)',
+                        'timeFormatText': '24시간 형식',
+                        'cancelTimerSettingsBtn': '취소',
+                        'saveTimerSettingsBtn': '설정 저장',
+                        
+                        // Calendar Event Modal
+                        'eventTitleLabel': '일정 제목',
+                        'eventDescLabel': '설명',
+                        'eventTypeLabel': '일정 유형',
+                        'linkedTaskLabel': '연결된 작업',
+                        'linkedObjectiveLabel': '연결된 목표',
+                        'eventDateLabel': '날짜',
+                        'eventTimeLabel': '시간(선택사항)',
+                        'eventColorLabel': '색상',
+                        'eventPriorityLabel': '우선순위',
+                        'cancelCalendarEventBtn': '취소',
+                        'saveEventBtn': '일정 저장',
+                        
+                        // Objective Modal
+                        'objTitleLabel': '제목',
+                        'objDescLabel': '설명',
+                        'objCategoryLabel': '카테고리',
+                        'objTimeLabel': '시간 범위',
+                        'objPriorityLabel': '우선순위',
+                        'objStatusLabel': '상태',
+                        'objDeadlineLabel': '목표 날짜(선택사항)',
+                        'cancelObjectiveBtn': '취소',
+                        'saveObjectiveBtn': '목표 저장',
+                        
+                        // Task Modal
+                        'taskTitleLabel': '제목',
+                        'taskDescLabel': '설명',
+                        'taskObjLabel': '연결된 목표',
+                        'taskDeadlineLabel': '마감일',
+                        'taskDurationLabel': '예상 소요 시간(시간)',
+                        'taskImportanceLabel': '중요도',
+                        'taskStatusLabel': '상태',
+                        'cancelTaskBtn': '취소',
+                        'saveTaskBtn': '작업 저장',
+                        
+                        // Context Menu
+                        'editText': '편집',
+                        'deleteText': '삭제',
+                        'duplicateText': '복제',
+                        'markDoneText': '완료 표시',
+                        
+                        // Tutorial
+                        'quickTipText': '빠른 팁'
                     }
+                };
+                
+                // Achievements system - Enhanced with 12 achievements
+                this.achievements = [
+                    { id: 'first_task', title: 'First Task', description: 'Complete your first task', icon: 'fa-check', unlocked: false, type: 'task' },
+                    { id: 'streak_7', title: '7-Day Streak', description: 'Maintain a 7-day focus streak', icon: 'fa-fire', unlocked: false, type: 'streak' },
+                    { id: 'focus_master', title: 'Focus Master', description: 'Complete 10 focus sessions', icon: 'fa-brain', unlocked: false, type: 'focus' },
+                    { id: 'early_bird', title: 'Early Bird', description: 'Start a focus session before 8 AM', icon: 'fa-sun', unlocked: false, type: 'time' },
+                    { id: 'night_owl', title: 'Night Owl', description: 'Start a focus session after 8 PM', icon: 'fa-moon', unlocked: false, type: 'time' },
+                    { id: 'marathon', title: 'Marathon', description: 'Complete a 2-hour focus session', icon: 'fa-running', unlocked: false, type: 'focus' },
+                    { id: 'objective_complete', title: 'Goal Getter', description: 'Complete your first objective', icon: 'fa-trophy', unlocked: false, type: 'objective' },
+                    { id: 'break_king', title: 'Break King', description: 'Take 10 breaks', icon: 'fa-coffee', unlocked: false, type: 'break' },
+                    { id: 'productivity_pro', title: 'Productivity Pro', description: 'Complete 50 tasks', icon: 'fa-rocket', unlocked: false, type: 'task' },
+                    { id: 'time_manager', title: 'Time Manager', description: 'Log 100 total focus hours', icon: 'fa-clock', unlocked: false, type: 'focus' },
+                    { id: 'weekend_warrior', title: 'Weekend Warrior', description: 'Focus on both Saturday and Sunday', icon: 'fa-calendar-weekend', unlocked: false, type: 'time' },
+                    { id: 'quick_starter', title: 'Quick Starter', description: 'Complete a task within 1 hour of creating it', icon: 'fa-bolt', unlocked: false, type: 'task' }
                 ];
                 
                 // Context menu
@@ -3855,13 +4522,15 @@
                 
                 // Achievement tracking
                 this.achievementStats = {
-                    totalBreaksTaken: 0,
-                    totalFocusSessions: 0,
-                    focusSessionStartTimes: [],
-                    longestFocusSession: 0, // in minutes
-                    totalTasksCompleted: 0,
-                    totalObjectivesCompleted: 0,
-                    calendarEventsCreated: 0
+                    tasksCompleted: 0,
+                    breaksTaken: 0,
+                    focusSessionsCompleted: 0,
+                    totalFocusHours: 0,
+                    earlySessions: 0,
+                    lateSessions: 0,
+                    weekendSessions: 0,
+                    quickCompletions: 0,
+                    marathonSessions: 0
                 };
                 
                 this.init();
@@ -3876,21 +4545,21 @@
                 this.initSearch();
                 this.showTutorialTip();
                 
+                // Initialize audio
+                this.initializeAudio();
+                
                 // Start quote rotation
                 setInterval(() => this.nextQuote(), 30000);
                 
-                // Initialize audio
-                this.initAudioSystem();
+                // Update achievements periodically
+                setInterval(() => this.updateAchievements(), 5000);
             }
 
-            checkSetup() {
-                if (!this.settings || !this.settings.setupCompleted) {
-                    document.getElementById('setupModal').style.display = 'flex';
-                    document.getElementById('mainApp').style.display = 'none';
-                } else {
-                    document.getElementById('setupModal').style.display = 'none';
-                    document.getElementById('mainApp').style.display = 'block';
-                    this.updateUI();
+            initializeAudio() {
+                this.musicSettings.audioElement = document.getElementById('backgroundMusic');
+                if (this.musicSettings.audioElement) {
+                    this.musicSettings.audioElement.volume = 0.3; // Set volume to 30%
+                    this.musicSettings.audioElement.muted = false;
                 }
             }
 
@@ -3924,8 +4593,30 @@
                     todayFocusMinutes: 0,
                     focusSessions: [],
                     todayTasksCompleted: 0,
-                    achievementsUnlocked: []
+                    achievementsUnlocked: [],
+                    language: 'en',
+                    achievementStats: {
+                        tasksCompleted: 0,
+                        breaksTaken: 0,
+                        focusSessionsCompleted: 0,
+                        totalFocusHours: 0,
+                        earlySessions: 0,
+                        lateSessions: 0,
+                        weekendSessions: 0,
+                        quickCompletions: 0,
+                        marathonSessions: 0
+                    }
                 };
+
+                // Load language
+                if (this.settings.language) {
+                    this.currentLanguage = this.settings.language;
+                }
+
+                // Load achievement stats
+                if (this.settings.achievementStats) {
+                    this.achievementStats = this.settings.achievementStats;
+                }
 
                 // Load grind zone settings
                 const grindData = localStorage.getItem('flusso_grind');
@@ -3955,17 +4646,14 @@
                     this.achievements = JSON.parse(achievementsData);
                 }
 
-                // Load achievement stats
-                const achievementStatsData = localStorage.getItem('flusso_achievementStats');
-                if (achievementStatsData) {
-                    this.achievementStats = JSON.parse(achievementStatsData);
-                }
-
                 // Check streak
                 this.checkStreak();
                 
-                // Update achievements with current stats
+                // Update achievements
                 this.updateAchievements();
+                
+                // Apply current language
+                this.applyLanguage();
             }
 
             saveData() {
@@ -3977,7 +4665,6 @@
                 localStorage.setItem('flusso_timerSettings', JSON.stringify(this.timerSettings));
                 localStorage.setItem('flusso_musicSettings', JSON.stringify(this.musicSettings));
                 localStorage.setItem('flusso_achievements', JSON.stringify(this.achievements));
-                localStorage.setItem('flusso_achievementStats', JSON.stringify(this.achievementStats));
             }
 
             checkStreak() {
@@ -4011,194 +4698,154 @@
             }
 
             updateAchievements() {
-                // Calculate current stats
-                const completedTasks = this.tasks.filter(t => t.status === 'completed').length;
-                const completedObjectives = this.objectives.filter(o => o.status === 'completed').length;
-                const currentHour = new Date().getHours();
-                
                 // Update achievement stats
-                this.achievementStats.totalTasksCompleted = completedTasks;
-                this.achievementStats.totalObjectivesCompleted = completedObjectives;
-                this.achievementStats.totalFocusSessions = this.settings.focusSessions.length;
-                this.achievementStats.calendarEventsCreated = this.calendarEvents.length;
+                this.achievementStats.tasksCompleted = this.tasks.filter(t => t.status === 'completed').length;
+                this.achievementStats.focusSessionsCompleted = this.settings.focusSessions.length;
+                this.achievementStats.totalFocusHours = this.settings.totalFocusHours;
                 
-                // Check for achievement unlocks
+                // Check for new achievement unlocks
+                let newAchievements = false;
+                
                 this.achievements.forEach(achievement => {
                     if (!achievement.unlocked) {
+                        let shouldUnlock = false;
+                        
                         switch(achievement.id) {
                             case 'first_task':
-                                achievement.progress = completedTasks > 0 ? 1 : 0;
-                                if (completedTasks > 0) {
-                                    achievement.unlocked = true;
+                                if (this.achievementStats.tasksCompleted >= 1) {
+                                    shouldUnlock = true;
                                 }
                                 break;
                             case 'streak_7':
-                                achievement.progress = Math.min(this.settings.streak, 7);
                                 if (this.settings.streak >= 7) {
-                                    achievement.unlocked = true;
+                                    shouldUnlock = true;
                                 }
                                 break;
                             case 'focus_master':
-                                achievement.progress = Math.min(this.achievementStats.totalFocusSessions, 10);
-                                if (this.achievementStats.totalFocusSessions >= 10) {
-                                    achievement.unlocked = true;
+                                if (this.achievementStats.focusSessionsCompleted >= 10) {
+                                    shouldUnlock = true;
                                 }
                                 break;
                             case 'early_bird':
-                                if (this.achievementStats.focusSessionStartTimes.some(time => {
-                                    const hour = new Date(time).getHours();
-                                    return hour < 8;
-                                })) {
-                                    achievement.progress = 1;
-                                    achievement.unlocked = true;
+                                // Check for early sessions (before 8 AM)
+                                if (this.achievementStats.earlySessions >= 1) {
+                                    shouldUnlock = true;
                                 }
                                 break;
                             case 'night_owl':
-                                if (this.achievementStats.focusSessionStartTimes.some(time => {
-                                    const hour = new Date(time).getHours();
-                                    return hour >= 20;
-                                })) {
-                                    achievement.progress = 1;
-                                    achievement.unlocked = true;
+                                // Check for late sessions (after 8 PM)
+                                if (this.achievementStats.lateSessions >= 1) {
+                                    shouldUnlock = true;
                                 }
                                 break;
                             case 'marathon':
-                                if (this.achievementStats.longestFocusSession >= 120) {
-                                    achievement.progress = 120;
-                                    achievement.unlocked = true;
-                                } else {
-                                    achievement.progress = this.achievementStats.longestFocusSession;
+                                // Check for 2-hour focus sessions
+                                if (this.achievementStats.marathonSessions >= 1) {
+                                    shouldUnlock = true;
                                 }
                                 break;
                             case 'objective_complete':
-                                achievement.progress = completedObjectives > 0 ? 1 : 0;
-                                if (completedObjectives > 0) {
-                                    achievement.unlocked = true;
+                                if (this.objectives.some(obj => obj.status === 'completed')) {
+                                    shouldUnlock = true;
                                 }
                                 break;
                             case 'break_king':
-                                achievement.progress = Math.min(this.achievementStats.totalBreaksTaken, 10);
-                                if (this.achievementStats.totalBreaksTaken >= 10) {
-                                    achievement.unlocked = true;
+                                if (this.achievementStats.breaksTaken >= 10) {
+                                    shouldUnlock = true;
                                 }
                                 break;
-                            case 'time_traveler':
-                                achievement.progress = Math.min(this.settings.totalFocusHours, 100);
-                                if (this.settings.totalFocusHours >= 100) {
-                                    achievement.unlocked = true;
+                            case 'productivity_pro':
+                                if (this.achievementStats.tasksCompleted >= 50) {
+                                    shouldUnlock = true;
                                 }
                                 break;
-                            case 'task_master':
-                                achievement.progress = Math.min(completedTasks, 50);
-                                if (completedTasks >= 50) {
-                                    achievement.unlocked = true;
+                            case 'time_manager':
+                                if (this.achievementStats.totalFocusHours >= 100) {
+                                    shouldUnlock = true;
                                 }
                                 break;
-                            case 'calendar_expert':
-                                achievement.progress = Math.min(this.calendarEvents.length, 10);
-                                if (this.calendarEvents.length >= 10) {
-                                    achievement.unlocked = true;
+                            case 'weekend_warrior':
+                                if (this.achievementStats.weekendSessions >= 2) {
+                                    shouldUnlock = true;
                                 }
                                 break;
-                            case 'consistency_pro':
-                                achievement.progress = Math.min(this.settings.streak, 30);
-                                if (this.settings.streak >= 30) {
-                                    achievement.unlocked = true;
+                            case 'quick_starter':
+                                if (this.achievementStats.quickCompletions >= 1) {
+                                    shouldUnlock = true;
                                 }
                                 break;
+                        }
+                        
+                        if (shouldUnlock) {
+                            achievement.unlocked = true;
+                            newAchievements = true;
+                            this.showNotification(`Achievement unlocked: ${achievement.title}!`);
                         }
                     }
                 });
+                
+                if (newAchievements) {
+                    this.saveData();
+                }
+            }
+
+            recordBreakTaken() {
+                this.achievementStats.breaksTaken++;
+                this.settings.achievementStats = this.achievementStats;
                 this.saveData();
+                this.updateAchievements();
             }
 
-            initAudioSystem() {
-                // Create audio element for music (ad-free lo-fi)
-                this.musicSettings.audioElement = new Audio();
+            recordFocusSession(minutes, startTime) {
+                const today = new Date();
+                const hours = minutes / 60;
                 
-                // Use a direct MP3/audio file source that doesn't have ads
-                // Multiple fallback options for lo-fi music
-                const musicSources = [
-                    'https://cdn.pixabay.com/download/audio/2022/03/15/audio_12b8e1a2f9.mp3', // Lo-fi study music
-                    'https://assets.codepen.io/1468070/Lofi+Study+2.mp3', // Alternative lo-fi
-                    'https://assets.mixkit.co/music/preview/mixkit-chill-hop-164.mp3' // Chill hop
-                ];
+                this.settings.totalFocusHours += hours;
+                this.settings.todayFocusMinutes = (this.settings.todayFocusMinutes || 0) + minutes;
                 
-                this.musicSettings.audioElement.src = musicSources[0];
-                this.musicSettings.audioElement.loop = true;
-                this.musicSettings.audioElement.volume = this.musicSettings.volume;
-                this.musicSettings.audioElement.preload = 'auto';
+                this.settings.focusSessions.push({
+                    date: today.toISOString().split('T')[0],
+                    duration: hours,
+                    timestamp: new Date().toISOString(),
+                    startTime: startTime
+                });
                 
-                // Set up audio context for better control
-                try {
-                    this.musicSettings.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const source = this.musicSettings.audioContext.createMediaElementSource(this.musicSettings.audioElement);
-                    const gainNode = this.musicSettings.audioContext.createGain();
-                    source.connect(gainNode);
-                    gainNode.connect(this.musicSettings.audioContext.destination);
-                    
-                    // Store gain node for volume control
-                    this.musicSettings.gainNode = gainNode;
-                } catch (e) {
-                    console.log('Audio context not supported, using basic audio');
+                // Update achievement stats
+                this.achievementStats.focusSessionsCompleted++;
+                this.achievementStats.totalFocusHours = this.settings.totalFocusHours;
+                
+                // Check for early bird (before 8 AM)
+                const sessionHour = startTime.getHours();
+                if (sessionHour < 8) {
+                    this.achievementStats.earlySessions++;
                 }
-            }
-
-            updateMusic() {
-                if (!this.musicSettings.audioElement) return;
                 
-                if (this.musicSettings.enabled) {
-                    // Start muted to avoid ads
-                    this.musicSettings.audioElement.muted = true;
-                    this.musicSettings.isMuted = true;
-                    
-                    // Play the music
-                    this.musicSettings.audioElement.play().then(() => {
-                        // After 1 second, unmute (skip any potential ad)
-                        setTimeout(() => {
-                            this.musicSettings.audioElement.muted = false;
-                            this.musicSettings.isMuted = false;
-                            if (this.musicSettings.gainNode) {
-                                this.musicSettings.gainNode.gain.value = this.musicSettings.volume;
-                            }
-                        }, 1000);
-                    }).catch(error => {
-                        console.log('Error playing audio:', error);
-                        // Try alternative source if first fails
-                        if (this.musicSettings.audioElement.src.includes('pixabay')) {
-                            this.musicSettings.audioElement.src = 'https://assets.codepen.io/1468070/Lofi+Study+2.mp3';
-                            this.musicSettings.audioElement.play();
-                        }
-                    });
-                } else {
-                    this.musicSettings.audioElement.pause();
-                    this.musicSettings.audioElement.currentTime = 0;
+                // Check for night owl (after 8 PM)
+                if (sessionHour >= 20) {
+                    this.achievementStats.lateSessions++;
                 }
-            }
-
-            toggleMusic() {
-                this.musicSettings.enabled = !this.musicSettings.enabled;
+                
+                // Check for weekend warrior
+                const dayOfWeek = startTime.getDay();
+                if (dayOfWeek === 0 || dayOfWeek === 6) { // Sunday (0) or Saturday (6)
+                    this.achievementStats.weekendSessions++;
+                }
+                
+                // Check for marathon (2+ hour session)
+                if (hours >= 2) {
+                    this.achievementStats.marathonSessions++;
+                }
+                
                 this.saveData();
-                this.updateMusic();
-                this.updateMusicToggle();
-                this.showNotification(this.musicSettings.enabled ? 'Music enabled' : 'Music disabled');
+                this.updateAchievements();
+                this.updateDashboard();
             }
 
-            updateMusicToggle() {
-                const toggleBtn = document.getElementById('musicToggleBtn');
-                const settingsToggle = document.getElementById('musicToggle');
-                
-                if (toggleBtn) {
-                    toggleBtn.classList.toggle('active', this.musicSettings.enabled);
-                    toggleBtn.innerHTML = `
-                        <i class="fas fa-music"></i>
-                        <span>${this.musicSettings.enabled ? 'Music On' : 'Music Off'}</span>
-                    `;
-                }
-                
-                if (settingsToggle) {
-                    settingsToggle.checked = this.musicSettings.enabled;
-                }
+            recordQuickCompletion() {
+                this.achievementStats.quickCompletions++;
+                this.settings.achievementStats = this.achievementStats;
+                this.saveData();
+                this.updateAchievements();
             }
 
             initSearch() {
@@ -4442,6 +5089,11 @@
                     this.updateMusic();
                 });
 
+                // Language selector
+                document.getElementById('languageSelect')?.addEventListener('change', (e) => {
+                    this.changeLanguage(e.target.value);
+                });
+
                 // Grind Zone
                 document.getElementById('startGrindBtn').addEventListener('click', () => this.openGrindZone());
                 document.getElementById('backgroundToggleBtn').addEventListener('click', () => this.toggleBackgroundPanel());
@@ -4528,6 +5180,105 @@
 
                 // Apply theme on load
                 this.applyTheme();
+            }
+
+            updateMusic() {
+                const audio = this.musicSettings.audioElement;
+                if (!audio) return;
+                
+                if (this.musicSettings.enabled) {
+                    audio.play().catch(e => {
+                        console.log("Audio play failed:", e);
+                        // Auto-play might be blocked, we'll handle it when user interacts
+                    });
+                } else {
+                    audio.pause();
+                }
+                
+                this.updateMusicToggle();
+            }
+
+            toggleMusic() {
+                this.musicSettings.enabled = !this.musicSettings.enabled;
+                this.saveData();
+                this.updateMusic();
+                
+                const toggleBtn = document.getElementById('musicToggleBtn');
+                if (toggleBtn) {
+                    toggleBtn.classList.toggle('active', this.musicSettings.enabled);
+                    toggleBtn.innerHTML = `
+                        <i class="fas fa-music"></i>
+                        <span>${this.musicSettings.enabled ? 'Music On' : 'Music Off'}</span>
+                    `;
+                }
+                
+                this.showNotification(this.musicSettings.enabled ? 'Music enabled' : 'Music disabled');
+            }
+
+            updateMusicToggle() {
+                const toggleBtn = document.getElementById('musicToggleBtn');
+                const settingsToggle = document.getElementById('musicToggle');
+                
+                if (toggleBtn) {
+                    toggleBtn.classList.toggle('active', this.musicSettings.enabled);
+                    toggleBtn.innerHTML = `
+                        <i class="fas fa-music"></i>
+                        <span>${this.musicSettings.enabled ? 'Music On' : 'Music Off'}</span>
+                    `;
+                }
+                
+                if (settingsToggle) {
+                    settingsToggle.checked = this.musicSettings.enabled;
+                }
+            }
+
+            // Language System
+            changeLanguage(langCode) {
+                this.currentLanguage = langCode;
+                this.settings.language = langCode;
+                this.saveData();
+                this.applyLanguage();
+                this.showNotification(`Language changed to ${this.getLanguageName(langCode)}`);
+            }
+
+            applyLanguage() {
+                // Update all elements with data-key attributes
+                document.querySelectorAll('[data-key]').forEach(element => {
+                    const key = element.dataset.key;
+                    if (this.translations[this.currentLanguage] && this.translations[this.currentLanguage][key]) {
+                        element.textContent = this.translations[this.currentLanguage][key];
+                    }
+                });
+                
+                // Update elements with IDs
+                Object.keys(this.translations[this.currentLanguage] || {}).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element && !element.dataset.key) {
+                        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT') {
+                            element.placeholder = this.translations[this.currentLanguage][key];
+                        } else {
+                            element.textContent = this.translations[this.currentLanguage][key];
+                        }
+                    }
+                });
+                
+                // Update quotes based on language
+                this.updateQuotesForLanguage();
+            }
+
+            getLanguageName(code) {
+                const names = {
+                    'en': 'English',
+                    'fr': 'Français',
+                    'es': 'Español',
+                    'ko': '한국어'
+                };
+                return names[code] || code;
+            }
+
+            updateQuotesForLanguage() {
+                // You could add translated quotes here
+                // For now, we'll keep the English quotes
             }
 
             // Setup Steps
@@ -4684,6 +5435,9 @@
                 document.getElementById('mainApp').style.display = 'block';
                 this.updateUI();
                 this.showNotification(`Welcome to Flusso, ${this.settings.userName}! You've created your first objective and task.`);
+                
+                // Apply language after setup
+                this.applyLanguage();
             }
 
             // Quotes System
@@ -4805,25 +5559,6 @@
                     btn.classList.toggle('active', btn.dataset.section === sectionId);
                 });
 
-                // Update content bar title
-                const titleMap = {
-                    'dashboard': 'Dashboard',
-                    'objectives': 'Objectives',
-                    'tasks': 'Tasks',
-                    'progress': 'Progress Analytics',
-                    'calendar': 'Calendar',
-                    'settings': 'Settings'
-                };
-                
-                const iconMap = {
-                    'dashboard': 'home',
-                    'objectives': 'bullseye',
-                    'tasks': 'tasks',
-                    'progress': 'chart-line',
-                    'calendar': 'calendar-alt',
-                    'settings': 'cog'
-                };
-                
                 // Show section
                 document.querySelectorAll('.content-section').forEach(section => {
                     section.classList.toggle('active', section.id === sectionId);
@@ -5065,7 +5800,7 @@
                 if (!statsGrid) return;
 
                 // Calculate real statistics
-                const achievementScore = this.achievements.filter(a => a.unlocked).length;
+                const achievementScore = this.calculateAchievementScore();
                 const efficiencyScore = this.calculateEfficiencyScore();
                 const weeklyGrowth = this.calculateWeeklyGrowth();
                 const focusConsistency = this.calculateFocusConsistency();
@@ -5088,12 +5823,12 @@
                         <div class="stat-card-icon">
                             <i class="fas fa-trophy"></i>
                         </div>
-                        <div class="stat-card-value">${achievementScore}/12</div>
+                        <div class="stat-card-value">${achievementScore}</div>
                         <div class="stat-card-label">Achievements</div>
                         <div class="progress-indicator">
-                            <div class="text-sm">${achievementScore} unlocked</div>
+                            <div class="text-sm">${this.achievements.filter(a => a.unlocked).length}/12 unlocked</div>
                             <div class="progress-level">
-                                <div class="progress-level-fill" style="width: ${(achievementScore / 12) * 100}%"></div>
+                                <div class="progress-level-fill" style="width: ${(this.achievements.filter(a => a.unlocked).length / 12) * 100}%"></div>
                             </div>
                         </div>
                     </div>
@@ -5130,33 +5865,18 @@
                 const modal = document.getElementById('achievementsModal');
                 const grid = document.getElementById('achievementsGrid');
                 
-                grid.innerHTML = this.achievements.map((achievement, index) => {
-                    const progressPercent = achievement.maxProgress > 0 ? 
-                        Math.min((achievement.progress / achievement.maxProgress) * 100, 100) : 
-                        achievement.unlocked ? 100 : 0;
-                    
-                    return `
-                        <div class="achievement-item ${achievement.unlocked ? 'unlocked' : 'locked'}">
-                            <div class="achievement-badge">${index + 1}</div>
-                            <div class="achievement-icon">
-                                <i class="fas ${achievement.icon}"></i>
-                            </div>
-                            <div class="achievement-title">${achievement.title}</div>
-                            <div class="achievement-desc">${achievement.description}</div>
-                            ${!achievement.unlocked && achievement.maxProgress > 1 ? `
-                                <div class="achievement-progress">
-                                    ${achievement.progress}/${achievement.maxProgress}
-                                </div>
-                                <div class="achievement-progress-bar">
-                                    <div class="achievement-progress-fill" style="width: ${progressPercent}%"></div>
-                                </div>
-                            ` : ''}
-                            <div class="text-sm mt-2 ${achievement.unlocked ? 'text-success' : 'text-muted'}">
-                                ${achievement.unlocked ? '✓ Unlocked' : 'Locked'}
-                            </div>
+                grid.innerHTML = this.achievements.map(achievement => `
+                    <div class="achievement-item ${achievement.unlocked ? 'unlocked' : 'locked'}">
+                        <div class="achievement-icon">
+                            <i class="fas ${achievement.icon}"></i>
                         </div>
-                    `;
-                }).join('');
+                        <div class="achievement-title">${achievement.title}</div>
+                        <div class="achievement-desc">${achievement.description}</div>
+                        <div class="text-sm mt-2 ${achievement.unlocked ? 'text-success' : 'text-muted'}">
+                            ${achievement.unlocked ? '✓ Unlocked' : 'Locked'}
+                        </div>
+                    </div>
+                `).join('');
                 
                 modal.classList.add('active');
             }
@@ -5876,6 +6596,9 @@
                 
                 // Update music toggle
                 this.updateMusicToggle();
+                
+                // Apply language to grind zone
+                this.applyLanguage();
             }
 
             closeGrindZone() {
@@ -5916,6 +6639,9 @@
                 document.getElementById('breakDuration').value = this.timerSettings.breakDuration;
                 document.getElementById('timer24hToggle').checked = this.timerSettings.use24hFormat;
                 modal.classList.add('active');
+                
+                // Apply language
+                this.applyLanguage();
             }
 
             closeTimerSettings() {
@@ -5955,32 +6681,14 @@
             // Timer Methods with Animations
             startTimer() {
                 if (!this.timer.running) {
-                    // Track session start time for achievements
-                    this.achievementStats.focusSessionStartTimes.push(new Date().toISOString());
-                    const currentHour = new Date().getHours();
-                    
-                    // Check for early bird/night owl achievements
-                    if (currentHour < 8) {
-                        // Early bird
-                        const earlyBirdAchievement = this.achievements.find(a => a.id === 'early_bird');
-                        if (earlyBirdAchievement) {
-                            earlyBirdAchievement.progress = 1;
-                            this.updateAchievements();
-                        }
-                    } else if (currentHour >= 20) {
-                        // Night owl
-                        const nightOwlAchievement = this.achievements.find(a => a.id === 'night_owl');
-                        if (nightOwlAchievement) {
-                            nightOwlAchievement.progress = 1;
-                            this.updateAchievements();
-                        }
-                    }
-                    
                     this.timer.running = true;
                     this.timer.interval = setInterval(() => this.updateTimer(), 1000);
                     document.getElementById('startTimerBtn').disabled = true;
                     document.getElementById('pauseTimerBtn').disabled = false;
                     this.showNotification('Focus session started!');
+                    
+                    // Record start time for achievements
+                    this.currentSessionStartTime = new Date();
                 }
             }
 
@@ -6000,20 +6708,8 @@
                     // Record session
                     const minutesFocused = (this.timer.isFocus ? this.timerSettings.focusDuration : this.timerSettings.breakDuration) - 
                                         (this.timer.minutes + this.timer.seconds / 60);
-                    if (minutesFocused > 0) {
-                        if (this.timer.isFocus) {
-                            this.recordFocusSession(minutesFocused);
-                            
-                            // Update longest session for marathon achievement
-                            if (minutesFocused > this.achievementStats.longestFocusSession) {
-                                this.achievementStats.longestFocusSession = minutesFocused;
-                                this.updateAchievements();
-                            }
-                        } else {
-                            // Track break for break king achievement
-                            this.achievementStats.totalBreaksTaken++;
-                            this.updateAchievements();
-                        }
+                    if (minutesFocused > 0 && this.timer.isFocus) {
+                        this.recordFocusSession(minutesFocused, this.currentSessionStartTime);
                     }
                 }
                 this.timer.minutes = this.timer.isFocus ? this.timerSettings.focusDuration : this.timerSettings.breakDuration;
@@ -6037,18 +6733,13 @@
                     if (this.timer.isFocus) {
                         this.showNotification('Break finished! Time to focus.');
                         document.getElementById('grindSessionInfo').textContent = 'Focus Session';
-                        // Track break completion
-                        this.achievementStats.totalBreaksTaken++;
-                        this.updateAchievements();
+                        // Record break taken
+                        this.recordBreakTaken();
                     } else {
                         this.showNotification('Focus session finished! Time for a break.');
                         document.getElementById('grindSessionInfo').textContent = 'Break Session';
                         // Record focus session
-                        this.recordFocusSession(this.timerSettings.focusDuration);
-                        // Update longest session
-                        if (this.timerSettings.focusDuration > this.achievementStats.longestFocusSession) {
-                            this.achievementStats.longestFocusSession = this.timerSettings.focusDuration;
-                        }
+                        this.recordFocusSession(this.timerSettings.focusDuration, this.currentSessionStartTime);
                         // Start break automatically
                         this.startBreak();
                     }
@@ -6088,29 +6779,6 @@
                 }
             }
 
-            recordFocusSession(minutes) {
-                const today = new Date().toISOString().split('T')[0];
-                const hours = minutes / 60;
-                
-                this.settings.totalFocusHours += hours;
-                this.settings.todayFocusMinutes = (this.settings.todayFocusMinutes || 0) + minutes;
-                
-                this.settings.focusSessions.push({
-                    date: today,
-                    duration: hours,
-                    timestamp: new Date().toISOString()
-                });
-                
-                // Update achievement stats
-                this.achievementStats.totalFocusSessions++;
-                
-                // Update achievements
-                this.updateAchievements();
-                
-                this.saveData();
-                this.updateDashboard();
-            }
-
             animateButton(button) {
                 button.classList.add('bounce');
                 setTimeout(() => {
@@ -6133,6 +6801,9 @@
                 this.updateBreakTimerDisplay();
                 
                 this.showNotification("Break started! Relax and recharge.");
+                
+                // Apply language
+                this.applyLanguage();
             }
 
             updateBreakTimer() {
@@ -6158,10 +6829,6 @@
             finishBreakTimer() {
                 clearInterval(this.breakTimer.interval);
                 this.breakTimer.running = false;
-                
-                // Track break completion for achievements
-                this.achievementStats.totalBreaksTaken++;
-                this.updateAchievements();
                 
                 // Select random end message
                 const randomMessage = this.breakMessages[Math.floor(Math.random() * this.breakMessages.length)];
@@ -6391,6 +7058,9 @@
                 }
                 
                 modal.classList.add('active');
+                
+                // Apply language
+                this.applyLanguage();
             }
 
             closeCalendarEventModal() {
@@ -6438,10 +7108,6 @@
                 } else {
                     this.calendarEvents.push(event);
                     this.showNotification('Event created successfully');
-                    
-                    // Track for calendar expert achievement
-                    this.achievementStats.calendarEventsCreated++;
-                    this.updateAchievements();
                 }
                 
                 this.saveData();
@@ -6497,6 +7163,9 @@
                 }
                 
                 modal.classList.add('active');
+                
+                // Apply language
+                this.applyLanguage();
             }
 
             closeObjectiveModal() {
@@ -6598,6 +7267,9 @@
                 }
                 
                 modal.classList.add('active');
+                
+                // Apply language
+                this.applyLanguage();
             }
 
             closeTaskModal() {
@@ -6652,6 +7324,10 @@
             toggleTaskCompletion(id) {
                 const task = this.tasks.find(t => t.id === id);
                 if (task) {
+                    const now = new Date();
+                    const taskCreationTime = new Date(task.createdAt);
+                    const timeDifference = (now - taskCreationTime) / (1000 * 60 * 60); // hours
+                    
                     if (task.status === 'completed') {
                         task.status = 'not-started';
                         this.settings.todayTasksCompleted = Math.max(0, (this.settings.todayTasksCompleted || 0) - 1);
@@ -6659,23 +7335,13 @@
                         task.status = 'completed';
                         this.settings.todayTasksCompleted = (this.settings.todayTasksCompleted || 0) + 1;
                         
+                        // Check for quick completion (within 1 hour)
+                        if (timeDifference <= 1) {
+                            this.recordQuickCompletion();
+                        }
+                        
                         // Check for achievements
                         this.updateAchievements();
-                        
-                        // Check if objective is now complete
-                        if (task.objectiveId) {
-                            const objectiveTasks = this.tasks.filter(t => t.objectiveId === task.objectiveId);
-                            const completedObjectiveTasks = objectiveTasks.filter(t => t.status === 'completed');
-                            
-                            if (objectiveTasks.length > 0 && objectiveTasks.length === completedObjectiveTasks.length) {
-                                const objective = this.objectives.find(o => o.id === task.objectiveId);
-                                if (objective && objective.status !== 'completed') {
-                                    objective.status = 'completed';
-                                    this.showNotification(`Objective "${objective.title}" completed!`);
-                                    this.updateAchievements();
-                                }
-                            }
-                        }
                     }
                     this.saveData();
                     this.updateDashboard();
@@ -6716,8 +7382,7 @@
                     streak: this.settings.streak,
                     efficiency: this.calculateEfficiencyScore(),
                     achievements: this.achievements.filter(a => a.unlocked).length,
-                    weeklyGrowth: this.calculateWeeklyGrowth(),
-                    achievementStats: this.achievementStats
+                    weeklyGrowth: this.calculateWeeklyGrowth()
                 };
                 
                 const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
@@ -6790,7 +7455,6 @@
                     timerSettings: this.timerSettings,
                     musicSettings: this.musicSettings,
                     achievements: this.achievements,
-                    achievementStats: this.achievementStats,
                     exportDate: new Date().toISOString()
                 };
                 
@@ -6826,7 +7490,6 @@
                                 this.timerSettings = data.timerSettings || this.timerSettings;
                                 this.musicSettings = data.musicSettings || this.musicSettings;
                                 this.achievements = data.achievements || this.achievements;
-                                this.achievementStats = data.achievementStats || this.achievementStats;
                                 this.saveData();
                                 this.updateUI();
                                 this.showNotification('Data imported successfully');
@@ -6857,6 +7520,9 @@
                 document.getElementById('workStyleDisplay').textContent = this.settings.workStyle === 'pomodoro' ? 'Pomodoro' : 
                     this.settings.workStyle === 'deep' ? 'Deep Work' : 
                     this.settings.workStyle === 'timeblocking' ? 'Time Blocking' : 'Flexible';
+                
+                document.getElementById('languageDisplay').textContent = this.getLanguageName(this.currentLanguage);
+                document.getElementById('languageSelect').value = this.currentLanguage;
                 
                 document.getElementById('focusDurationDisplay').textContent = `${this.timerSettings.focusDuration} minutes`;
                 document.getElementById('breakDurationDisplay').textContent = `${this.timerSettings.breakDuration} minutes`;
