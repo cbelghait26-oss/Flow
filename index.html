@@ -1,12 +1,26 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flusso - Goal-Oriented Productivity System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script>
+        // Apply theme ASAP to prevent flash on refresh
+        (function () {
+            try {
+                const raw = localStorage.getItem('flusso_settings');
+                const settings = raw ? JSON.parse(raw) : null;
+                const hasSetting = settings && typeof settings.darkMode === 'boolean';
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const dark = hasSetting ? settings.darkMode : prefersDark;
+                document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+            } catch (e) {}
+        })();
+    </script>
+<title>Flusso - Goal-Oriented Productivity System</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
         :root {
             /* New Color System - Deep Water + Mist + Moonlight */
             --primary: #2C3E50; /* Deep Navy */
@@ -1078,6 +1092,7 @@
 
         .calendar-event-item {
             font-size: 11px;
+            border-left: 3px solid transparent;
             padding: 2px 4px;
             margin-bottom: 2px;
             border-radius: 3px;
@@ -2536,1081 +2551,1035 @@
     </style>
 </head>
 <body>
-    <!-- Setup Modal -->
-    <div class="setup-modal" id="setupModal">
-        <div class="setup-content">
-            <div class="setup-header">
-                <i class="fas fa-bullseye"></i>
-                <h2>Welcome to Flusso</h2>
-                <p>Let's personalize your experience</p>
-            </div>
-
-            <div class="setup-progress">
-                <div class="progress-step active" id="step1Indicator">
-                    <div class="step-circle">1</div>
-                    <div class="step-label">Personal Info</div>
-                </div>
-                <div class="progress-step" id="step2Indicator">
-                    <div class="step-circle">2</div>
-                    <div class="step-label">First Steps</div>
-                </div>
-                <div class="progress-step" id="step3Indicator">
-                    <div class="step-circle">3</div>
-                    <div class="step-label">Preferences</div>
-                </div>
-            </div>
-
-            <div class="setup-steps">
-                <div class="setup-step active" id="step1">
-                    <div class="form-group">
-                        <label class="form-label" for="userName">What's your name?</label>
-                        <input type="text" class="form-input" id="userName" placeholder="Enter your name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="userFocus">What's your primary focus area?</label>
-                        <select class="form-select" id="userFocus" required>
-                            <option value="">Select your focus</option>
-                            <option value="academic">Academic & Study</option>
-                            <option value="career">Career & Professional</option>
-                            <option value="creative">Creative Projects</option>
-                            <option value="entrepreneur">Entrepreneurship</option>
-                            <option value="personal">Personal Development</option>
-                            <option value="fitness">Health & Fitness</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="setup-step hidden" id="step2">
-                    <div class="form-group">
-                        <label class="form-label" for="setupObjective">Create your first objective</label>
-                        <input type="text" class="form-input" id="setupObjective" placeholder="e.g., Learn JavaScript basics" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="setupTask">Create your first task</label>
-                        <input type="text" class="form-input" id="setupTask" placeholder="e.g., Complete JavaScript tutorial" required>
-                    </div>
-                </div>
-                
-                <div class="setup-step hidden" id="step3">
-                    <div class="form-group">
-                        <label class="form-label" for="workStyle">How do you prefer to work?</label>
-                        <select class="form-select" id="workStyle" required>
-                            <option value="">Select work style</option>
-                            <option value="pomodoro">Pomodoro Technique (25/5)</option>
-                            <option value="deep">Deep Work (90 min blocks)</option>
-                            <option value="timeblocking">Time Blocking</option>
-                            <option value="flexible">Flexible Sessions</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="motivationType">What motivates you most?</label>
-                        <select class="form-select" id="motivationType" required>
-                            <option value="">Select motivation type</option>
-                            <option value="progress">Seeing Progress</option>
-                            <option value="deadlines">Deadlines & Accountability</option>
-                            <option value="rewards">Rewards & Recognition</option>
-                            <option value="intrinsic">Intrinsic Satisfaction</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="setup-buttons">
-                <button class="btn btn-secondary hidden" id="prevBtn">Previous</button>
-                <button class="btn btn-primary" id="nextBtn">Next Step</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main App -->
-    <div class="app-container" id="mainApp" style="display: none;">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <i class="fas fa-bullseye"></i>
-                <h1>Flusso</h1>
-            </div>
-            <div class="header-controls">
-                <button class="btn-icon" id="themeToggle" title="Toggle theme">
-                    <i class="fas fa-moon"></i>
+<!-- Setup Modal -->
+<div class="setup-modal" id="setupModal">
+<div class="setup-content">
+<div class="setup-header">
+<i class="fas fa-bullseye"></i>
+<h2>Welcome to Flusso</h2>
+<p>Let's personalize your experience</p>
+</div>
+<div class="setup-progress">
+<div class="progress-step active" id="step1Indicator">
+<div class="step-circle">1</div>
+<div class="step-label">Personal Info</div>
+</div>
+<div class="progress-step" id="step2Indicator">
+<div class="step-circle">2</div>
+<div class="step-label">First Steps</div>
+</div>
+<div class="progress-step" id="step3Indicator">
+<div class="step-circle">3</div>
+<div class="step-label">Preferences</div>
+</div>
+</div>
+<div class="setup-steps">
+<div class="setup-step active" id="step1">
+<div class="form-group">
+<label class="form-label" for="userName">What's your name?</label>
+<input class="form-input" id="userName" placeholder="Enter your name" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="userFocus">What's your primary focus area?</label>
+<select class="form-select" id="userFocus" required="">
+<option value="">Select your focus</option>
+<option value="academic">Academic &amp; Study</option>
+<option value="career">Career &amp; Professional</option>
+<option value="creative">Creative Projects</option>
+<option value="entrepreneur">Entrepreneurship</option>
+<option value="personal">Personal Development</option>
+<option value="fitness">Health &amp; Fitness</option>
+<option value="other">Other</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label" for="userDailyFocusHours">How many hours per day do you want to focus?</label>
+<input class="form-input" id="userDailyFocusHours" max="16" min="0.5" placeholder="e.g., 2" required="" step="0.5" type="number"/>
+<small style="color: var(--text-light); display:block; margin-top:6px;">This sets your Daily Focus Goal and personalizes the dashboard.</small>
+</div>
+</div>
+<div class="setup-step hidden" id="step2">
+<div class="form-group">
+<label class="form-label" for="setupObjective">Create your first objective</label>
+<input class="form-input" id="setupObjective" placeholder="e.g., Learn JavaScript basics" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="setupTask">Create your first task</label>
+<input class="form-input" id="setupTask" placeholder="e.g., Complete JavaScript tutorial" required="" type="text"/>
+</div>
+</div>
+<div class="setup-step hidden" id="step3">
+<div class="form-group">
+<label class="form-label" for="workStyle">How do you prefer to work?</label>
+<select class="form-select" id="workStyle" required="">
+<option value="">Select work style</option>
+<option value="pomodoro">Pomodoro Technique (25/5)</option>
+<option value="deep">Deep Work (90 min blocks)</option>
+<option value="timeblocking">Time Blocking</option>
+<option value="flexible">Flexible Sessions</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label" for="motivationType">What motivates you most?</label>
+<select class="form-select" id="motivationType" required="">
+<option value="">Select motivation type</option>
+<option value="progress">Seeing Progress</option>
+<option value="deadlines">Deadlines &amp; Accountability</option>
+<option value="rewards">Rewards &amp; Recognition</option>
+<option value="intrinsic">Intrinsic Satisfaction</option>
+</select>
+</div>
+</div>
+</div>
+<div class="setup-buttons">
+<button class="btn btn-secondary hidden" id="prevBtn">Previous</button>
+<button class="btn btn-primary" id="nextBtn">Next Step</button>
+</div>
+</div>
+</div>
+<!-- Main App -->
+<div class="app-container" id="mainApp" style="display: none;">
+<!-- Header -->
+<header class="header">
+<div class="logo">
+<i class="fas fa-bullseye"></i>
+<h1>Flusso</h1>
+</div>
+<div class="header-controls">
+<button class="btn-icon" id="themeToggle" title="Toggle theme">
+<i class="fas fa-moon"></i>
+</button>
+<button class="btn btn-primary" id="startGrindBtn">
+<i class="fas fa-play"></i> Start Focus
                 </button>
-                <button class="btn btn-primary" id="startGrindBtn">
-                    <i class="fas fa-play"></i> Start Focus
-                </button>
-            </div>
-        </header>
-
-        <!-- Enhanced Search Bar -->
-        <div class="search-container">
-            <div class="search-bar">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" id="globalSearch" placeholder="Search objectives, tasks, events...">
-                <div class="search-actions">
-                    <span class="search-shortcut">⌘K</span>
-                    <button class="btn-icon" id="clearSearchBtn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="search-results" id="searchResults">
-                <!-- Search results will be dynamically populated -->
-            </div>
-        </div>
-
-        <!-- Quotes Bar -->
-        <div class="quotes-bar" id="quotesBar">
-            <div class="quote-content">
-                <div class="quote-text" id="currentQuote">Loading quote...</div>
-                <div class="quote-author" id="quoteAuthor">— Loading author</div>
-            </div>
-            <div class="quote-controls">
-                <button class="btn-icon" id="prevQuoteBtn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="btn-icon" id="toggleQuotesBtn">
-                    <i class="fas fa-eye"></i>
-                </button>
-                <button class="btn-icon" id="nextQuoteBtn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Navigation -->
-        <nav class="nav">
-            <button class="nav-btn active" data-section="dashboard">
-                <i class="fas fa-home"></i> Dashboard
+</div>
+</header>
+<!-- Enhanced Search Bar -->
+<div class="search-container">
+<div class="search-bar">
+<i class="fas fa-search search-icon"></i>
+<input class="search-input" id="globalSearch" placeholder="Search objectives, tasks, events..." type="text"/>
+<div class="search-actions">
+<span class="search-shortcut">⌘K</span>
+<button class="btn-icon" id="clearSearchBtn">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+<div class="search-results" id="searchResults">
+<!-- Search results will be dynamically populated -->
+</div>
+</div>
+<!-- Quotes Bar -->
+<div class="quotes-bar" id="quotesBar">
+<div class="quote-content">
+<div class="quote-text" id="currentQuote">Loading quote...</div>
+<div class="quote-author" id="quoteAuthor">— Loading author</div>
+</div>
+<div class="quote-controls">
+<button class="btn-icon" id="prevQuoteBtn">
+<i class="fas fa-chevron-left"></i>
+</button>
+<button class="btn-icon" id="toggleQuotesBtn">
+<i class="fas fa-eye"></i>
+</button>
+<button class="btn-icon" id="nextQuoteBtn">
+<i class="fas fa-chevron-right"></i>
+</button>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="nav">
+<button class="nav-btn active" data-section="dashboard">
+<i class="fas fa-home"></i> Dashboard
             </button>
-            <button class="nav-btn" data-section="objectives">
-                <i class="fas fa-bullseye"></i> Objectives
+<button class="nav-btn" data-section="objectives">
+<i class="fas fa-bullseye"></i> Objectives
             </button>
-            <button class="nav-btn" data-section="tasks">
-                <i class="fas fa-tasks"></i> Tasks
+<button class="nav-btn" data-section="tasks">
+<i class="fas fa-tasks"></i> Tasks
             </button>
-            <button class="nav-btn" data-section="progress">
-                <i class="fas fa-chart-line"></i> Progress
+<button class="nav-btn" data-section="progress">
+<i class="fas fa-chart-line"></i> Progress
             </button>
-            <button class="nav-btn" data-section="calendar">
-                <i class="fas fa-calendar"></i> Calendar
+<button class="nav-btn" data-section="calendar">
+<i class="fas fa-calendar"></i> Calendar
             </button>
-            <button class="nav-btn" data-section="settings">
-                <i class="fas fa-cog"></i> Settings
+<button class="nav-btn" data-section="settings">
+<i class="fas fa-cog"></i> Settings
             </button>
-        </nav>
-
-        <!-- Dashboard Section -->
-        <section id="dashboard" class="content-section active">
-            <!-- Welcome Card -->
-            <div class="card welcome-card">
-                <div class="user-welcome">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <div class="user-info">
-                        <h3 id="welcomeMessage">Welcome back!</h3>
-                        <p id="userFocusDisplay">Focus Area: Not set</p>
-                    </div>
-                </div>
-                <div class="quick-stats">
-                    <div class="stat-item">
-                        <div class="stat-value" id="dailyGoalDisplay">0m</div>
-                        <div class="stat-label">Daily Goal</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="streakDisplay">0</div>
-                        <div class="stat-label">Day Streak</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="completedToday">0</div>
-                        <div class="stat-label">Completed Today</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="focusTimeToday">00</div>
-                        <div class="stat-label">Focus Today (min)</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Top Row: Progress, Active Objective, Active Task -->
-            <div class="dashboard-top-row">
-                <!-- Progress Box -->
-                <div class="progress-box">
-                    <h2 class="card-title">
-                        <i class="fas fa-chart-pie"></i> Overall Progress
+</nav>
+<!-- Dashboard Section -->
+<section class="content-section active" id="dashboard">
+<!-- Welcome Card -->
+<div class="card welcome-card">
+<div class="user-welcome">
+<div class="user-avatar" id="userAvatar">U</div>
+<div class="user-info">
+<h3 id="welcomeMessage">Welcome back!</h3>
+<p id="userFocusDisplay">Focus Area: Not set</p>
+</div>
+</div>
+<div class="quick-stats">
+<div class="stat-item">
+<div class="stat-value" id="dailyGoalDisplay">0m</div>
+<div class="stat-label">Daily Goal</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="streakDisplay">0</div>
+<div class="stat-label">Day Streak</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="completedToday">0</div>
+<div class="stat-label">Completed Today</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="focusTimeToday">00</div>
+<div class="stat-label">Focus Today (min)</div>
+</div>
+</div>
+</div>
+<!-- Top Row: Progress, Active Objective, Active Task -->
+<div class="dashboard-top-row">
+<!-- Progress Box -->
+<div class="progress-box">
+<h2 class="card-title">
+<i class="fas fa-chart-pie"></i> Overall Progress
                     </h2>
-                    <div class="progress-content">
-                        <div class="mini-progress-ring">
-                            <svg class="mini-progress-ring-circle" width="80" height="80">
-                                <circle class="mini-progress-ring-bg" cx="40" cy="40" r="36"></circle>
-                                <circle class="mini-progress-ring-fill" cx="40" cy="40" r="36"></circle>
-                            </svg>
-                            <div class="mini-progress-text" id="miniOverallProgress">0%</div>
-                        </div>
-                        <p class="text-muted" id="miniProgressMessage">Start your journey today!</p>
-                    </div>
-                </div>
-
-                <!-- Active Objective Box -->
-                <div class="objective-box">
-                    <div class="card-header" style="padding: 0; margin-bottom: 15px;">
-                        <h2 class="card-title">
-                            <i class="fas fa-star"></i> Active Objective
+<div class="progress-content">
+<div class="mini-progress-ring">
+<svg class="mini-progress-ring-circle" height="80" width="80">
+<circle class="mini-progress-ring-bg" cx="40" cy="40" r="36"></circle>
+<circle class="mini-progress-ring-fill" cx="40" cy="40" r="36"></circle>
+</svg>
+<div class="mini-progress-text" id="miniOverallProgress">0%</div>
+</div>
+<p class="text-muted" id="miniProgressMessage">Start your journey today!</p>
+</div>
+</div>
+<!-- Active Objective Box -->
+<div class="objective-box">
+<div class="card-header" style="padding: 0; margin-bottom: 15px;">
+<h2 class="card-title">
+<i class="fas fa-star"></i> Active Objective
                         </h2>
-                        <button class="btn btn-secondary btn-sm" onclick="app.changeActiveObjective()">
+<button class="btn btn-secondary btn-sm" onclick="app.changeActiveObjective()">
                             Change
                         </button>
-                    </div>
-                    <div class="objective-content" id="activeObjectiveContent">
-                        <!-- Content will be populated by JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Active Task Box -->
-                <div class="task-box">
-                    <div class="card-header" style="padding: 0; margin-bottom: 15px;">
-                        <h2 class="card-title">
-                            <i class="fas fa-tasks"></i> Active Task
+</div>
+<div class="objective-content" id="activeObjectiveContent">
+<!-- Content will be populated by JavaScript -->
+</div>
+</div>
+<!-- Active Task Box -->
+<div class="task-box">
+<div class="card-header" style="padding: 0; margin-bottom: 15px;">
+<h2 class="card-title">
+<i class="fas fa-tasks"></i> Active Task
                         </h2>
-                        <button class="btn btn-secondary btn-sm" onclick="app.changeActiveTask()">
+<button class="btn btn-secondary btn-sm" onclick="app.changeActiveTask()">
                             Change
                         </button>
-                    </div>
-                    <div class="task-content" id="activeTaskContent">
-                        <!-- Content will be populated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions Box -->
-            <div class="quick-actions-box">
-                <h2 class="card-title">
-                    <i class="fas fa-bolt"></i> Quick Actions
+</div>
+<div class="task-content" id="activeTaskContent">
+<!-- Content will be populated by JavaScript -->
+</div>
+</div>
+</div>
+<!-- Quick Actions Box -->
+<div class="quick-actions-box">
+<h2 class="card-title">
+<i class="fas fa-bolt"></i> Quick Actions
                 </h2>
-                <div class="quick-actions-grid">
-                    <div class="quick-action" onclick="app.openGrindZone()">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-play"></i>
-                        </div>
-                        <div>Start Focus Session</div>
-                    </div>
-                    <div class="quick-action" onclick="app.startBreak()">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-coffee"></i>
-                        </div>
-                        <div>Take a Break</div>
-                    </div>
-                    <div class="quick-action" onclick="app.generateReport()">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
-                        <div>Generate Report</div>
-                    </div>
-                    <div class="quick-action" onclick="app.openCalendarEventModal()">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-calendar-plus"></i>
-                        </div>
-                        <div>Add Calendar Event</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Calendar View -->
-            <div class="card calendar-container" id="calendarCard">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-calendar"></i> This Week
+<div class="quick-actions-grid">
+<div class="quick-action" onclick="app.openGrindZone()">
+<div class="quick-action-icon">
+<i class="fas fa-play"></i>
+</div>
+<div>Start Focus Session</div>
+</div>
+<div class="quick-action" onclick="app.startBreak()">
+<div class="quick-action-icon">
+<i class="fas fa-coffee"></i>
+</div>
+<div>Take a Break</div>
+</div>
+<div class="quick-action" onclick="app.generateReport()">
+<div class="quick-action-icon">
+<i class="fas fa-chart-bar"></i>
+</div>
+<div>Generate Report</div>
+</div>
+<div class="quick-action" onclick="app.openCalendarEventModal()">
+<div class="quick-action-icon">
+<i class="fas fa-calendar-plus"></i>
+</div>
+<div>Add Calendar Event</div>
+</div>
+</div>
+</div>
+<!-- Calendar View -->
+<div class="card calendar-container" id="calendarCard">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-calendar"></i> This Week
                     </h2>
-                    <button class="btn btn-secondary btn-sm" onclick="app.viewFullCalendar()">
+<button class="btn btn-secondary btn-sm" onclick="app.viewFullCalendar()">
                         View All
                     </button>
-                </div>
-                <div class="calendar-header">
-                    <div>Sun</div>
-                    <div>Mon</div>
-                    <div>Tue</div>
-                    <div>Wed</div>
-                    <div>Thu</div>
-                    <div>Fri</div>
-                    <div>Sat</div>
-                </div>
-                <div class="calendar-view" id="weekCalendar">
-                    <!-- Calendar days will be generated here -->
-                </div>
-            </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid" id="enhancedStats">
-                <!-- Stats will be dynamically added here -->
-            </div>
-        </section>
-
-        <!-- Objectives Section -->
-        <section id="objectives" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-bullseye"></i> Your Objectives
+</div>
+<div class="calendar-header">
+<div>Sun</div>
+<div>Mon</div>
+<div>Tue</div>
+<div>Wed</div>
+<div>Thu</div>
+<div>Fri</div>
+<div>Sat</div>
+</div>
+<div class="calendar-view" id="weekCalendar">
+<!-- Calendar days will be generated here -->
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="stats-grid" id="enhancedStats">
+<!-- Stats will be dynamically added here -->
+</div>
+</section>
+<!-- Objectives Section -->
+<section class="content-section" id="objectives">
+<div class="card">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-bullseye"></i> Your Objectives
                     </h2>
-                    <div>
-                        <button class="btn btn-primary" onclick="app.openObjectiveModal()">
-                            <i class="fas fa-plus"></i> Create Objective
+<div>
+<button class="btn btn-primary" onclick="app.openObjectiveModal()">
+<i class="fas fa-plus"></i> Create Objective
                         </button>
-                    </div>
-                </div>
-                <div id="objectivesList" class="objectives-grid">
-                    <!-- Objectives will be dynamically added here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Tasks Section -->
-        <section id="tasks" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-tasks"></i> Task Management
+</div>
+</div>
+<div class="objectives-grid" id="objectivesList">
+<!-- Objectives will be dynamically added here -->
+</div>
+</div>
+</section>
+<!-- Tasks Section -->
+<section class="content-section" id="tasks">
+<div class="card">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-tasks"></i> Task Management
                     </h2>
-                    <div>
-                        <button class="btn btn-primary" onclick="app.openTaskModal()">
-                            <i class="fas fa-plus"></i> Create Task
+<div>
+<button class="btn btn-primary" onclick="app.openTaskModal()">
+<i class="fas fa-plus"></i> Create Task
                         </button>
-                    </div>
-                </div>
-                <div id="tasksContainer">
-                    <div id="tasksList">
-                        <!-- Tasks will be dynamically added here -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Progress Section -->
-        <section id="progress" class="content-section">
-            <div class="progress-section">
-                <!-- Progress Stats -->
-                <div class="progress-stats-grid">
-                    <div class="progress-stat-card">
-                        <div class="progress-stat-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="progress-stat-value" id="totalHoursDisplay">0</div>
-                        <div class="progress-stat-label">Total Focus Hours</div>
-                    </div>
-                    <div class="progress-stat-card">
-                        <div class="progress-stat-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="progress-stat-value" id="completedTasksDisplay">0</div>
-                        <div class="progress-stat-label">Completed Tasks</div>
-                    </div>
-                    <div class="progress-stat-card">
-                        <div class="progress-stat-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="progress-stat-value" id="completionRateDisplay">0%</div>
-                        <div class="progress-stat-label">Completion Rate</div>
-                    </div>
-                    <div class="progress-stat-card">
-                        <div class="progress-stat-icon">
-                            <i class="fas fa-fire"></i>
-                        </div>
-                        <div class="progress-stat-value" id="streakDisplayProgress">0</div>
-                        <div class="progress-stat-label">Day Streak</div>
-                    </div>
-                </div>
-
-                <!-- Focus Time Graph -->
-                <div class="progress-graph-container">
-                    <div class="graph-header">
-                        <h3 class="graph-title">
-                            <i class="fas fa-chart-bar"></i> Weekly Focus Time
+</div>
+</div>
+<div id="tasksContainer">
+<div id="tasksList">
+<!-- Tasks will be dynamically added here -->
+</div>
+</div>
+</div>
+</section>
+<!-- Progress Section -->
+<section class="content-section" id="progress">
+<div class="progress-section">
+<!-- Progress Stats -->
+<div class="progress-stats-grid">
+<div class="progress-stat-card">
+<div class="progress-stat-icon">
+<i class="fas fa-clock"></i>
+</div>
+<div class="progress-stat-value" id="totalHoursDisplay">0</div>
+<div class="progress-stat-label">Total Focus Hours</div>
+</div>
+<div class="progress-stat-card">
+<div class="progress-stat-icon">
+<i class="fas fa-check-circle"></i>
+</div>
+<div class="progress-stat-value" id="completedTasksDisplay">0</div>
+<div class="progress-stat-label">Completed Tasks</div>
+</div>
+<div class="progress-stat-card">
+<div class="progress-stat-icon">
+<i class="fas fa-chart-line"></i>
+</div>
+<div class="progress-stat-value" id="completionRateDisplay">0%</div>
+<div class="progress-stat-label">Completion Rate</div>
+</div>
+<div class="progress-stat-card">
+<div class="progress-stat-icon">
+<i class="fas fa-fire"></i>
+</div>
+<div class="progress-stat-value" id="streakDisplayProgress">0</div>
+<div class="progress-stat-label">Day Streak</div>
+</div>
+</div>
+<!-- Focus Time Graph -->
+<div class="progress-graph-container">
+<div class="graph-header">
+<h3 class="graph-title">
+<i class="fas fa-chart-bar"></i> Weekly Focus Time
                         </h3>
-                        <div class="graph-controls">
-                            <button class="graph-period-btn active" data-period="week">Week</button>
-                            <button class="graph-period-btn" data-period="month">Month</button>
-                            <button class="graph-period-btn" data-period="year">Year</button>
-                        </div>
-                    </div>
-                    <div class="graph-container">
-                        <div class="graph-y-axis" id="graphYAxis">
-                            <div class="y-label">4h</div>
-                            <div class="y-label">3h</div>
-                            <div class="y-label">2h</div>
-                            <div class="y-label">1h</div>
-                            <div class="y-label">0h</div>
-                        </div>
-                        <div class="bar-graph" id="focusTimeGraph">
-                            <!-- Bar graph will be generated here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Heatmap -->
-                <div class="progress-graph-container heatmap-container">
-                    <div class="graph-header">
-                        <h3 class="graph-title">
-                            <i class="fas fa-calendar-alt"></i> Activity Heatmap
+<div class="graph-controls">
+<button class="graph-period-btn active" data-period="week">Week</button>
+<button class="graph-period-btn" data-period="month">Month</button>
+<button class="graph-period-btn" data-period="year">Year</button>
+</div>
+</div>
+<div class="graph-container">
+<div class="graph-y-axis" id="graphYAxis">
+<div class="y-label">4h</div>
+<div class="y-label">3h</div>
+<div class="y-label">2h</div>
+<div class="y-label">1h</div>
+<div class="y-label">0h</div>
+</div>
+<div class="bar-graph" id="focusTimeGraph">
+<!-- Bar graph will be generated here -->
+</div>
+</div>
+</div>
+<!-- Heatmap -->
+<div class="progress-graph-container heatmap-container">
+<div class="graph-header">
+<h3 class="graph-title">
+<i class="fas fa-calendar-alt"></i> Activity Heatmap
                         </h3>
-                        <div class="graph-controls">
-                            <button class="graph-period-btn active" data-heatmap="year">Last Year</button>
-                            <button class="graph-period-btn" data-heatmap="6months">Last 6 Months</button>
-                            <button class="graph-period-btn" data-heatmap="3months">Last 3 Months</button>
-                        </div>
-                    </div>
-                    <div class="heatmap-grid" id="heatmapGrid">
-                        <!-- Heatmap will be generated here -->
-                    </div>
-                    <div class="heatmap-legend">
-                        <div class="heatmap-legend-item">
-                            <div class="legend-color" style="background: var(--border);"></div>
-                            <span>No activity</span>
-                        </div>
-                        <div class="heatmap-legend-item">
-                            <div class="legend-color" style="background: rgba(26, 188, 156, 0.3);"></div>
-                            <span>Low</span>
-                        </div>
-                        <div class="heatmap-legend-item">
-                            <div class="legend-color" style="background: rgba(26, 188, 156, 0.6);"></div>
-                            <span>Medium</span>
-                        </div>
-                        <div class="heatmap-legend-item">
-                            <div class="legend-color" style="background: rgba(26, 188, 156, 1);"></div>
-                            <span>High</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Week Focus Breakdown -->
-                <div class="week-breakdown">
-                    <h3 class="graph-title">
-                        <i class="fas fa-calendar-week"></i> This Week's Focus
+<div class="graph-controls">
+<button class="graph-period-btn active" data-heatmap="year">Last Year</button>
+<button class="graph-period-btn" data-heatmap="6months">Last 6 Months</button>
+<button class="graph-period-btn" data-heatmap="3months">Last 3 Months</button>
+</div>
+</div>
+<div class="heatmap-grid" id="heatmapGrid">
+<!-- Heatmap will be generated here -->
+</div>
+<div class="heatmap-legend">
+<div class="heatmap-legend-item">
+<div class="legend-color" style="background: var(--border);"></div>
+<span>No activity</span>
+</div>
+<div class="heatmap-legend-item">
+<div class="legend-color" style="background: rgba(26, 188, 156, 0.3);"></div>
+<span>Low</span>
+</div>
+<div class="heatmap-legend-item">
+<div class="legend-color" style="background: rgba(26, 188, 156, 0.6);"></div>
+<span>Medium</span>
+</div>
+<div class="heatmap-legend-item">
+<div class="legend-color" style="background: rgba(26, 188, 156, 1);"></div>
+<span>High</span>
+</div>
+</div>
+</div>
+<!-- Week Focus Breakdown -->
+<div class="week-breakdown">
+<h3 class="graph-title">
+<i class="fas fa-calendar-week"></i> This Week's Focus
                     </h3>
-                    <div class="week-days" id="weekFocusBreakdown">
-                        <!-- Week days will be generated here -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Calendar Section -->
-        <section id="calendar" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-calendar-alt"></i> Calendar
+<div class="week-days" id="weekFocusBreakdown">
+<!-- Week days will be generated here -->
+</div>
+</div>
+</div>
+</section>
+<!-- Calendar Section -->
+<section class="content-section" id="calendar">
+<div class="card">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-calendar-alt"></i> Calendar
                     </h2>
-                    <div>
-                        <button class="btn btn-primary" onclick="app.openCalendarEventModal()">
-                            <i class="fas fa-plus"></i> Add Event
+<div>
+<button class="btn btn-primary" onclick="app.openCalendarEventModal()">
+<i class="fas fa-plus"></i> Add Event
                         </button>
-                    </div>
-                </div>
-                <div id="calendarMonthView">
-                    <!-- Monthly calendar will be generated here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Settings Section -->
-        <section id="settings" class="content-section">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-cog"></i> Settings
+</div>
+</div>
+<div id="calendarMonthView">
+<!-- Monthly calendar will be generated here -->
+</div>
+</div>
+</section>
+<!-- Settings Section -->
+<section class="content-section" id="settings">
+<div class="card">
+<div class="card-header">
+<h2 class="card-title">
+<i class="fas fa-cog"></i> Settings
                     </h2>
-                </div>
-
-                <div class="settings-section">
-                    <h3>Personalization</h3>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>User Name</h4>
-                            <p id="userNameDisplay">Not set</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="app.editUserName()">Edit</button>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Focus Area</h4>
-                            <p id="focusAreaDisplay">Not set</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="app.editFocusArea()">Change</button>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Work Style</h4>
-                            <p id="workStyleDisplay">Standard</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="app.editWorkStyle()">Change</button>
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <h3>Timer Settings</h3>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Default Focus Duration</h4>
-                            <p id="focusDurationDisplay">25 minutes</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="app.openTimerSettings()">Edit</button>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Break Duration</h4>
-                            <p id="breakDurationDisplay">5 minutes</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="app.openTimerSettings()">Edit</button>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Timer Display</h4>
-                            <p id="timerDisplayMode">24-hour format</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="app.openTimerSettings()">Change</button>
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <h3>Music Settings</h3>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Background Music</h4>
-                            <p>Lo-fi music for focus sessions</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="musicToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Spotify Integration</h4>
-                            <p>Connect your Spotify account</p>
-                        </div>
-                        <button class="btn btn-success" onclick="app.connectSpotify()">
-                            <i class="fab fa-spotify"></i> Connect
+</div>
+<div class="settings-section">
+<h3>Personalization</h3>
+<div class="setting-item">
+<div class="setting-info">
+<h4>User Name</h4>
+<p id="userNameDisplay">Not set</p>
+</div>
+<button class="btn btn-secondary" onclick="app.editUserName()">Edit</button>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Focus Area</h4>
+<p id="focusAreaDisplay">Not set</p>
+</div>
+<button class="btn btn-secondary" onclick="app.editFocusArea()">Change</button>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Work Style</h4>
+<p id="workStyleDisplay">Standard</p>
+</div>
+<button class="btn btn-secondary" onclick="app.editWorkStyle()">Change</button>
+</div>
+</div>
+<div class="settings-section">
+<h3>Timer Settings</h3>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Default Focus Duration</h4>
+<p id="focusDurationDisplay">25 minutes</p>
+</div>
+<button class="btn btn-secondary" onclick="app.openTimerSettings()">Edit</button>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Break Duration</h4>
+<p id="breakDurationDisplay">5 minutes</p>
+</div>
+<button class="btn btn-secondary" onclick="app.openTimerSettings()">Edit</button>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Timer Display</h4>
+<p id="timerDisplayMode">24-hour format</p>
+</div>
+<button class="btn btn-secondary" onclick="app.openTimerSettings()">Change</button>
+</div>
+</div>
+<div class="settings-section">
+<h3>Music Settings</h3>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Background Music</h4>
+<p>Lo-fi music for focus sessions</p>
+</div>
+<label class="toggle-switch">
+<input id="musicToggle" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Spotify Integration</h4>
+<p>Connect your Spotify account</p>
+</div>
+<button class="btn btn-success" onclick="app.connectSpotify()">
+<i class="fab fa-spotify"></i> Connect
                         </button>
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <h3>Preferences</h3>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Dark Mode</h4>
-                            <p>Switch between light and dark theme</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="darkModeToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Pomodoro Timer</h4>
-                            <p>Enable 25/5 minute work/break cycles</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="pomodoroToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Notifications</h4>
-                            <p>Get session reminders and updates</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="notificationsToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <h3>Data Management</h3>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Export Data</h4>
-                            <p>Download your objectives and tasks as JSON</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="app.exportData()">Export</button>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Import Data</h4>
-                            <p>Import objectives and tasks from JSON file</p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="app.importData()">Import</button>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Clear All Data</h4>
-                            <p>Reset the application to initial state</p>
-                        </div>
-                        <button class="btn btn-danger" onclick="app.clearData()">Clear All</button>
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <h3>About</h3>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Version</h4>
-                            <p>Flusso 2.3.0</p>
-                        </div>
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>BLG group</h4>
-                            <p>Built with ❤️ for productive minds</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Grind Zone -->
-    <div class="grind-zone" id="grindZone">
-        <div class="background-panel" id="backgroundPanel">
-            <div class="background-panel-header">
-                <h3>Choose Background</h3>
-                <button class="close-panel-btn" id="closePanelBtn">
-                    <i class="fas fa-times"></i>
+</div>
+</div>
+<div class="settings-section">
+<h3>Preferences</h3>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Dark Mode</h4>
+<p>Switch between light and dark theme</p>
+</div>
+<label class="toggle-switch">
+<input id="darkModeToggle" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Pomodoro Timer</h4>
+<p>Enable 25/5 minute work/break cycles</p>
+</div>
+<label class="toggle-switch">
+<input id="pomodoroToggle" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Notifications</h4>
+<p>Get session reminders and updates</p>
+</div>
+<label class="toggle-switch">
+<input id="notificationsToggle" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+</div>
+</div>
+<div class="settings-section">
+<h3>Data Management</h3>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Export Data</h4>
+<p>Download your objectives and tasks as JSON</p>
+</div>
+<button class="btn btn-secondary" onclick="app.exportData()">Export</button>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Import Data</h4>
+<p>Import objectives and tasks from JSON file</p>
+</div>
+<button class="btn btn-secondary" onclick="app.importData()">Import</button>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Clear All Data</h4>
+<p>Reset the application to initial state</p>
+</div>
+<button class="btn btn-danger" onclick="app.clearData()">Clear All</button>
+</div>
+</div>
+<div class="settings-section">
+<h3>About</h3>
+<div class="setting-item">
+<div class="setting-info">
+<h4>Version</h4>
+<p>Flusso 2.3.0</p>
+</div>
+</div>
+<div class="setting-item">
+<div class="setting-info">
+<h4>BLG group</h4>
+<p>Built with ❤️ for productive minds</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Grind Zone -->
+<div class="grind-zone" id="grindZone">
+<div class="background-panel" id="backgroundPanel">
+<div class="background-panel-header">
+<h3>Choose Background</h3>
+<button class="close-panel-btn" id="closePanelBtn">
+<i class="fas fa-times"></i>
+</button>
+</div>
+<div class="background-grid">
+<div class="background-option forest active" data-bg="forest">
+<span>Forest</span>
+</div>
+<div class="background-option ocean" data-bg="ocean">
+<span>Ocean</span>
+</div>
+<div class="background-option skyline" data-bg="skyline">
+<span>Skyline</span>
+</div>
+<div class="background-option mountain" data-bg="mountain">
+<span>Mountain</span>
+</div>
+<div class="background-option coffee" data-bg="coffee">
+<span>Coffee Shop</span>
+</div>
+<div class="background-option space" data-bg="space">
+<span>Space</span>
+</div>
+</div>
+</div>
+<div class="grind-header">
+<div>
+<button class="back-button" onclick="app.closeGrindZone()">
+<i class="fas fa-arrow-left"></i> Back to Dashboard
                 </button>
-            </div>
-            <div class="background-grid">
-                <div class="background-option forest active" data-bg="forest">
-                    <span>Forest</span>
-                </div>
-                <div class="background-option ocean" data-bg="ocean">
-                    <span>Ocean</span>
-                </div>
-                <div class="background-option skyline" data-bg="skyline">
-                    <span>Skyline</span>
-                </div>
-                <div class="background-option mountain" data-bg="mountain">
-                    <span>Mountain</span>
-                </div>
-                <div class="background-option coffee" data-bg="coffee">
-                    <span>Coffee Shop</span>
-                </div>
-                <div class="background-option space" data-bg="space">
-                    <span>Space</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="grind-header">
-            <div>
-                <button class="back-button" onclick="app.closeGrindZone()">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
-                </button>
-                <h2 style="margin-top: 10px;">Focus Zone</h2>
-                <p id="grindSessionInfo">Focus Session</p>
-            </div>
-        </div>
-
-        <!-- Action buttons -->
-        <div class="grind-action-buttons">
-            <button class="grind-action-btn" id="backgroundToggleBtn">
-                <i class="fas fa-palette"></i> Background
+<h2 style="margin-top: 10px;">Focus Zone</h2>
+<p id="grindSessionInfo">Focus Session</p>
+</div>
+</div>
+<!-- Action buttons -->
+<div class="grind-action-buttons">
+<button class="grind-action-btn" id="backgroundToggleBtn">
+<i class="fas fa-palette"></i> Background
             </button>
-            <button class="grind-action-btn spotify" id="spotifyConnectBtn">
-                <div class="spotify-logo">♪</div>
-                <span>Spotify</span>
+<button class="grind-action-btn spotify" id="spotifyConnectBtn">
+<div class="spotify-logo">♪</div>
+<span>Spotify</span>
+</button>
+<button class="grind-action-btn" id="timerSettingsBtn">
+<i class="fas fa-clock"></i> Timer Settings
             </button>
-            <button class="grind-action-btn" id="timerSettingsBtn">
-                <i class="fas fa-clock"></i> Timer Settings
+</div>
+<div class="grind-content">
+<div class="current-task" id="grindTask">No task selected</div>
+<div class="timer" id="grindTimer">25:00</div>
+<!-- Music toggle -->
+<div class="music-controls">
+<div class="music-toggle" id="musicToggleBtn">
+<i class="fas fa-music"></i>
+<span>Music</span>
+</div>
+</div>
+<div class="timer-controls">
+<button class="timer-btn start" id="startTimerBtn">
+<i class="fas fa-play"></i>
+</button>
+<button class="timer-btn pause" id="pauseTimerBtn">
+<i class="fas fa-pause"></i>
+</button>
+<button class="timer-btn stop" id="stopTimerBtn">
+<i class="fas fa-stop"></i>
+</button>
+</div>
+</div>
+</div>
+<!-- Break Zone -->
+<div class="break-zone" id="breakZone">
+<div class="break-content">
+<h1 style="font-size: 48px; margin-bottom: 20px;">Break Time</h1>
+<div class="break-message" id="breakMessage">Take a deep breath and relax...</div>
+<div class="break-timer" id="breakTimer">05:00</div>
+<div class="break-message" id="breakEndMessage"></div>
+<button class="finish-break-btn" id="finishBreakBtn">
+<i class="fas fa-check"></i> Finish Break
             </button>
-        </div>
-
-        <div class="grind-content">
-            <div class="current-task" id="grindTask">No task selected</div>
-            <div class="timer" id="grindTimer">25:00</div>
-            
-            <!-- Music toggle -->
-            <div class="music-controls">
-                <div class="music-toggle" id="musicToggleBtn">
-                    <i class="fas fa-music"></i>
-                    <span>Music</span>
-                </div>
-            </div>
-            
-            <div class="timer-controls">
-                <button class="timer-btn start" id="startTimerBtn">
-                    <i class="fas fa-play"></i>
-                </button>
-                <button class="timer-btn pause" id="pauseTimerBtn">
-                    <i class="fas fa-pause"></i>
-                </button>
-                <button class="timer-btn stop" id="stopTimerBtn">
-                    <i class="fas fa-stop"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Break Zone -->
-    <div class="break-zone" id="breakZone">
-        <div class="break-content">
-            <h1 style="font-size: 48px; margin-bottom: 20px;">Break Time</h1>
-            <div class="break-message" id="breakMessage">Take a deep breath and relax...</div>
-            <div class="break-timer" id="breakTimer">05:00</div>
-            <div class="break-message" id="breakEndMessage"></div>
-            <button class="finish-break-btn" id="finishBreakBtn">
-                <i class="fas fa-check"></i> Finish Break
-            </button>
-        </div>
-    </div>
-
-    <!-- Achievements Modal -->
-    <div class="modal" id="achievementsModal">
-        <div class="modal-content achievements-modal">
-            <div class="modal-header">
-                <h3 class="modal-title">Your Achievements</h3>
-                <button class="btn-icon" id="closeAchievementsModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="achievementsGrid" class="achievements-grid">
-                <!-- Achievements will be dynamically added here -->
-            </div>
-            <div class="text-right mt-6">
-                <button class="btn btn-primary" id="closeAchievementsBtn">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Timer Settings Modal -->
-    <div class="modal" id="timerSettingsModal">
-        <div class="modal-content timer-settings-modal">
-            <div class="modal-header">
-                <h3 class="modal-title">Timer Settings</h3>
-                <button class="btn-icon" id="closeTimerSettingsModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="timerSettingsForm">
-                <div class="timer-settings-group">
-                    <div class="form-group">
-                        <label class="form-label" for="focusDuration">Focus Duration (min)</label>
-                        <input type="number" class="form-input" id="focusDuration" min="1" max="120" value="25">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="breakDuration">Break Duration (min)</label>
-                        <input type="number" class="form-input" id="breakDuration" min="1" max="60" value="5">
-                    </div>
-                </div>
-                <div class="time-display-toggle">
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="timer24hToggle">
-                        <span class="toggle-slider"></span>
-                    </label>
-                    <span>24-hour format</span>
-                </div>
-                <div class="text-right mt-6">
-                    <button type="button" class="btn btn-secondary" id="cancelTimerSettingsBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ml-2">Save Settings</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Calendar Event Modal -->
-    <div class="modal" id="calendarEventModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="calendarEventModalTitle">Add Calendar Event</h3>
-                <button class="btn-icon" id="closeCalendarEventModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="calendarEventForm">
-                <input type="hidden" id="calendarEventId">
-                <div class="form-group">
-                    <label class="form-label" for="eventTitle">Event Title</label>
-                    <input type="text" class="form-input" id="eventTitle" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="eventDescription">Description</label>
-                    <textarea class="form-textarea" id="eventDescription"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="eventType">Event Type</label>
-                    <select class="form-select" id="eventType" required>
-                        <option value="">Select event type</option>
-                        <option value="custom">Custom Event</option>
-                        <option value="task">Task Deadline</option>
-                        <option value="objective">Objective Deadline</option>
-                    </select>
-                </div>
-                <div class="form-group" id="linkedTaskGroup" style="display: none;">
-                    <label class="form-label" for="linkedTask">Linked Task</label>
-                    <select class="form-select" id="linkedTask">
-                        <option value="">Select task</option>
-                    </select>
-                </div>
-                <div class="form-group" id="linkedObjectiveGroup" style="display: none;">
-                    <label class="form-label" for="linkedObjective">Linked Objective</label>
-                    <select class="form-select" id="linkedObjective">
-                        <option value="">Select objective</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="eventDate">Date</label>
-                        <input type="date" class="form-input" id="eventDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="eventTime">Time (Optional)</label>
-                        <input type="time" class="form-input" id="eventTime">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="eventColor">Color</label>
-                        <select class="form-select" id="eventColor">
-                            <option value="">Select color</option>
-                            <option value="#2C3E50">Navy</option>
-                            <option value="#1ABC9C">Teal</option>
-                            <option value="#F39C12">Gold</option>
-                            <option value="#9B59B6">Lavender</option>
-                            <option value="#E74C3C">Red</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="eventPriority">Priority</label>
-                        <select class="form-select" id="eventPriority">
-                            <option value="">Select priority</option>
-                            <option value="1">Low</option>
-                            <option value="2">Medium</option>
-                            <option value="3">High</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="text-right mt-6">
-                    <button type="button" class="btn btn-secondary" id="cancelCalendarEventBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ml-2">Save Event</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Full Calendar Modal -->
-    <div class="full-calendar-modal" id="fullCalendarModal">
-        <div class="full-calendar-content">
-            <button class="full-calendar-close" onclick="app.closeFullCalendar()">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="full-calendar-header">
-                <h2 id="fullCalendarMonth">Calendar</h2>
-                <div class="month-navigation">
-                    <button class="btn btn-secondary btn-sm" onclick="app.prevMonth()">
-                        <i class="fas fa-chevron-left"></i>
+</div>
+</div>
+<!-- Achievements Modal -->
+<div class="modal" id="achievementsModal">
+<div class="modal-content achievements-modal">
+<div class="modal-header">
+<h3 class="modal-title">Your Achievements</h3>
+<button class="btn-icon" id="closeAchievementsModal">
+<i class="fas fa-times"></i>
+</button>
+</div>
+<div class="achievements-grid" id="achievementsGrid">
+<!-- Achievements will be dynamically added here -->
+</div>
+<div class="text-right mt-6">
+<button class="btn btn-primary" id="closeAchievementsBtn">Close</button>
+</div>
+</div>
+</div>
+<!-- Timer Settings Modal -->
+<div class="modal" id="timerSettingsModal">
+<div class="modal-content timer-settings-modal">
+<div class="modal-header">
+<h3 class="modal-title">Timer Settings</h3>
+<button class="btn-icon" id="closeTimerSettingsModal">
+<i class="fas fa-times"></i>
+</button>
+</div>
+<form id="timerSettingsForm">
+<div class="timer-settings-group">
+<div class="form-group">
+<label class="form-label" for="focusDuration">Focus Duration (min)</label>
+<input class="form-input" id="focusDuration" max="120" min="1" type="number" value="25"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="breakDuration">Break Duration (min)</label>
+<input class="form-input" id="breakDuration" max="60" min="1" type="number" value="5"/>
+</div>
+</div>
+<div class="time-display-toggle">
+<label class="toggle-switch">
+<input id="timer24hToggle" type="checkbox"/>
+<span class="toggle-slider"></span>
+</label>
+<span>24-hour format</span>
+</div>
+<div class="text-right mt-6">
+<button class="btn btn-secondary" id="cancelTimerSettingsBtn" type="button">Cancel</button>
+<button class="btn btn-primary ml-2" type="submit">Save Settings</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Calendar Event Modal -->
+<div class="modal" id="calendarEventModal">
+<div class="modal-content">
+<div class="modal-header">
+<h3 class="modal-title" id="calendarEventModalTitle">Add Calendar Event</h3>
+<button class="btn-icon" id="closeCalendarEventModal">
+<i class="fas fa-times"></i>
+</button>
+</div>
+<form id="calendarEventForm">
+<input id="calendarEventId" type="hidden"/>
+<div class="form-group">
+<label class="form-label" for="eventTitle">Event Title</label>
+<input class="form-input" id="eventTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="eventDescription">Description</label>
+<textarea class="form-textarea" id="eventDescription"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label" for="eventType">Event Type</label>
+<select class="form-select" id="eventType" required="">
+<option value="">Select event type</option>
+<option value="custom">Custom Event</option>
+<option value="task">Task Deadline</option>
+<option value="objective">Objective Deadline</option>
+</select>
+</div>
+<div class="form-group" id="linkedTaskGroup" style="display: none;">
+<label class="form-label" for="linkedTask">Linked Task</label>
+<select class="form-select" id="linkedTask">
+<option value="">Select task</option>
+</select>
+</div>
+<div class="form-group" id="linkedObjectiveGroup" style="display: none;">
+<label class="form-label" for="linkedObjective">Linked Objective</label>
+<select class="form-select" id="linkedObjective">
+<option value="">Select objective</option>
+</select>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label" for="eventDate">Date</label>
+<input class="form-input" id="eventDate" required="" type="date"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="eventTime">Time (Optional)</label>
+<input class="form-input" id="eventTime" type="time"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label" for="eventColor">Color</label>
+<select class="form-select" id="eventColor">
+<option value="">Select color</option>
+<option value="#2C3E50">Navy</option>
+<option value="#1ABC9C">Teal</option>
+<option value="#F39C12">Gold</option>
+<option value="#9B59B6">Lavender</option>
+<option value="#E74C3C">Red</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label" for="eventPriority">Priority</label>
+<select class="form-select" id="eventPriority">
+<option value="">Select priority</option>
+<option value="1">Low</option>
+<option value="2">Medium</option>
+<option value="3">High</option>
+</select>
+</div>
+</div>
+<div class="text-right mt-6">
+<button class="btn btn-secondary" id="cancelCalendarEventBtn" type="button">Cancel</button>
+<button class="btn btn-primary ml-2" type="submit">Save Event</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Full Calendar Modal -->
+<div class="full-calendar-modal" id="fullCalendarModal">
+<div class="full-calendar-content">
+<button class="full-calendar-close" onclick="app.closeFullCalendar()">
+<i class="fas fa-times"></i>
+</button>
+<div class="full-calendar-header">
+<h2 id="fullCalendarMonth">Calendar</h2>
+<div class="month-navigation">
+<button class="btn btn-secondary btn-sm" onclick="app.prevMonth()">
+<i class="fas fa-chevron-left"></i>
+</button>
+<button class="btn btn-secondary btn-sm" onclick="app.nextMonth()">
+<i class="fas fa-chevron-right"></i>
+</button>
+<button class="btn btn-primary btn-sm" onclick="app.openCalendarEventModal()">
+<i class="fas fa-plus"></i> Add Event
                     </button>
-                    <button class="btn btn-secondary btn-sm" onclick="app.nextMonth()">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <button class="btn btn-primary btn-sm" onclick="app.openCalendarEventModal()">
-                        <i class="fas fa-plus"></i> Add Event
-                    </button>
-                </div>
-            </div>
-            <div class="calendar-header">
-                <div>Sun</div>
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
-            </div>
-            <div class="full-calendar-view" id="fullCalendarDays">
-                <!-- Full calendar days will be generated here -->
-            </div>
+</div>
+</div>
+<div class="calendar-header">
+<div>Sun</div>
+<div>Mon</div>
+<div>Tue</div>
+<div>Wed</div>
+<div>Thu</div>
+<div>Fri</div>
+<div>Sat</div>
+</div>
+<div class="full-calendar-view" id="fullCalendarDays">
+<!-- Full calendar days will be generated here -->
+</div>
+</div>
+</div>
+<!-- Objective Modal -->
+<div class="modal" id="objectiveModal">
+<div class="modal-content">
+<div class="modal-header">
+<h3 class="modal-title" id="objectiveModalTitle">New Objective</h3>
+<button class="btn-icon" id="closeObjectiveModal">
+<i class="fas fa-times"></i>
+</button>
+</div>
+<form id="objectiveForm">
+<input id="objectiveId" type="hidden"/>
+<div class="form-group">
+<label class="form-label" for="objectiveTitle">Title</label>
+<input class="form-input" id="objectiveTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="objectiveDescription">Description</label>
+<textarea class="form-textarea" id="objectiveDescription"></textarea>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label" for="objectiveCategory">Category</label>
+<select class="form-select" id="objectiveCategory" required="">
+<option value="">Select category</option>
+<option value="academic">Academic</option>
+<option value="career">Career</option>
+<option value="personal">Personal</option>
+<option value="health">Health &amp; Fitness</option>
+<option value="skill">Skill Development</option>
+<option value="creative">Creative</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label" for="objectiveTimeRange">Time Range</label>
+<select class="form-select" id="objectiveTimeRange" required="">
+<option value="">Select time range</option>
+<option value="short">Short Term (1-3 months)</option>
+<option value="medium">Medium Term (3-12 months)</option>
+<option value="long">Long Term (1+ years)</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label" for="objectivePriority">Priority</label>
+<select class="form-select" id="objectivePriority" required="">
+<option value="">Select priority</option>
+<option value="1">Low</option>
+<option value="2">Medium-Low</option>
+<option value="3">Medium</option>
+<option value="4">High</option>
+<option value="5">Critical</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label" for="objectiveStatus">Status</label>
+<select class="form-select" id="objectiveStatus" required="">
+<option value="">Select status</option>
+<option value="active">Active</option>
+<option value="paused">Paused</option>
+<option value="completed">Completed</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label" for="objectiveDeadline">Target Date (Optional)</label>
+<input class="form-input" id="objectiveDeadline" type="date"/>
+</div>
+<div class="text-right mt-6">
+<button class="btn btn-secondary" id="cancelObjectiveBtn" type="button">Cancel</button>
+<button class="btn btn-primary ml-2" type="submit">Save Objective</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Task Modal -->
+<div class="modal" id="taskModal">
+<div class="modal-content">
+<div class="modal-header">
+<h3 class="modal-title" id="taskModalTitle">New Task</h3>
+<button class="btn-icon" id="closeTaskModal">
+<i class="fas fa-times"></i>
+</button>
+</div>
+<form id="taskForm">
+<input id="taskId" type="hidden"/>
+<div class="form-group">
+<label class="form-label" for="taskTitle">Title</label>
+<input class="form-input" id="taskTitle" required="" type="text"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="taskDescription">Description</label>
+<textarea class="form-textarea" id="taskDescription"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label" for="taskObjective">Linked Objective</label>
+<select class="form-select" id="taskObjective" required="">
+<option value="">Select objective</option>
+</select>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label" for="taskDeadline">Deadline</label>
+<input class="form-input" id="taskDeadline" required="" type="date"/>
+</div>
+<div class="form-group">
+<label class="form-label" for="taskDuration">Estimated Duration (hours)</label>
+<input class="form-input" id="taskDuration" min="0.5" step="0.5" type="number" value="1"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label" for="taskImportance">Importance</label>
+<select class="form-select" id="taskImportance">
+<option value="">Select importance</option>
+<option value="1">Low</option>
+<option value="2">Medium</option>
+<option value="3">High</option>
+<option value="4">Critical</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label" for="taskStatus">Status</label>
+<select class="form-select" id="taskStatus">
+<option value="">Select status</option>
+<option value="not-started">Not Started</option>
+<option value="in-progress">In Progress</option>
+<option value="completed">Completed</option>
+</select>
+</div>
+</div>
+<div class="text-right mt-6">
+<button class="btn btn-secondary" id="cancelTaskBtn" type="button">Cancel</button>
+<button class="btn btn-primary ml-2" type="submit">Save Task</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Context Menu -->
+<div class="context-menu" id="contextMenu">
+<div class="context-menu-item" data-action="edit">
+<i class="fas fa-edit"></i> Edit
         </div>
-    </div>
-
-    <!-- Objective Modal -->
-    <div class="modal" id="objectiveModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="objectiveModalTitle">New Objective</h3>
-                <button class="btn-icon" id="closeObjectiveModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="objectiveForm">
-                <input type="hidden" id="objectiveId">
-                <div class="form-group">
-                    <label class="form-label" for="objectiveTitle">Title</label>
-                    <input type="text" class="form-input" id="objectiveTitle" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="objectiveDescription">Description</label>
-                    <textarea class="form-textarea" id="objectiveDescription"></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="objectiveCategory">Category</label>
-                        <select class="form-select" id="objectiveCategory" required>
-                            <option value="">Select category</option>
-                            <option value="academic">Academic</option>
-                            <option value="career">Career</option>
-                            <option value="personal">Personal</option>
-                            <option value="health">Health & Fitness</option>
-                            <option value="skill">Skill Development</option>
-                            <option value="creative">Creative</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="objectiveTimeRange">Time Range</label>
-                        <select class="form-select" id="objectiveTimeRange" required>
-                            <option value="">Select time range</option>
-                            <option value="short">Short Term (1-3 months)</option>
-                            <option value="medium">Medium Term (3-12 months)</option>
-                            <option value="long">Long Term (1+ years)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="objectivePriority">Priority</label>
-                        <select class="form-select" id="objectivePriority" required>
-                            <option value="">Select priority</option>
-                            <option value="1">Low</option>
-                            <option value="2">Medium-Low</option>
-                            <option value="3">Medium</option>
-                            <option value="4">High</option>
-                            <option value="5">Critical</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="objectiveStatus">Status</label>
-                        <select class="form-select" id="objectiveStatus" required>
-                            <option value="">Select status</option>
-                            <option value="active">Active</option>
-                            <option value="paused">Paused</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="objectiveDeadline">Target Date (Optional)</label>
-                    <input type="date" class="form-input" id="objectiveDeadline">
-                </div>
-                <div class="text-right mt-6">
-                    <button type="button" class="btn btn-secondary" id="cancelObjectiveBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ml-2">Save Objective</button>
-                </div>
-            </form>
+<div class="context-menu-item" data-action="delete">
+<i class="fas fa-trash"></i> Delete
         </div>
-    </div>
-
-    <!-- Task Modal -->
-    <div class="modal" id="taskModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="taskModalTitle">New Task</h3>
-                <button class="btn-icon" id="closeTaskModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="taskForm">
-                <input type="hidden" id="taskId">
-                <div class="form-group">
-                    <label class="form-label" for="taskTitle">Title</label>
-                    <input type="text" class="form-input" id="taskTitle" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="taskDescription">Description</label>
-                    <textarea class="form-textarea" id="taskDescription"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="taskObjective">Linked Objective</label>
-                    <select class="form-select" id="taskObjective" required>
-                        <option value="">Select objective</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="taskDeadline">Deadline</label>
-                        <input type="date" class="form-input" id="taskDeadline" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="taskDuration">Estimated Duration (hours)</label>
-                        <input type="number" class="form-input" id="taskDuration" min="0.5" step="0.5" value="1">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label" for="taskImportance">Importance</label>
-                        <select class="form-select" id="taskImportance">
-                            <option value="">Select importance</option>
-                            <option value="1">Low</option>
-                            <option value="2">Medium</option>
-                            <option value="3">High</option>
-                            <option value="4">Critical</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="taskStatus">Status</label>
-                        <select class="form-select" id="taskStatus">
-                            <option value="">Select status</option>
-                            <option value="not-started">Not Started</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="text-right mt-6">
-                    <button type="button" class="btn btn-secondary" id="cancelTaskBtn">Cancel</button>
-                    <button type="submit" class="btn btn-primary ml-2">Save Task</button>
-                </div>
-            </form>
+<div class="context-menu-item" data-action="duplicate">
+<i class="fas fa-copy"></i> Duplicate
         </div>
-    </div>
-
-    <!-- Context Menu -->
-    <div class="context-menu" id="contextMenu">
-        <div class="context-menu-item" data-action="edit">
-            <i class="fas fa-edit"></i> Edit
+<div class="context-menu-item" data-action="mark-done">
+<i class="fas fa-check"></i> Mark as Done
         </div>
-        <div class="context-menu-item" data-action="delete">
-            <i class="fas fa-trash"></i> Delete
-        </div>
-        <div class="context-menu-item" data-action="duplicate">
-            <i class="fas fa-copy"></i> Duplicate
-        </div>
-        <div class="context-menu-item" data-action="mark-done">
-            <i class="fas fa-check"></i> Mark as Done
-        </div>
-    </div>
-
-    <!-- Tutorial Tip -->
-    <div class="tutorial-tip" id="tutorialTip">
-        <div class="tip-header">
-            <h4>💡 Quick Tip</h4>
-            <button class="close-tip" id="closeTipBtn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <p id="tipContent">Use the search bar to quickly find objectives, tasks, or events!</p>
-    </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <div id="notificationMessage">Operation completed successfully</div>
-    </div>
-
-    <!-- YouTube Iframe for Music -->
-    <iframe id="youtubeMusic" style="display: none;" width="0" height="0" src="https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-    <script>
+</div>
+<!-- Tutorial Tip -->
+<div class="tutorial-tip" id="tutorialTip">
+<div class="tip-header">
+<h4>💡 Quick Tip</h4>
+<button class="close-tip" id="closeTipBtn">
+<i class="fas fa-times"></i>
+</button>
+</div>
+<p id="tipContent">Use the search bar to quickly find objectives, tasks, or events!</p>
+</div>
+<!-- Notification -->
+<div class="notification" id="notification">
+<div id="notificationMessage">Operation completed successfully</div>
+</div>
+<!-- YouTube Iframe for Music -->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="0" id="youtubeMusic" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=0" style="display: none;" title="YouTube video player" width="0"></iframe>
+<script>
         class FlussoApp {
             constructor() {
                 this.currentStep = 1;
@@ -3711,6 +3680,23 @@
                 this.initContextMenu();
                 this.initSearch();
                 this.showTutorialTip();
+
+                // Keep theme/notifications/goal in sync across refreshes or multiple tabs
+                window.addEventListener('storage', (ev) => {
+                    if (ev.key === 'flusso_settings' && ev.newValue) {
+                        try {
+                            const next = JSON.parse(ev.newValue);
+                            if (typeof next.darkMode === 'boolean') this.settings.darkMode = next.darkMode;
+                            if (typeof next.notificationsEnabled === 'boolean') this.settings.notificationsEnabled = next.notificationsEnabled;
+                            if (typeof next.focusHoursGoal === 'number') this.settings.focusHoursGoal = next.focusHoursGoal;
+                            if (typeof next.dailyGoalMinutes === 'number') this.settings.dailyGoalMinutes = next.dailyGoalMinutes;
+                            this.applyTheme();
+                            this.updateSettingsUI();
+                            this.updateDashboard();
+                        } catch (e) {}
+                    }
+                });
+
                 
                 // Start quote rotation
                 setInterval(() => this.nextQuote(), 30000);
@@ -3749,6 +3735,9 @@
                     userFocus: '',
                     workStyle: '',
                     motivationType: '',
+                    focusHoursGoal: 2,
+                    dailyGoalMinutes: 120,
+                    notificationsEnabled: true,
                     activeObjective: null,
                     activeTask: null,
                     streak: 0,
@@ -3760,7 +3749,34 @@
                     achievementsUnlocked: []
                 };
 
-                // Load grind zone settings
+                
+
+                // Migrate older settings / keep refresh stable
+                const goalFromHours = (v) => {
+                    const n = Number(v);
+                    if (!Number.isFinite(n) || n <= 0) return null;
+                    return Math.round(n * 60);
+                };
+                // Back-compat: some builds used "dailyGoal" in minutes
+                if (typeof this.settings.dailyGoal === 'number' && !this.settings.dailyGoalMinutes) {
+                    this.settings.dailyGoalMinutes = Math.max(0, Math.round(this.settings.dailyGoal));
+                }
+                // Prefer hours-based goal when available
+                if (typeof this.settings.focusHoursGoal === 'number' && Number.isFinite(this.settings.focusHoursGoal)) {
+                    this.settings.dailyGoalMinutes = goalFromHours(this.settings.focusHoursGoal) ?? this.settings.dailyGoalMinutes;
+                }
+                // If missing, set a sane default (2h)
+                if (!this.settings.dailyGoalMinutes || this.settings.dailyGoalMinutes <= 0) {
+                    this.settings.dailyGoalMinutes = 120;
+                }
+                if (!this.settings.focusHoursGoal || this.settings.focusHoursGoal <= 0) {
+                    this.settings.focusHoursGoal = Math.max(0.5, Math.round((this.settings.dailyGoalMinutes / 60) * 2) / 2);
+                }
+                if (typeof this.settings.notificationsEnabled !== 'boolean') {
+                    this.settings.notificationsEnabled = true;
+                }
+
+// Load grind zone settings
                 const grindData = localStorage.getItem('flusso_grind');
                 this.grindSettings = grindData ? JSON.parse(grindData) : {
                     background: 'forest',
@@ -4099,6 +4115,7 @@
                     this.settings.darkMode = e.target.checked;
                     this.saveData();
                     this.applyTheme();
+                    this.showNotification(this.settings.darkMode ? 'Dark mode enabled' : 'Light mode enabled');
                 });
 
                 // Music toggle
@@ -4363,9 +4380,17 @@
                 this.settings.setupCompleted = true;
                 this.settings.userName = document.getElementById('userName').value.trim();
                 this.settings.userFocus = document.getElementById('userFocus').value;
+
+                // New: daily focus goal (hours/day)
+                this.settings.focusHoursGoal = Math.max(
+                    0.5,
+                    parseFloat(document.getElementById('userDailyFocusHours').value) || 2
+                );
+                this.settings.dailyGoalMinutes = Math.round(this.settings.focusHoursGoal * 60);
+
                 this.settings.workStyle = document.getElementById('workStyle').value;
                 this.settings.motivationType = document.getElementById('motivationType').value;
-                
+
                 // Create first objective and task from setup
                 const objectiveId = this.generateId();
                 const objective = {
@@ -4378,7 +4403,7 @@
                     status: "active",
                     createdAt: new Date().toISOString()
                 };
-                
+
                 const task = {
                     id: this.generateId(),
                     title: document.getElementById('setupTask').value.trim(),
@@ -4390,17 +4415,17 @@
                     status: "not-started",
                     createdAt: new Date().toISOString()
                 };
-                
+
                 this.objectives.push(objective);
                 this.tasks.push(task);
                 this.settings.activeObjective = objectiveId;
                 this.settings.activeTask = task.id;
-                
+
                 this.saveData();
                 document.getElementById('setupModal').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 this.updateUI();
-                this.showNotification(`Welcome to Flusso, ${this.settings.userName}! You've created your first objective and task.`);
+                this.showNotification(`Welcome to Flusso, ${this.settings.userName}! Daily goal set to ${this.settings.focusHoursGoal}h.`);
             }
 
             // Quotes System
@@ -4572,10 +4597,16 @@
                 
                 document.getElementById('welcomeMessage').textContent = `${greeting}, ${this.settings.userName}!`;
                 document.getElementById('userAvatar').textContent = this.settings.userName.charAt(0).toUpperCase();
-                document.getElementById('userFocusDisplay').textContent = `Focus Area: ${this.getFocusText(this.settings.userFocus)}`;
+                document.getElementById('userFocusDisplay').textContent = `Focus Area: ${this.getFocusText(this.settings.userFocus)} • Daily goal: ${(this.settings.focusHoursGoal || (this.settings.dailyGoalMinutes/60)).toFixed(1).replace('.0','')}h`;
                 
                 // Update stats - Focus Today always 2 digits
-                document.getElementById('dailyGoalDisplay').textContent = `${this.settings.dailyGoal || '0'}m`;
+                (function () {
+                    const goalMin = this.settings.dailyGoalMinutes || Math.round((this.settings.focusHoursGoal || 0) * 60) || 0;
+                    const goalH = goalMin >= 60 ? (goalMin / 60) : 0;
+                    const fmtH = goalH ? (Number.isInteger(goalH) ? `${goalH}` : `${goalH.toFixed(1)}`) : null;
+                    document.getElementById('dailyGoalDisplay').textContent = fmtH ? `${fmtH}h` : `${goalMin}m`;
+                    document.getElementById('dailyGoalDisplay').title = `${goalMin} minutes`;
+                }).call(this);
                 document.getElementById('streakDisplay').textContent = this.settings.streak;
                 document.getElementById('completedToday').textContent = this.settings.todayTasksCompleted || 0;
                 
@@ -5530,11 +5561,15 @@
             applyTheme() {
                 if (this.settings.darkMode) {
                     document.body.classList.add('dark-mode');
-                    document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+                    document.documentElement.dataset.theme = 'dark';
+                    const tBtn = document.getElementById('themeToggle');
+                    if (tBtn) tBtn.innerHTML = '<i class="fas fa-sun"></i>';
                 } else {
                     document.body.classList.remove('dark-mode');
+                    document.documentElement.dataset.theme = 'light';
                     document.body.classList.add('light-mode');
-                    document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
+                    const tBtn = document.getElementById('themeToggle');
+                    if (tBtn) tBtn.innerHTML = '<i class="fas fa-moon"></i>';
                 }
             }
 
@@ -5705,9 +5740,11 @@
                     
                     if (this.timer.isFocus) {
                         this.showNotification('Break finished! Time to focus.');
+                        this.notifySystem('Flusso', 'Break finished — time to focus.');
                         document.getElementById('grindSessionInfo').textContent = 'Focus Session';
                     } else {
                         this.showNotification('Focus session finished! Time for a break.');
+                        this.notifySystem('Flusso', 'Focus session finished — time for a break.');
                         document.getElementById('grindSessionInfo').textContent = 'Break Session';
                         // Record focus session
                         this.recordFocusSession(this.timerSettings.focusDuration);
@@ -5907,8 +5944,10 @@
                     
                     // Add custom events
                     dayEvents.forEach(event => {
+                        const base = event.color || '#1ABC9C';
+                        const bg = this.hexToRgba(base, 0.18);
                         eventsHtml += `
-                            <div class="calendar-event-item calendar-event-custom" onclick="app.editCalendarEvent('${event.id}')">
+                            <div class="calendar-event-item" style="background:${bg};color:${base};border-left:3px solid ${base};" onclick="app.editCalendarEvent('${event.id}')">
                                 <i class="fas fa-calendar"></i> ${event.title}
                             </div>
                         `;
@@ -6504,7 +6543,21 @@
                 return Date.now().toString(36) + Math.random().toString(36).substr(2);
             }
 
-            getObjectiveProgress(objectiveId) {
+            
+
+            hexToRgba(hex, alpha = 1) {
+                try {
+                    const clean = String(hex || '').replace('#', '').trim();
+                    if (clean.length !== 6) return `rgba(26, 188, 156, ${alpha})`;
+                    const r = parseInt(clean.slice(0, 2), 16);
+                    const g = parseInt(clean.slice(2, 4), 16);
+                    const b = parseInt(clean.slice(4, 6), 16);
+                    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                } catch (e) {
+                    return `rgba(26, 188, 156, ${alpha})`;
+                }
+            }
+getObjectiveProgress(objectiveId) {
                 const objectiveTasks = this.tasks.filter(task => task.objectiveId === objectiveId);
                 if (objectiveTasks.length === 0) return 0;
                 
@@ -6587,6 +6640,28 @@
                 document.getElementById('tutorialTip').style.display = 'none';
             }
 
+            async ensureNotificationPermission() {
+                try {
+                    if (!('Notification' in window)) return false;
+                    if (Notification.permission === 'granted') return true;
+                    if (Notification.permission === 'denied') return false;
+                    const res = await Notification.requestPermission();
+                    return res === 'granted';
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            notifySystem(title, body) {
+                if (!this.settings.notificationsEnabled) return;
+                try {
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        new Notification(title, { body });
+                    }
+                } catch (e) {}
+            }
+
+
             showNotification(message) {
                 const notification = document.getElementById('notification');
                 document.getElementById('notificationMessage').textContent = message;
@@ -6613,5 +6688,3 @@
     </script>
 </body>
 </html>
-
-
