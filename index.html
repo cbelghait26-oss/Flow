@@ -2548,7 +2548,90 @@
                 font-size: 50px;
             }
         }
-    </style>
+    
+        /* Settings accordion */
+        .settings-accordion { display:flex; flex-direction:column; gap:12px; }
+        .settings-cat {
+            width:100%;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:14px 16px;
+            border-radius:12px;
+            border:1px solid var(--border);
+            background: var(--card-bg);
+            cursor:pointer;
+            font-weight:700;
+            transition: var(--transition);
+        }
+        .settings-cat:hover { transform: translateY(-1px); }
+        .settings-cat .chevron { transition: transform 0.2s ease; opacity:0.75; }
+        .settings-cat.active .chevron { transform: rotate(180deg); }
+        .settings-panel {
+            display:none;
+            padding:14px 16px;
+            border-radius:12px;
+            border:1px solid var(--border);
+            background: var(--card-bg);
+        }
+        .settings-panel.active { display:block; }
+        .settings-item {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:16px;
+            padding:12px 0;
+            border-bottom:1px solid var(--border);
+        }
+        .settings-item:last-child { border-bottom:none; }
+        .settings-label { font-weight:700; }
+        .settings-desc { font-size: 0.9rem; opacity:0.75; margin-top:2px; }
+        .settings-inline { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+        .input.small { padding:8px 10px; border-radius:10px; }
+
+        /* Achievements */
+        .achievements-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+            margin-top: 8px;
+        }
+        .ach-card {
+            border:1px solid var(--border);
+            border-radius:16px;
+            background: var(--card-bg);
+            padding:14px;
+            display:flex;
+            gap:12px;
+            align-items:flex-start;
+        }
+        .ach-icon {
+            width:44px; height:44px;
+            border-radius:14px;
+            display:flex; align-items:center; justify-content:center;
+            border:1px solid var(--border);
+            background: rgba(255,255,255,0.06);
+            flex: 0 0 44px;
+        }
+        .ach-title { font-weight:800; }
+        .ach-meta { font-size:0.9rem; opacity:0.78; margin-top:2px; }
+        .ach-progress { margin-top:10px; }
+        .ach-bar { height:10px; border-radius:999px; background: rgba(255,255,255,0.08); overflow:hidden; border:1px solid var(--border); }
+        .ach-bar > div { height:100%; width:0%; background: var(--secondary); transition: width 0.3s ease; }
+        .ach-badge {
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            padding:4px 10px;
+            border-radius:999px;
+            border:1px solid var(--border);
+            font-size:0.8rem;
+            margin-top:8px;
+            opacity:0.9;
+        }
+        .ach-locked { opacity:0.72; }
+
+</style>
 </head>
 <body>
 <!-- Setup Modal -->
@@ -2649,6 +2732,8 @@
 <button class="btn-icon" id="themeToggle" title="Toggle theme">
 <i class="fas fa-moon"></i>
 </button>
+
+<button class="btn-icon" id="openSettingsBtn" title="Settings"><i class="fas fa-cog"></i></button>
 <button class="btn btn-primary" id="startGrindBtn">
 <i class="fas fa-play"></i> Start Focus
                 </button>
@@ -3008,155 +3093,123 @@
 </section>
 <!-- Settings Section -->
 <section class="content-section" id="settings">
-<div class="card">
-<div class="card-header">
-<h2 class="card-title">
-<i class="fas fa-cog"></i> Settings
-                    </h2>
-</div>
-<div class="settings-section">
-<h3>Personalization</h3>
-<div class="setting-item">
-<div class="setting-info">
-<h4>User Name</h4>
-<p id="userNameDisplay">Not set</p>
-</div>
-<button class="btn btn-secondary" onclick="app.editUserName()">Edit</button>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Focus Area</h4>
-<p id="focusAreaDisplay">Not set</p>
-</div>
-<button class="btn btn-secondary" onclick="app.editFocusArea()">Change</button>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Work Style</h4>
-<p id="workStyleDisplay">Standard</p>
-</div>
-<button class="btn btn-secondary" onclick="app.editWorkStyle()">Change</button>
-</div>
-</div>
-<div class="settings-section">
-<h3>Timer Settings</h3>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Default Focus Duration</h4>
-<p id="focusDurationDisplay">25 minutes</p>
-</div>
-<button class="btn btn-secondary" onclick="app.openTimerSettings()">Edit</button>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Break Duration</h4>
-<p id="breakDurationDisplay">5 minutes</p>
-</div>
-<button class="btn btn-secondary" onclick="app.openTimerSettings()">Edit</button>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Timer Display</h4>
-<p id="timerDisplayMode">24-hour format</p>
-</div>
-<button class="btn btn-secondary" onclick="app.openTimerSettings()">Change</button>
-</div>
-</div>
-<div class="settings-section">
-<h3>Music Settings</h3>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Background Music</h4>
-<p>Lo-fi music for focus sessions</p>
-</div>
-<label class="toggle-switch">
-<input id="musicToggle" type="checkbox"/>
-<span class="toggle-slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Spotify Integration</h4>
-<p>Connect your Spotify account</p>
-</div>
-<button class="btn btn-success" onclick="app.connectSpotify()">
-<i class="fab fa-spotify"></i> Connect
-                        </button>
-</div>
-</div>
-<div class="settings-section">
-<h3>Preferences</h3>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Dark Mode</h4>
-<p>Switch between light and dark theme</p>
-</div>
-<label class="toggle-switch">
-<input id="darkModeToggle" type="checkbox"/>
-<span class="toggle-slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Pomodoro Timer</h4>
-<p>Enable 25/5 minute work/break cycles</p>
-</div>
-<label class="toggle-switch">
-<input id="pomodoroToggle" type="checkbox"/>
-<span class="toggle-slider"></span>
-</label>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Notifications</h4>
-<p>Get session reminders and updates</p>
-</div>
-<label class="toggle-switch">
-<input id="notificationsToggle" type="checkbox"/>
-<span class="toggle-slider"></span>
-</label>
-</div>
-</div>
-<div class="settings-section">
-<h3>Data Management</h3>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Export Data</h4>
-<p>Download your objectives and tasks as JSON</p>
-</div>
-<button class="btn btn-secondary" onclick="app.exportData()">Export</button>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Import Data</h4>
-<p>Import objectives and tasks from JSON file</p>
-</div>
-<button class="btn btn-secondary" onclick="app.importData()">Import</button>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Clear All Data</h4>
-<p>Reset the application to initial state</p>
-</div>
-<button class="btn btn-danger" onclick="app.clearData()">Clear All</button>
-</div>
-</div>
-<div class="settings-section">
-<h3>About</h3>
-<div class="setting-item">
-<div class="setting-info">
-<h4>Version</h4>
-<p>Flusso 2.3.0</p>
-</div>
-</div>
-<div class="setting-item">
-<div class="setting-info">
-<h4>BLG group</h4>
-<p>Built with ❤️ for productive minds</p>
-</div>
-</div>
-</div>
-</div>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-cog"></i> Settings</h2>
+      <p class="card-subtitle">Tap a category to expand.</p>
+    </div>
+    <div class="card-body">
+
+      <div class="settings-accordion">
+
+        <button class="settings-cat" data-cat="appearance">
+          <span><i class="fas fa-palette"></i> Appearance</span>
+          <i class="fas fa-chevron-down chevron"></i>
+        </button>
+        <div class="settings-panel" id="cat-appearance">
+          <div class="settings-item">
+            <div>
+              <div class="settings-label">Dark mode</div>
+              <div class="settings-desc">Switch themes instantly.</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="darkModeToggle"/>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <button class="settings-cat" data-cat="focus">
+          <span><i class="fas fa-bullseye"></i> Focus & Timer</span>
+          <i class="fas fa-chevron-down chevron"></i>
+        </button>
+        <div class="settings-panel" id="cat-focus">
+          <div class="settings-item">
+            <div>
+              <div class="settings-label">Daily focus goal</div>
+              <div class="settings-desc">Used on the dashboard progress.</div>
+            </div>
+            <div class="settings-inline">
+              <input type="number" min="0.5" step="0.5" id="dailyGoalHoursInput" class="input small" style="width:110px" />
+              <span class="muted">hours/day</span>
+              <button class="btn btn-secondary" id="saveDailyGoalBtn">Save</button>
+            </div>
+          </div>
+
+          <div class="settings-item">
+            <div>
+              <div class="settings-label">Timer settings</div>
+              <div class="settings-desc">Pomodoro & break length.</div>
+            </div>
+            <button class="btn btn-secondary" id="timerSettingsBtn"><i class="fas fa-sliders-h"></i> Configure</button>
+          </div>
+        </div>
+
+        <button class="settings-cat" data-cat="music">
+          <span><i class="fas fa-music"></i> Music</span>
+          <i class="fas fa-chevron-down chevron"></i>
+        </button>
+        <div class="settings-panel" id="cat-music">
+          <div class="settings-item">
+            <div>
+              <div class="settings-label">Music</div>
+              <div class="settings-desc">Ambient audio = no ads.</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="musicToggle"/>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="settings-item">
+            <div>
+              <div class="settings-label">Source</div>
+              <div class="settings-desc">Ambient is built-in. YouTube may include ads.</div>
+            </div>
+            <select id="musicSourceSelect" class="input" style="max-width:220px">
+              <option value="ambient">Ambient (no ads)</option>
+              <option value="youtube">YouTube Lofi (may contain ads)</option>
+            </select>
+          </div>
+
+          <div class="settings-item">
+            <div>
+              <div class="settings-label">Volume</div>
+              <div class="settings-desc">Applies to ambient audio.</div>
+            </div>
+            <input type="range" min="0" max="1" step="0.01" id="musicVolume" style="width:220px"/>
+          </div>
+        </div>
+
+        <button class="settings-cat" data-cat="data">
+          <span><i class="fas fa-database"></i> Data</span>
+          <i class="fas fa-chevron-down chevron"></i>
+        </button>
+        <div class="settings-panel" id="cat-data">
+          <div class="settings-item">
+            <div>
+              <div class="settings-label">Export / Import</div>
+              <div class="settings-desc">Backup your data locally.</div>
+            </div>
+            <div class="settings-inline">
+              <button class="btn btn-secondary" id="exportBtn"><i class="fas fa-download"></i> Export</button>
+              <button class="btn btn-secondary" id="importBtn"><i class="fas fa-upload"></i> Import</button>
+            </div>
+          </div>
+
+          <div class="settings-item">
+            <div>
+              <div class="settings-label">Reset</div>
+              <div class="settings-desc">Clears all local data.</div>
+            </div>
+            <button class="btn btn-danger" id="resetDataBtn"><i class="fas fa-trash"></i> Reset</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </section>
 </div>
 <!-- Grind Zone -->
@@ -3602,9 +3655,13 @@
                 // Music settings
                 this.musicSettings = {
                     enabled: false,
+                    source: 'ambient',
                     volume: 0.5,
                     connectedToSpotify: false,
-                    youtubePlayer: null
+                    youtubePlayer: null,
+                    audioCtx: null,
+                    gainNode: null,
+                    noiseNode: null
                 };
                 
                 // Calendar state
@@ -3651,16 +3708,22 @@
                 this.showQuotesBar = true;
                 
                 // Achievements system
+                
                 this.achievements = [
-                    { id: 'first_task', title: 'First Task', description: 'Complete your first task', icon: 'fa-check', unlocked: false },
-                    { id: 'streak_7', title: '7-Day Streak', description: 'Maintain a 7-day focus streak', icon: 'fa-fire', unlocked: false },
-                    { id: 'focus_master', title: 'Focus Master', description: 'Complete 10 focus sessions', icon: 'fa-brain', unlocked: false },
+                    // Multi-stage achievements (progress -> stages)
+                    { id: 'tasks_done', title: 'Task Finisher', icon: 'fa-check', stages: [1, 10, 50, 200], unit: 'tasks', unlockedStage: 0 },
+                    { id: 'objectives_done', title: 'Objective Crusher', icon: 'fa-trophy', stages: [1, 5, 20], unit: 'objectives', unlockedStage: 0 },
+                    { id: 'focus_sessions', title: 'Focus Sessions', icon: 'fa-brain', stages: [1, 10, 50, 150], unit: 'sessions', unlockedStage: 0 },
+                    { id: 'focus_time', title: 'Deep Work Time', icon: 'fa-hourglass-half', stages: [60, 300, 1000, 5000], unit: 'minutes', unlockedStage: 0 },
+                    { id: 'streak', title: 'Streak Builder', icon: 'fa-fire', stages: [3, 7, 14, 30, 100], unit: 'days', unlockedStage: 0 },
+
+                    // Single achievements
                     { id: 'early_bird', title: 'Early Bird', description: 'Start a focus session before 8 AM', icon: 'fa-sun', unlocked: false },
                     { id: 'night_owl', title: 'Night Owl', description: 'Start a focus session after 8 PM', icon: 'fa-moon', unlocked: false },
                     { id: 'marathon', title: 'Marathon', description: 'Complete a 2-hour focus session', icon: 'fa-running', unlocked: false },
-                    { id: 'objective_complete', title: 'Goal Getter', description: 'Complete your first objective', icon: 'fa-trophy', unlocked: false },
                     { id: 'break_king', title: 'Break King', description: 'Take 10 breaks', icon: 'fa-coffee', unlocked: false }
                 ];
+
                 
                 // Context menu
                 this.contextMenuTarget = null;
@@ -3691,6 +3754,7 @@
                             if (typeof next.focusHoursGoal === 'number') this.settings.focusHoursGoal = next.focusHoursGoal;
                             if (typeof next.dailyGoalMinutes === 'number') this.settings.dailyGoalMinutes = next.dailyGoalMinutes;
                             this.applyTheme();
+                this.hydrateSettingsUI();
                             this.updateSettingsUI();
                             this.updateDashboard();
                         } catch (e) {}
@@ -3852,38 +3916,161 @@
                 this.saveData();
             }
 
+            
             updateAchievements() {
-                // Check for achievement unlocks
-                this.achievements.forEach(achievement => {
-                    if (!achievement.unlocked) {
-                        switch(achievement.id) {
-                            case 'first_task':
-                                if (this.tasks.some(task => task.status === 'completed')) {
-                                    achievement.unlocked = true;
-                                }
-                                break;
-                            case 'streak_7':
-                                if (this.settings.streak >= 7) {
-                                    achievement.unlocked = true;
-                                }
-                                break;
-                            case 'focus_master':
-                                if (this.settings.focusSessions.length >= 10) {
-                                    achievement.unlocked = true;
-                                }
-                                break;
-                            case 'objective_complete':
-                                if (this.objectives.some(obj => obj.status === 'completed')) {
-                                    achievement.unlocked = true;
-                                }
-                                break;
-                        }
+                // Compute live stats
+                const tasksDone = this.tasks.filter(t => t.status === 'completed').length;
+                const objectivesDone = this.objectives.filter(o => o.status === 'completed').length;
+                const sessionsDone = (this.settings.focusSessions || []).length;
+
+                // Total focused minutes (sum of session durations if present, fallback to today/total counters)
+                const totalFocusMinutes = (this.settings.focusSessions || []).reduce((acc, s) => acc + (s?.durationMinutes || 0), 0)
+                    || (this.settings.totalFocusMinutes || 0);
+
+                const streakDays = this.settings.streak || 0;
+                const breaksTaken = this.settings.breaksTaken || 0;
+
+                // Helper: update multi-stage achievements
+                const updateTrack = (ach, value) => {
+                    if (!Array.isArray(ach.stages)) return;
+                    let stage = 0;
+                    for (let i = 0; i < ach.stages.length; i++) {
+                        if (value >= ach.stages[i]) stage = i + 1;
+                    }
+                    if (stage > (ach.unlockedStage || 0)) {
+                        ach.unlockedStage = stage;
+                        const target = ach.stages[stage - 1];
+                        this.showNotification(`Achievement leveled up: ${ach.title} (${target} ${ach.unit})`);
+                    }
+                };
+
+                // Update tracks
+                this.achievements.forEach(ach => {
+                    switch (ach.id) {
+                        case 'tasks_done': updateTrack(ach, tasksDone); break;
+                        case 'objectives_done': updateTrack(ach, objectivesDone); break;
+                        case 'focus_sessions': updateTrack(ach, sessionsDone); break;
+                        case 'focus_time': updateTrack(ach, totalFocusMinutes); break;
+                        case 'streak': updateTrack(ach, streakDays); break;
+
+                        case 'early_bird':
+                            if (!ach.unlocked) {
+                                const has = (this.settings.focusSessions || []).some(s => {
+                                    const d = new Date(s?.startTime || s?.startedAt || 0);
+                                    return d && d.getHours && d.getHours() < 8;
+                                });
+                                if (has) { ach.unlocked = true; this.showNotification(`Achievement unlocked: ${ach.title}`); }
+                            }
+                            break;
+
+                        case 'night_owl':
+                            if (!ach.unlocked) {
+                                const has = (this.settings.focusSessions || []).some(s => {
+                                    const d = new Date(s?.startTime || s?.startedAt || 0);
+                                    return d && d.getHours && d.getHours() >= 20;
+                                });
+                                if (has) { ach.unlocked = true; this.showNotification(`Achievement unlocked: ${ach.title}`); }
+                            }
+                            break;
+
+                        case 'marathon':
+                            if (!ach.unlocked) {
+                                const has = (this.settings.focusSessions || []).some(s => (s?.durationMinutes || 0) >= 120);
+                                if (has) { ach.unlocked = true; this.showNotification(`Achievement unlocked: ${ach.title}`); }
+                            }
+                            break;
+
+                        case 'break_king':
+                            if (!ach.unlocked && breaksTaken >= 10) {
+                                ach.unlocked = true;
+                                this.showNotification(`Achievement unlocked: ${ach.title}`);
+                            }
+                            break;
                     }
                 });
+
                 this.saveData();
+                this.renderAchievements();
             }
 
-            initSearch() {
+            renderAchievements() {
+                const grid = document.getElementById('achievementsGrid');
+                if (!grid) return;
+
+                // Live stats for progress bars
+                const tasksDone = this.tasks.filter(t => t.status === 'completed').length;
+                const objectivesDone = this.objectives.filter(o => o.status === 'completed').length;
+                const sessionsDone = (this.settings.focusSessions || []).length;
+                const totalFocusMinutes = (this.settings.focusSessions || []).reduce((acc, s) => acc + (s?.durationMinutes || 0), 0)
+                    || (this.settings.totalFocusMinutes || 0);
+                const streakDays = this.settings.streak || 0;
+                const breaksTaken = this.settings.breaksTaken || 0;
+
+                const valueFor = (id) => {
+                    switch (id) {
+                        case 'tasks_done': return tasksDone;
+                        case 'objectives_done': return objectivesDone;
+                        case 'focus_sessions': return sessionsDone;
+                        case 'focus_time': return totalFocusMinutes;
+                        case 'streak': return streakDays;
+                        case 'break_king': return breaksTaken;
+                        default: return 0;
+                    }
+                };
+
+                grid.innerHTML = this.achievements.map(ach => {
+                    const isTrack = Array.isArray(ach.stages);
+                    const icon = ach.icon || 'fa-award';
+
+                    if (isTrack) {
+                        const v = valueFor(ach.id);
+                        const stages = ach.stages;
+                        const unlockedStage = ach.unlockedStage || 0;
+                        const nextTarget = stages[Math.min(unlockedStage, stages.length - 1)];
+                        const prevTarget = unlockedStage === 0 ? 0 : stages[unlockedStage - 1];
+                        const denom = Math.max(1, nextTarget - prevTarget);
+                        const pct = Math.max(0, Math.min(1, (v - prevTarget) / denom)) * 100;
+
+                        const badgeText = unlockedStage === 0
+                            ? `Stage 0/${stages.length}`
+                            : `Stage ${unlockedStage}/${stages.length}`;
+
+                        const subtitle = unlockedStage >= stages.length
+                            ? `Maxed out • ${v} ${ach.unit}`
+                            : `Next: ${nextTarget} ${ach.unit} • You: ${v}`;
+
+                        return `
+                          <div class="ach-card">
+                            <div class="ach-icon"><i class="fas ${icon}"></i></div>
+                            <div style="flex:1">
+                              <div class="ach-title">${ach.title}</div>
+                              <div class="ach-meta">${subtitle}</div>
+                              <div class="ach-progress">
+                                <div class="ach-bar"><div style="width:${pct}%"></div></div>
+                                <div class="ach-badge"><i class="fas fa-layer-group"></i> ${badgeText}</div>
+                              </div>
+                            </div>
+                          </div>`;
+                    }
+
+                    const unlocked = !!ach.unlocked;
+                    return `
+                      <div class="ach-card ${unlocked ? '' : 'ach-locked'}">
+                        <div class="ach-icon"><i class="fas ${icon}"></i></div>
+                        <div style="flex:1">
+                          <div class="ach-title">${ach.title}</div>
+                          <div class="ach-meta">${ach.description || ''}</div>
+                          <div class="ach-badge">
+                            <i class="fas ${unlocked ? 'fa-check-circle' : 'fa-lock'}"></i>
+                            ${unlocked ? 'Unlocked' : 'Locked'}
+                          </div>
+                        </div>
+                      </div>`;
+                }).join('');
+            }
+
+            initSearch(
+) {
                 const searchInput = document.getElementById('globalSearch');
                 const clearBtn = document.getElementById('clearSearchBtn');
                 const searchResults = document.getElementById('searchResults');
@@ -4224,22 +4411,123 @@
                 this.musicSettings.youtubePlayer = iframe;
             }
 
+            
             updateMusic() {
+                const source = this.musicSettings.source || 'ambient';
+
+                // Always keep YouTube hidden unless explicitly selected
                 const iframe = this.musicSettings.youtubePlayer;
+                if (iframe) iframe.style.display = 'none';
+
+                if (!this.musicSettings.enabled) {
+                    this.stopAmbientAudio();
+                    if (iframe) {
+                        iframe.src = "https://www.youtube.com/embed/jfKfPfyJRdk?controls=0&autoplay=0&mute=1";
+                    }
+                    return;
+                }
+
+                if (source === 'ambient') {
+                    // Built-in ambient audio (no ads)
+                    this.startAmbientAudio();
+                    return;
+                }
+
+                // YouTube option (may include ads; we can't control that)
                 if (!iframe) return;
-                
-                if (this.musicSettings.enabled) {
-                    // Enable music by changing src to autoplay
-                    iframe.src = "https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=1&amp;mute=0";
-                    iframe.style.display = 'block';
-                } else {
-                    // Disable music
-                    iframe.src = "https://www.youtube.com/embed/jfKfPfyJRdk?si=Qo6CCOi9pXksg0X-&amp;controls=0&amp;autoplay=0";
-                    iframe.style.display = 'none';
+
+                iframe.src = "https://www.youtube.com/embed/jfKfPfyJRdk?controls=0&autoplay=1&mute=0";
+                iframe.style.display = 'block';
+
+                this.showNotification("YouTube may include ads — use Ambient for an ad-free focus environment.");
+            }
+
+            startAmbientAudio() {
+                try {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioCtx) return;
+
+                    if (!this.musicSettings.audioCtx) {
+                        const ctx = new AudioCtx();
+                        const gain = ctx.createGain();
+                        gain.gain.value = 0.0001; // start nearly silent, fade in
+                        gain.connect(ctx.destination);
+
+                        // Create brown-ish noise
+                        const bufferSize = 2 * ctx.sampleRate;
+                        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                        const output = noiseBuffer.getChannelData(0);
+
+                        let lastOut = 0.0;
+                        for (let i = 0; i < bufferSize; i++) {
+                            const white = Math.random() * 2 - 1;
+                            output[i] = (lastOut + (0.02 * white)) / 1.02;
+                            lastOut = output[i];
+                            output[i] *= 3.5;
+                        }
+
+                        const noise = ctx.createBufferSource();
+                        noise.buffer = noiseBuffer;
+                        noise.loop = true;
+
+                        // Gentle lowpass filter to make it calmer
+                        const filter = ctx.createBiquadFilter();
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 700;
+
+                        noise.connect(filter);
+                        filter.connect(gain);
+
+                        noise.start(0);
+
+                        this.musicSettings.audioCtx = ctx;
+                        this.musicSettings.gainNode = gain;
+                        this.musicSettings.noiseNode = noise;
+                    }
+
+                    // Resume context (required by some browsers)
+                    this.musicSettings.audioCtx.resume?.();
+
+                    // Apply volume with smooth fade
+                    const target = Math.max(0, Math.min(1, this.musicSettings.volume ?? 0.5));
+                    const g = this.musicSettings.gainNode;
+                    if (g) {
+                        g.gain.cancelScheduledValues(this.musicSettings.audioCtx.currentTime);
+                        g.gain.setValueAtTime(g.gain.value, this.musicSettings.audioCtx.currentTime);
+                        g.gain.linearRampToValueAtTime(target * 0.35, this.musicSettings.audioCtx.currentTime + 0.35);
+                    }
+                } catch (e) {
+                    console.warn('Ambient audio failed:', e);
+                }
+            }
+
+            stopAmbientAudio() {
+                try {
+                    const ctx = this.musicSettings.audioCtx;
+                    const noise = this.musicSettings.noiseNode;
+                    const gain = this.musicSettings.gainNode;
+
+                    if (gain && ctx) {
+                        gain.gain.cancelScheduledValues(ctx.currentTime);
+                        gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+                        gain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
+                    }
+
+                    // Stop after fade
+                    setTimeout(() => {
+                        try { noise?.stop?.(); } catch {}
+                        try { ctx?.close?.(); } catch {}
+                        this.musicSettings.audioCtx = null;
+                        this.musicSettings.gainNode = null;
+                        this.musicSettings.noiseNode = null;
+                    }, 300);
+                } catch (e) {
+                    console.warn('Stop ambient audio failed:', e);
                 }
             }
 
             updateMusicToggle() {
+ {
                 const toggleBtn = document.getElementById('musicToggleBtn');
                 const settingsToggle = document.getElementById('musicToggle');
                 
@@ -4263,6 +4551,47 @@
                 this.updateMusicToggle();
                 this.showNotification(this.musicSettings.enabled ? 'Music enabled' : 'Music disabled');
             }
+            toggleSettingsCategory(cat) {
+                const btn = document.querySelector(`.settings-cat[data-cat="${cat}"]`);
+                const panel = document.getElementById(`cat-${cat}`);
+                if (!btn || !panel) return;
+
+                const isOpen = panel.classList.contains('active');
+
+                // Close all
+                document.querySelectorAll('.settings-cat').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+
+                // Open selected
+                if (!isOpen) {
+                    btn.classList.add('active');
+                    panel.classList.add('active');
+                }
+            }
+
+            hydrateSettingsUI() {
+                // Ensure settings inputs reflect stored values
+                const hours = (typeof this.settings.focusHoursGoal === 'number' && this.settings.focusHoursGoal > 0)
+                    ? this.settings.focusHoursGoal
+                    : ((this.settings.dailyGoalMinutes || 120) / 60);
+
+                const goalInput = document.getElementById('dailyGoalHoursInput');
+                if (goalInput) goalInput.value = String(hours);
+
+                const musicToggle = document.getElementById('musicToggle');
+                if (musicToggle) musicToggle.checked = !!this.musicSettings.enabled;
+
+                const sourceSel = document.getElementById('musicSourceSelect');
+                if (sourceSel) sourceSel.value = this.musicSettings.source || 'ambient';
+
+                const vol = document.getElementById('musicVolume');
+                if (vol) vol.value = String(this.musicSettings.volume ?? 0.5);
+
+                const dm = document.getElementById('darkModeToggle');
+                if (dm) dm.checked = !!this.settings.darkMode;
+            }
+
+
 
             // Setup Steps
             nextStep() {
@@ -5558,19 +5887,27 @@
                 this.showNotification(this.settings.darkMode ? 'Dark mode enabled' : 'Light mode enabled');
             }
 
-            applyTheme() {
-                if (this.settings.darkMode) {
+                        applyTheme() {
+                const isDark = !!this.settings.darkMode;
+
+                // Always remove both first to avoid style conflicts
+                document.body.classList.remove('dark-mode', 'light-mode');
+
+                if (isDark) {
                     document.body.classList.add('dark-mode');
                     document.documentElement.dataset.theme = 'dark';
-                    const tBtn = document.getElementById('themeToggle');
-                    if (tBtn) tBtn.innerHTML = '<i class="fas fa-sun"></i>';
                 } else {
-                    document.body.classList.remove('dark-mode');
-                    document.documentElement.dataset.theme = 'light';
                     document.body.classList.add('light-mode');
-                    const tBtn = document.getElementById('themeToggle');
-                    if (tBtn) tBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                    document.documentElement.dataset.theme = 'light';
                 }
+
+                // Update toggle button icon
+                const tBtn = document.getElementById('themeToggle');
+                if (tBtn) tBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+
+                // Keep Settings toggle in sync if present
+                const dm = document.getElementById('darkModeToggle');
+                if (dm && dm.checked !== isDark) dm.checked = isDark;
             }
 
             // Music Methods
